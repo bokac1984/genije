@@ -16,6 +16,8 @@ class Location extends AppModel {
     public $useTable = 'map_objects'; 
     public $primaryKey = 'id';
     public $displayField = 'name';
+    
+    public $actsAs = array('Containable');
      
     public $hasMany = array(
         'Contact' => array(
@@ -40,6 +42,10 @@ class Location extends AppModel {
         ),
         'Event' => array(
             'className' => 'Event',
+            'foreignKey' => 'fk_id_map_objects',
+        ),
+        'News' => array(
+            'className' => 'News',
             'foreignKey' => 'fk_id_map_objects',
         )
     );
@@ -113,9 +119,11 @@ class Location extends AppModel {
     }
     
     /**
+     *
+     * Nadji naziv lokacije
      * 
-     * @param type $id
-     * @return type
+     * @param int $id
+     * @return string
      */
     public function getLocationName($id) {
         $this->recursive = -1;
@@ -195,7 +203,7 @@ class Location extends AppModel {
      * @return string
      */
     public function getMainImage($id) {
-        $image = $this->find('count', array(
+        $image = $this->find('first', array(
             'conditions' => array(
                 'Location.id' => $id
             ),
@@ -203,7 +211,7 @@ class Location extends AppModel {
                 'Location.img_url'
             )
         ));
-        
+
         return $image['Location']['img_url'];
     }
     /**
@@ -224,5 +232,35 @@ class Location extends AppModel {
         }
         
         return '404';
+    }
+    
+    /**
+     * 
+     * @param int $cityId
+     * @return array
+     */
+    public function getCityLocations($cityId = null) {
+        $this->recursive = -1;
+        $lokOut = array();
+        $lokacije = $this->find('all', array(
+            'conditions' => array(
+                'Location.fk_id_cities' => $cityId
+            ),
+            'fields' => array(
+                'Location.id',
+                'Location.name'
+            )
+        ));
+        
+        if (count($lokacije) > 0) {
+            foreach ($lokacije as $l) {
+                $lokOut[] = array(
+                    'id' => $l['Location']['id'],
+                    'name' => $l['Location']['name']
+                );
+            }
+        }
+        
+        return $lokOut;
     }
 }

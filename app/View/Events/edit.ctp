@@ -9,7 +9,7 @@ $this->assign('crumb', 'Uređivanje' );
 $this->assign('title', $event['name']);
 $this->assign('page-title', $event['name'].' <small>izmjena događaja</small>');
 
-
+$this->assign('breadcrumb-icon', $icon);
 
 echo $this->Html->script('/assets/plugins/jquery-mockjax/jquery.mockjax', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/moment/moment', array('block' => 'scriptBottom'));

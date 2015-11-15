@@ -60,6 +60,19 @@ class LocationsController extends AppController {
         )
     );
     
+    public function beforeFilter() {
+        parent::beforeFilter();
+        $this->set('icon', 'location');
+    }
+    
+    public function isAuthorized($user) {
+        if ($user['group_id'] === 2 || $user['group_id'] == 3) {
+            return true;
+        }
+        
+        return parent::isAuthorized($user);
+    }
+    
     public $helpers =  array('DataTable.DataTable');
 
     public function index() {
@@ -71,9 +84,49 @@ class LocationsController extends AppController {
         if (!$this->Location->exists()) {
           throw new NotFoundException(__('Ne postoji lokacija'));
         }
-        $location = $this->Location->findById($id);  
+
+        $options = array(
+            'conditions' => array(
+                'Location.' . $this->Location->primaryKey => $id
+            ),
+            'contain' => array(
+                'City',
+                'Contact',
+                'LocationDescription',
+                'MapObjectSubtypeRelation'
+            )
+        );
+        $this->Location->recursive = -1;
+        $this->set('location', $this->Location->find('first', $options));
+    }
+    
+    /**
+     * view method
+     *
+     * @throws NotFoundException
+     * @param string $id
+     * @return void
+     */
+    public function view($id = null) {
         
-        $this->set(compact('location'));
+        if (!$this->Location->exists($id)) {
+            throw new NotFoundException(__('Ne postoji lokacija'));
+        }
+        $options = array(
+            'conditions' => array(
+                'Location.' . $this->Location->primaryKey => $id
+            ),
+            'contain' => array(
+                'City' => array(
+                    'fields' => array(
+                        'id', 'name'
+                    )
+                ),
+                'Contact'
+            )
+        );
+        $this->Location->recursive = -1;
+        $this->set('location', $this->Location->find('first', $options));
     }
     
     public function getSubtypes() {
@@ -111,6 +164,9 @@ class LocationsController extends AppController {
         $mainImage = $this->Location->find('first', array(
             'fields' => array(
                 'Location.img_url'
+            ),
+            'conditions' => array(
+                'Location.id' => $id
             )
         ));
         $mainImage = $mainImage['Location']['img_url'];
@@ -261,26 +317,6 @@ class LocationsController extends AppController {
         echo '404';
     }
     
-    private function uploadFile($uploadedImage) {
-        $fileName = '';
-        if (!empty($uploadedImage) && $uploadedImage['size'] > 0) {
-            $fileData = pathinfo($uploadedImage['name']);
-            $arr_ext = array('jpg', 'jpeg','png');
-            if (in_array($fileData['extension'], $arr_ext)) {
-                $fileName = hash('sha512', $fileData['filename']);
-                $fileName = substr($fileName, 0, 10)."-";
-                $fileName = uniqid ($fileName, false).".".strtolower($fileData['extension']);
-                $uploadLocation = WWW_ROOT . '/photos/';
-                if (!move_uploaded_file($uploadedImage['tmp_name'],  $uploadLocation . $fileName))
-                {
-                    $fileName = 'error';
-                }
-            }
-        }
-        
-        return $fileName;
-    }
-    
     /**
      * Brise sliku iz galerije
      */
@@ -306,6 +342,11 @@ class LocationsController extends AppController {
         $this->autoRender = false;
         if ($this->request->is('ajax')){
             $id = $this->request->data['pk'];
+            $this->Location->id = $id;
+            if (!$this->Location->exists()) {
+                echo '404';
+                exit();
+            }
             echo $this->Location->deleteLocation($id);
         }
     }    

@@ -8,7 +8,7 @@ class ApplicationUser extends AppModel {
        
     public $useTable = 'users'; 
     public $primaryKey = 'id';
-    public $displayField = 'name';
+    public $displayField = 'display_name';
 
     public function getAllUsers() {
         $users = $this->find('all', array(

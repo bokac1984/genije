@@ -7,6 +7,8 @@ $this->assign('crumb', 'Izmjena lokacije' );
 $this->assign('title', $location['Location']['name']);
 $this->assign('page-title', $location['Location']['name'] . ' <small>pregled lokacija</small>');
 
+$this->assign('breadcrumb-icon', $icon);
+
 define("PHONE", 1);
 define("MOBILE", 2);
 define("WEB", 3);
@@ -29,6 +31,7 @@ echo $this->Html->script('/assets/plugins/bootstrap-datetimepicker/js/bootstrap-
 echo $this->Html->script('/assets/plugins/x-editable/js/bootstrap-editable.min', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/typeaheadjs/typeaheadjs', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/jquery-address/address', array('block' => 'scriptBottom'));
+echo $this->Html->script('/assets/plugins/jQuery-Knob/js/jquery.knob', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/wysihtml5/wysihtml5', array('block' => 'scriptBottom'));
@@ -133,13 +136,19 @@ $idLocation = $location['id'];
                 <tr>
                     <td>Lid</td>
                     <td>
-                        <a href="#" id="lid" data-url="/locations/ajaxEdit"  data-type="text" data-original-title="Unesite lid"><?php echo $location['lid']; ?></a>
+                        <a href="#" id="lid" data-url="/locations/ajaxEdit"  data-type="textarea" data-original-title="Unesite lid"><?php echo $location['lid']; ?></a>
                     </td>
                 </tr>
                 <tr>
                     <td>Rejting lokacije</td>
                     <td>
-                        <a href="#" id="admin_rating" data-pk="<?php echo $idLocation; ?>" data-url="/locations/ajaxEdit" data-type="text" data-original-title="Unesite rejting"><?php echo $location['admin_rating']; ?></a>
+                        <input id="admin_rating" data-pk="<?php echo $idLocation; ?>" 
+                               class="knob" name="data[Location][admin_rating]" data-width="160" data-min="0" 
+                               value="<?php echo $location['admin_rating'] ?>">
+<!--                        <a class="knob" data-min="0"  
+                            data-url="/locations/ajaxEdit" data-type="text" data-original-title="Unesite rejting">
+                            <?php echo $location['admin_rating']; ?>
+</a>-->
                     </td>
                 </tr>
                 <tr>
@@ -214,7 +223,7 @@ $idLocation = $location['id'];
                 <tr>
                     <td>Detaljan info <a id="pencil" href="#"><i class="fa fa-pencil"></i> [uredi]</a>
                     <td>
-                        <div data-original-title="Enter notes" data-url="/locations/updateDescription" data-toggle="manual" data-type="wysihtml5" data-pk="<?php echo $description['id'] != '' ? $description['id'] : $idLocation ?>" id="note" class="editable" tabindex="-1" style="display: block;">
+                        <div data-original-title="Enter notes" data-url="/locations/updateDescription" data-toggle="manual" data-type="wysihtml5" data-pk="<?php echo $idLocation ?>" id="note" class="editable" tabindex="-1" style="display: block;">
                             <?php echo $description['html_text']; ?>
                         </div></td>
                 </tr>

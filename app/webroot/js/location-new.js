@@ -155,20 +155,20 @@ var FormValidator = function () {
             errorClass: 'help-block',
             ignore: "",
             rules: {
-                name: {
+                "data[Location][name]": {
                     minlength: 2,
                     required: true
                 },
-                city_id: {
+                "data[Location][fk_id_cities]": {
                     required: true
                 },
-                lid: {
+                "data[Location][lid]": {
                     required: true
                 },
-                'sub_types[]': {
+                "data[MapObjectSubtypeRelation][sub_types][]": {
                     required: true
                 },
-                address: {
+                "data[Location][address]": {
                     required: true
                 },
                 contact_email: {
@@ -177,17 +177,32 @@ var FormValidator = function () {
                 contact_web: {
                     url: true
                 },
-                longitude: {
+                "data[Location][longitude]": {
                     required: true
                 },
-                latitude: {
+                "data[Location][latitude]": {
                     required: true
                 },
-                html_text: "getEditorValue"
+                "data[Location][html_text]": "getEditorValue"
             },
             messages: {
-                name: "Molimo unesite naziv lokacije",
-                'sub_types[]': "Morate izabrati bar jedan tip objekta kome lokacija pripada"
+                "data[Location][name]": "Molimo unesite naziv lokacije",
+                "data[Location][address]": {
+                    required: "Unesite adresu"
+                },
+                "data[Location][fk_id_cities]": {
+                    required: "Odaberite grad"
+                },  
+                "data[Location][longitude]": {
+                    required: "Odaberite neku lokaciju na mapi da bi se učitala geografska širina"
+                }, 
+                "data[Location][latitude]": {
+                    required: "Odaberite neku lokaciju na mapi da bi se učitala geografska dužina"
+                },                 
+                "data[MapObjectSubtypeRelation][sub_types][]": "Morate izabrati bar jedan tip objekta kome lokacija pripada",
+                "data[Location][html_text]": {
+                    required: "Unesite detaljan opis lokacije"
+                }
             },
             invalidHandler: function (event, validator) { //display error alert on form submit
                 successHandler.hide();

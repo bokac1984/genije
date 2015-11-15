@@ -38,7 +38,12 @@
             array('type' => 'icon')
         );
         ?>
-        <style>.page-header h1 {font-weight: 500;}</style>
+        <style>
+            .page-header h1 {font-weight: 500;}
+            .table {
+                width: 100% !important;
+            }
+        </style>
         <!-- end: MAIN CSS -->
         <!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
     </head>
@@ -100,7 +105,7 @@
                             ?>
                             <ol class="breadcrumb">
                                 <li>
-                                    <i class="clip-file"></i>
+                                    <i class="clip-<?php echo $this->fetch('breadcrumb-icon') ? $this->fetch('breadcrumb-icon') : 'file'; ?>"></i>
                                     <a href="#">
                                         <?php echo $this->fetch('page-breadcrumbroot'); ?>
                                     </a>
@@ -168,6 +173,7 @@
                 Main.init();
             });
         </script>
+        <?php //echo $this->element('sql_dump'); ?>
     </body>
     <!-- end: BODY -->
 </html>

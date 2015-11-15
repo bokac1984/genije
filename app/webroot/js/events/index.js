@@ -5,7 +5,6 @@ $(document).ready(function () {
         table = $(this);
         var settings = dataTableSettings[table.attr('data-config')];
 
-        console.log(settings);
         var options = {
             oLanguage: {
                 "sUrl": "//cdn.datatables.net/plug-ins/1.10.7/i18n/Serbian.json"
@@ -53,34 +52,30 @@ $(document).ready(function () {
 
             // EDIT
             $("#dialogDelete").click(function (event) {
-                deleteLocation($(this).attr('pk'), $(this).attr('name'));
+                jQuery.ajax({
+                    url: '/events/deleteEvent',
+                    method: 'POST',
+                    data: 'pk=' + $(this).attr('pk')
+                }).done(function (response) {
+                    if (parseInt(response) === 200)
+
+                        table.fnDraw(false);
+                }).fail(function () {
+                    alert('Error! Contact Urban Genie');
+                });
             });
 
             // DELETE
             $(".btn-delete").click(function (event) {
+                var pk = $(this).attr("data-pk");
                 $modal.modal()
                         .find('.modal-body')
-                        .html('<p>Da li ste sigurni da želite da obrišete lokaciju: </p><strong>' + $(this).attr('name') + '</strong>')
+                        .html('<p>Da li ste sigurni da želite da obrišete dogadjaj # <strong>' + pk + '</strong>' + '?' +'</p>')
                         .parent()
                         .find('.btn-bricky')
-                        .attr('pk', $(this).attr("value"))
-                        .attr('name', $(this).attr('name'));
+                        .attr('pk', pk);
             });
         };
-        
-    var deleteLocation = function (pk, name) {
-
-        jQuery.ajax({
-            url: 'server-methods/delete-location.php',
-            method: 'POST',
-            data: 'pk=' + pk + '&name=' + name
-        }).done(function (response) {
-            if (response == 200)
-                $oTable.fnDraw(false);
-        }).fail(function () {
-            alert('Error! Contact Djordje Hrnjez');
-        });
-    }
     });
 });
 

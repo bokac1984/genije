@@ -57,8 +57,18 @@ class EventsController extends AppController {
                     ),
                 )
             )
-        )
+        ),
+        'RequestHandler'
     );
+    
+    public function beforeFilter() {
+        parent::beforeFilter();
+        $this->set('icon', 'calendar');
+    }
+
+    public function isAuthorized($user) {
+        return parent::isAuthorized($user);
+    }
     
     public $helpers =  array('DataTable.DataTable');
 
@@ -72,19 +82,59 @@ class EventsController extends AppController {
         if (!$this->Event->exists()) {
           throw new NotFoundException(__('Ne postoji dogadjaj'));
         }
-        $event = $this->Event->findById($id);  
-        
+        $event = $this->Event->findById($id);
+
         $this->set(compact('event'));
     }
 
-    public function add() {
+    public function view($id = null) {
+        $this->Event->id = $id;
+        if (!$this->Event->exists()) {
+            throw new NotFoundException(__('Ne postoji dogadjaj'));
+        }
+        $options = array(
+            'conditions' => array(
+                'Event.id' => $id
+            ),
+            'contain' => array(
+                'Location' => array(
+                    'fields' => 'Location.id'
+                )
+            )
+        );
+        $event = $this->Event->find('first', $options);
+        $this->set(compact('event'));
+    }
 
+    /**
+     * add method
+     *
+     * @return void
+     */
+    public function add() {
+        if ($this->request->is('post')) {
+
+            if ( !isset($this->request->data['Event']['use_loc_image'])
+                && $this->request->data['Event']['use_loc_image'] !== 'on') {
+                $this->request->data['Event']['img_url'] =
+                    $this->uploadFile($this->request->data['Event']['img_url'], '/photos/events/');
+            }
+
+            $this->Event->create();
+            if ($this->Event->saveEvent($this->request->data)) {
+                $this->Flash->success(__('Uspješno ste sačuvali podatke o događaju.'));
+                $this->redirect(array('action' => 'index'));
+            } else {
+                $this->Flash->error(__('Nije moguće sačuvati podatke, molimo Vas pokušajte ponovo!'));
+            }
+        }
+        $cities = $this->Event->Location->City->find('list');
+        $this->set(compact(array('cities')));
     }
     
     public function editStatus() {
         $this->autoRender = false;
         if ($this->request->is('ajax')){
-
             $this->Event->id = $this->request->data['pk'];
             if ($this->Event->saveField('online_status', $this->request->data['value'])) {
                 echo 'da';
@@ -94,6 +144,20 @@ class EventsController extends AppController {
         }
     }
     
+    public function locations() {
+        $this->request->onlyAllow('ajax');
+        $this->viewClass = 'Json';
+        $cities = $this->Event->Location->getCityLocations($this->request->data['city']);
+        $this->set(compact('cities'));
+    }
+    
+    public function saveNewEvent() {
+        $this->request->onlyAllow('ajax');
+        $this->autoRender = false;
+        return $this->Event->saveEvent($this->request->data);
+    }
+
+
     public function editable() {
         $this->autoRender = false;
         if ($this->request->is('ajax')){
@@ -106,5 +170,15 @@ class EventsController extends AppController {
                 echo 'error';
             }
         }
+    }
+
+    public function deleteEvent() {
+        $this->request->allowMethod('ajax');
+        $this->autoRender = false;
+        if ($this->Event->delete($this->request->data['pk'])) {
+            echo '200';exit();
+        }
+
+        echo '303';
     }
 }

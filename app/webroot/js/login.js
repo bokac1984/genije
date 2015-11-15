@@ -1,38 +1,20 @@
 var Login = function () {
     var runLoginButtons = function () {
-        /*$('.forgot').bind('click', function () {
-            $('.box-login').hide();
-            $('.box-forgot').show();
-        });
-        $('.register').bind('click', function () {
-            $('.box-login').hide();
-            $('.box-register').show();
-        });
-        $('.go-back').click(function () {
-            $('.box-login').show();
-            $('.box-forgot').hide();
-            $('.box-register').hide();
-        });*/
-       
-       var el = $('.box-login');
-		if (getParameterByName('box').length) {
-			switch(getParameterByName('box')) {
-				case "register" :
-					el = $('.box-register');
-					break;
-				case "forgot" :
-					el = $('.box-forgot');
-					break;
-				default :
-					el = $('.box-login');
-					break;
-			}
-		}
-		el.show();
-       
-       
-       
-       
+        var el = $('.box-login');
+        if (getParameterByName('box').length) {
+            switch (getParameterByName('box')) {
+                case "register" :
+                    el = $('.box-register');
+                    break;
+                case "forgot" :
+                    el = $('.box-forgot');
+                    break;
+                default :
+                    el = $('.box-login');
+                    break;
+            }
+        }
+        el.show();
     };
     var runSetDefaultValidation = function () {
         $.validator.setDefaults({
@@ -77,17 +59,27 @@ var Login = function () {
         });
     };
     var runLoginValidator = function () {
+        
         var form = $('.form-login');
         var errorHandler = $('.errorHandler', form);
         form.validate({
             rules: {
-                username: {
+                "data[User][username]": {
                     minlength: 2,
                     required: true
                 },
-                password: {
-                    minlength: 6,
+                "data[User][password]": {
+                    minlength: 5,
                     required: true
+                }
+            },
+            messages: {
+                "data[User][username]": {
+                    required: "Obavezno polje"
+                },
+                "data[User][password]": {
+                    required: "Obavezno polje",
+                    minlength: "Mora biti duže od 6 karaktera"
                 }
             },
             submitHandler: function (form) {
@@ -117,61 +109,15 @@ var Login = function () {
             }
         });
     };
-    var runRegisterValidator = function () {
-        var form3 = $('.form-register');
-        var errorHandler3 = $('.errorHandler', form3);
-        form3.validate({
-            rules: {
-                full_name: {
-                    minlength: 2,
-                    required: true
-                },
-                address: {
-                    minlength: 2,
-                    required: true
-                },
-                city: {
-                    minlength: 2,
-                    required: true
-                },
-                gender: {
-                    required: true
-                },
-                email: {
-                    required: true
-                },
-                password: {
-                    minlength: 6,
-                    required: true
-                },
-                password_again: {
-                    required: true,
-                    minlength: 5,
-                    equalTo: "#password"
-                },
-                agree: {
-                    minlength: 1,
-                    required: true
-                }
-            },
-            submitHandler: function (form) {
-                errorHandler3.hide();
-                form3.submit();
-            },
-            invalidHandler: function (event, validator) { //display error alert on form submit
-                errorHandler3.show();
-            }
-        });
-    };
-    
+
     //function to return the querystring parameter with a given name.
-	var getParameterByName = function(name) {
-		name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search);
-		return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-	};
-    
-    
+    var getParameterByName = function (name) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search);
+        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    };
+
+
     return {
         //main function to initiate template pages
         init: function () {
@@ -179,7 +125,6 @@ var Login = function () {
             runSetDefaultValidation();
             runLoginValidator();
             runForgotValidator();
-            runRegisterValidator();
         }
     };
 }();

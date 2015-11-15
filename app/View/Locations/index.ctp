@@ -7,6 +7,8 @@ $this->assign('crumb', 'Pregled' );
 $this->assign('title', 'Lokacije');
 $this->assign('page-title', 'Lokacije <small>pregled lokacija</small>');
 
+$this->assign('breadcrumb-icon', $icon);
+
 echo $this->Html->script('/assets/plugins/bootbox/bootbox.min', array('block'=>'scriptBottom')); 
 echo $this->Html->script('/assets/plugins/jquery-mockjax/jquery.mockjax', array('block'=>'scriptBottom')); 
 echo $this->Html->script('/assets/plugins/select2/select2.min', array('block'=>'scriptBottom')); 

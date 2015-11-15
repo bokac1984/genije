@@ -63,16 +63,16 @@ $(document).ready(function () {
             });
         };
         
-    var deleteLocation = function (pk, name) {
-        jQuery.ajax({
+    var deleteLocation = function (pk) {
+        $.ajax({
             url: '/locations/deleteLoc',
             method: 'POST',
             data: 'pk=' + pk
         }).done(function (response) {
-            if (response == 200)
+            if (parseInt(response) === 200)
                 table.fnDraw(false);
         }).fail(function () {
-            alert('Error! Contact Djordje Hrnjez');
+            alert('Error! Contact Urban Genie');
         });
     }
 

@@ -4,35 +4,44 @@
     <!-- start: USER DROPDOWN -->
     <li class="dropdown current-user">
         <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" data-close-others="true" href="#">
-            <img src="assets/images/avatar-1-small.jpg" class="circle-img" alt="">
-            <span class="username">Peter Clark</span>
+            <?php 
+            
+            $slika = '/photos-profiles/default.jpg';
+            if (!empty(AuthComponent::user('img'))) {
+                $slika = '/photos-profiles/' . AuthComponent::user('img');
+            }
+            
+            echo $this->Html->image($slika, array(
+                'height' => '30',
+                'width' => '30',
+                'class' => 'circle-img',
+                'alt' => AuthComponent::user('fullname')
+            )); ?>
+            <span class="username"><?php echo AuthComponent::user('fullname'); ?></span>
             <i class="clip-chevron-down"></i>
         </a>
         <ul class="dropdown-menu">
             <li>
-                <a href="pages_user_profile.html">
-                    <i class="clip-user-2"></i>
-                    &nbsp;My Profile
-                </a>
+                <?php echo $this->Html->link('<i class="clip-user-2"></i> &nbsp;Moj profil', array(
+                    'controller' => 'users',
+                    'action' => 'profile',
+                    AuthComponent::user('id')
+                ),array(
+                    'escape' => false
+                )); ?>
             </li>
             <li>
-                <a href="pages_calendar.html">
-                    <i class="clip-calendar"></i>
-                    &nbsp;My Calendar
-                </a>
-            <li>
-                <a href="pages_messages.html">
-                    <i class="clip-bubble-4"></i>
-                    &nbsp;My Messages (3)
-                </a>
+                <?php echo $this->Html->link('<i class="clip-locked"></i> &nbsp;Promjeni šifru', array(
+                    'controller' => 'users',
+                    'action' => 'password',
+                    AuthComponent::user('id')
+                ),array(
+                    'escape' => false
+                )); ?>
             </li>
             <li class="divider"></li>
             <li>
-                <a href="utility_lock_screen.html"><i class="clip-locked"></i>
-                    &nbsp;Lock Screen </a>
-            </li>
-            <li>
-                <a href="login_example1.html">
+                <a href="/users/logout">
                     <i class="clip-exit"></i>
                     &nbsp;Log Out
                 </a>

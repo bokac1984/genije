@@ -1,7 +1,13 @@
-var LocationGallery = function () {
+var ProductsGallery = function () {
     var loadAllElements = function (pk) {
         // DROP ZONE
-        var myDropZone = new Dropzone("#my-awesome-dropzone", {
+//        var myDropZone = new Dropzone(".dropzone", {
+//            acceptedFiles: "image/*",
+//            paramName: "file", // The name that will be used to transfer the file
+//            maxFilesize: 5.0, // MB
+//            addRemoveLinks: true
+//        });
+        var myDropZone = $(".dropzone").dropzone({
             acceptedFiles: "image/*",
             paramName: "file", // The name that will be used to transfer the file
             maxFilesize: 5.0, // MB
@@ -9,12 +15,17 @@ var LocationGallery = function () {
         });
         
         myDropZone.on("success", function (file, response) {
-            $(file.previewTemplate).append('<input class="server_file_name" type="hidden" value="' + response + '">');
+            console.log('uspesh neki');
+            //$(file.previewTemplate).append('<input class="server_file_name" type="hidden" value="' + response + '">');
+        });
+        
+        myDropZone.on('addedfile', function(file){
+            console.log('dodan fajl');
         });
 
         myDropZone.on("removedfile", function (file) {
             var photoName = $(file.previewTemplate).children('.server_file_name').attr('value');
-            $.post('/locations/deleteImage', "photo=" + photoName); // Send the file id along
+            $.post('/products/deleteImage', "photo=" + photoName); // Send the file id along
         });
         
         $("#btn-add-photos").click(function (event) {
@@ -43,17 +54,19 @@ var LocationGallery = function () {
             e.preventDefault();
             var $slika = $(this);
             if (!$(this).parent().hasClass('selected')) {
-                $(this).parent().addClass('selected').children('a').children('img').addClass('selected');
+                $('.galerija-slika').find('.selected').removeClass('selected');
+                $slika.parent().addClass('selected').children('a').children('img').addClass('selected');
                 var pk = $(this).parent().children('a').attr('pk');
                 var photoName = $(this).parent().children('a').attr('data-jpg');
-                var posting = $.post( '/locations/makeCover', { id: pk, cover: photoName } );
+                var modelName = 'Product';
+                var posting = $.post( '/products/makeCover', { id: pk, cover: photoName, model: modelName } );
 
                 posting.done(function( data ) {
-                    if(data == 200) {
+                    if(parseInt(data) == 200) {
                         // TODO:
                         // ovdje bi bolje bilo mozda ne reloadati
                         // nego prebaciti check mark na kliknuti sliku a skinuti sa druge
-                        location.reload();
+                        //location.reload();
                     }
                     else
                         alert("Data: " + data + "\nStatus: " + status);
@@ -83,18 +96,16 @@ var LocationGallery = function () {
     }
     var deletePhoto = function (pk, fid, jpg) {
         jQuery.ajax({
-            url: '/locations/deleteImage',
+            url: '/products/deleteImage',
             method: 'POST',
             data: 'id=' + pk + '&jpg=' + jpg + '&fid=' + fid
         }).done(function (response) {
-            if (response == 200) {
+            if (parseInt(response) == 200) {
                 var $roditelj = $(".photo-remove[data-id='" + fid + "']").closest('.gallery-img');
-                console.log($roditelj);
                 $roditelj.fadeOut('slow').remove();
-                //location.reload();
             }
         }).fail(function () {
-            alert('Error! Contact Djordje Hrnjez');
+            alert('Error! Contact Urban Genie');
         });
     }
     return {

@@ -7,6 +7,8 @@ $this->assign('crumb', 'Nova lokacija' );
 $this->assign('title', 'Lokacije');
 $this->assign('page-title', 'Lokacije <small>nova lokacija</small>');
 
+$this->assign('breadcrumb-icon', $icon);
+
 // zbog neke gluposti nije radilo, pa mora prije svega da se ucita gmaps
 echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=true', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/gmaps/gmaps.js', array('block' => 'scriptBottom'));

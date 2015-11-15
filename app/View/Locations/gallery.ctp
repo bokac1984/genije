@@ -7,12 +7,14 @@ $this->assign('crumb', 'Pregled galerije' );
 $this->assign('title', 'Lokacije');
 $this->assign('page-title', 'Lokacije <small>pregled galerije lokacije</small>');
 
+$this->assign('breadcrumb-icon', $icon);
+
 echo $this->Html->script('/assets/plugins/dropzone/downloads/dropzone.min', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/bootstrap-modal/js/bootstrap-modal', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/bootstrap-modal/js/bootstrap-modalmanager', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/colorbox/jquery.colorbox-min', array('block' => 'scriptBottom'));
 echo $this->Html->script('/lightbox/js/lightbox', array('block' => 'scriptBottom'));
-echo $this->Html->script('/js/gallery', array('block' => 'scriptBottom'));
+echo $this->Html->script('/js/lokacije/gallery', array('block' => 'scriptBottom'));
 echo $this->Html->scriptBlock("LocationGallery.init(".$id.");", array('block'=>'scriptBottom'));
 
 echo $this->Html->css('/assets/plugins/dropzone/downloads/css/dropzone', array('block' => 'css'));
@@ -34,9 +36,9 @@ echo $this->Html->css('/lightbox/css/lightbox', array('block' => 'css'));
 <div class="separator">
     <br />
 </div>
-<div class="row">
+<div class="row galerija-slika">
     <?php foreach ($images as $currentImage) : ?>
-        <div class="col-md-3 col-sm-4 gallery-img">
+        <div class="col-md-2 col-sm-3 gallery-img">
             <div class="wrap-image <?php if ($mainImage == $currentImage['LocationImage']['img_name']) echo 'selected'; ?>">
                 <a data-lightbox="galerija" class="group1" href="/photos/<?php echo $currentImage['LocationImage']['img_name']; ?>" pk="<?php echo $currentImage['LocationImage']['fk_id_map_objects']; ?>" title="<?php echo $currentImage['LocationImage']['text']; ?>" data-id="<?php echo $currentImage['LocationImage']['id']; ?>" data-jpg="<?php echo $currentImage['LocationImage']['img_name']; ?>">
                     <img src="/photos/<?php echo $currentImage['LocationImage']['img_name']; ?>" 

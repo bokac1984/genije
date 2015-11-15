@@ -31,6 +31,10 @@ App::uses('Model', 'Model');
  */
 class AppModel extends Model {
     
+    public $recursive = -1;
+    
+    public $actsAs = array('Containable');
+    
     protected function modifyOnlineStatus($value, $key, $url) {
         $status = 'Nepoznato';
         switch ($value) {
@@ -52,7 +56,6 @@ class AppModel extends Model {
     public function formatTimeResult($time) {
         return CakeTime::format($time, '%d.%m.%Y %H:%M %p');
     }
-    
     /**
      * Vraća zadnji kveri na bazu
      * 

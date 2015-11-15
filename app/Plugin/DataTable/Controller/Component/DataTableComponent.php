@@ -68,15 +68,20 @@ class DataTableComponent extends Component {
                 $row = [];
                 foreach ($config->columns as $column => $options) {
                     if (!$options['useField']) {
-                        if ($column == 'Actions') {
+                        if ($column === 'Actions') {
                             // ovdje pozvati metodu koja svicuje izmedju modela
                             $row[] = $this->setColumnActions($config->model,$result);
                         } else {
                             $row[] = null;
                         }
                     } else {
-                        $value = Hash::extract($result, $column);
-                        $row[] = $value ? $value[0] : null;
+                        if ($column === 'News.show_products') {
+                            $row[] = $this->setProductHtml($config->model,$result);
+                        } else {
+                            
+                            $value = Hash::extract($result, $column);
+                            $row[] = $value ? $value[0] : null;
+                        }
                     }
                 }
                 $aaData[] = $row;
@@ -113,6 +118,12 @@ class DataTableComponent extends Component {
             case 'Event':
                 $a = $this->setEventsColumns($model,$result);
                 break;
+            case 'News':
+                $a = $this->setNewsColumns($model,$result);
+                break;
+            case 'Product':
+                $a = $this->setProductsColumns($model,$result);
+                break;
             default:
                 ;
                 break;
@@ -120,25 +131,64 @@ class DataTableComponent extends Component {
         return $a;
     }
     
-    public function setLocationColumns($model,$result) {
+    public function setLocationColumns($model, $result) {
         $location = $this->base . '/locations/edit/' . $result[$model]['id'];
         $gal = $this->base . '/locations/gallery/' . $result[$model]['id'];
         $row = '<div class="visible-md visible-lg hidden-sm hidden-xs">
                     <a href="' . $location . '" class="btn btn-xs btn-teal tooltips btn-edit" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
-                    <a href="' . $gal . '" class="btn btn-xs  tooltips btn-pictures" data-placement="top" data-original-title="Pictures"><i class="fa fa-picture-o"></i></a>
+                    <a href="' . $gal . '" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Pictures"><i class="fa fa-picture-o"></i></a>
                     <a href="#" class="btn btn-xs btn-bricky tooltips btn-delete" data-placement="top" data-original-title="Remove" data-pk="' . $result[$model]['id'] . '" name=""><i class="fa fa-times fa fa-white"></i></a>
             </div>';
         return $row;
     }
     
-    public function setEventsColumns($model,$result) {
+    public function setEventsColumns($model, $result) {
         $event = $this->base . '/events/edit/' . $result[$model]['id'];
+        $view = $this->base . '/events/view/' . $result[$model]['id'];
         $row = '<div class="visible-md visible-lg hidden-sm hidden-xs">
                     <a href="' . $event . '" class="btn btn-xs btn-teal tooltips btn-edit" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
-                    <a href="#" class="btn btn-xs btn-bricky tooltips btn-delete" data-placement="top" data-original-title="Remove" value="' . $result[$model]['id'] . '" name=""><i class="fa fa-times fa fa-white"></i></a>
+                    <a href="' . $view . '" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Pictures"><i class="fa fa-eye"></i></a>
+                    <a href="#" class="btn btn-xs btn-bricky tooltips btn-delete" data-placement="top" data-original-title="Remove" data-pk="' . $result[$model]['id'] . '" name=""><i class="fa fa-times fa fa-white"></i></a>
             </div>';
         return $row;
-    }    
+    }  
+    
+    public function setNewsColumns($model, $result) {
+        $event = $this->base . '/news/edit/' . $result[$model]['id'];
+        $gal = $this->base . '/news/images/' . $result[$model]['id'];
+        $row = '<div class="visible-md visible-lg hidden-sm hidden-xs">
+                    <a href="' . $event . '" class="btn btn-xs btn-teal tooltips btn-edit" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                        <a href="' . $gal . '" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Pictures"><i class="fa fa-picture-o"></i></a>
+                    <a href="#" class="btn btn-xs btn-bricky tooltips btn-delete" data-placement="top" data-original-title="Remove" data-pk="' . $result[$model]['id'] . '" name=""><i class="fa fa-times fa fa-white"></i></a>
+            </div>';
+        return $row;
+    }
+
+    public function setProductsColumns($model, $result) {
+        $product = $this->base . '/products/edit/' . $result[$model]['id'];
+        $gal = $this->base . '/products/view/' . $result[$model]['id'];
+        $img = $this->base . '/products/gallery/' . $result[$model]['id'];
+        $row = '<div class="visible-md visible-lg hidden-sm hidden-xs">
+                    <a href="' . $product . '" class="btn btn-xs btn-teal tooltips btn-edit" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                        <a href="' . $gal . '" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Pregled"><i class="fa fa-eye"></i></a>
+                        <a href="' . $img . '" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Galerija"><i class="fa fa-picture-o"></i></a>
+                    <a href="#" class="btn btn-xs btn-bricky tooltips btn-delete" data-placement="top" data-original-title="Remove" data-pk="' . $result[$model]['id'] . '" name=""><i class="fa fa-times fa fa-white"></i></a>
+            </div>';
+        return $row;
+    }
+    /**
+     * Prikazi ono dugme za "prikazi proizvode"
+     * @param type $model
+     * @param type $result
+     * @return string
+     */
+    public function setProductHtml($model, $result) {
+        $product = $result[$model]['show_products'] ? "checked" : "";
+        $row = '<div class="switch switch-mini" data-on-label="Da" data-pk="'.$result[$model]['id'].'" data-off-label="Ne" data-on="success" data-off="danger">
+                            <input type="checkbox" id="show_products" name="show_products" '.$product.'>
+                        </div>';
+        return $row; 
+    }
 
     /**
      * Sets view vars needed for the helper
