@@ -263,4 +263,8 @@ class Location extends AppModel {
         
         return $lokOut;
     }
+    
+    public function rangeFilter($column, $searchTerm, $columnSearchTerm, $config) {
+        // you can then check $columnSearchTerm and add conditions on `$config->conditions`
+    }
 }

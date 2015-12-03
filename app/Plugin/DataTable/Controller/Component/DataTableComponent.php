@@ -234,8 +234,9 @@ class DataTableComponent extends Component {
         $searchTerm = Hash::get($params, 'sSearch');
         foreach ($config->columns as $column => $options) {
             if ($options['useField']) {
-                $searchable = $options['bSearchable'];
+                $searchable = (boolean)$options['bSearchable'];
                 if ($searchable === false) {
+                    $i++;
                     continue;
                 }
                 $searchKey = "sSearch_$i";
@@ -247,6 +248,9 @@ class DataTableComponent extends Component {
                 if ($columnSearchTerm && ($searchable === true || $searchable === DataTableConfig::SEARCH_COLUMN)) {
                     $conditions[] = array("$column LIKE" => '%' . $columnSearchTerm . '%');
                 }
+                if ($columnSearchTerm === '0' && ($searchable === true || $searchable === DataTableConfig::SEARCH_COLUMN)) {
+                    $conditions[] = array("$column LIKE" => '%' . $columnSearchTerm . '%');
+                }
                 if (is_callable(array($Model, $searchable))) {
                     $Model->$searchable($column, $searchTerm, $columnSearchTerm, $config);
                 }
@@ -254,7 +258,7 @@ class DataTableComponent extends Component {
             $i++;
         }
         if (!empty($conditions)) {
-            $config->conditions['OR'] = Hash::merge((array) Hash::get($config->conditions, 'OR'), $conditions);
+            $config->conditions['AND'] = Hash::merge((array) Hash::get($config->conditions, 'AND'), $conditions);
         }
     }
 

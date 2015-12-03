@@ -16,7 +16,7 @@ echo $this->Html->script('/assets/plugins/DataTables/media/js/jquery.dataTables.
 echo $this->Html->script('/assets/plugins/DataTables/media/js/DT_bootstrap', array('block'=>'scriptBottom'));
 echo $this->Html->script('/assets/js/table-data', array('block'=>'scriptBottom'));
 ?>
-<!--<div class="panel panel-default">
+<div class="panel panel-default">
     <div class="panel-heading">
         <i class="fa fa-filter"></i>
         Filter lokacija
@@ -31,7 +31,7 @@ echo $this->Html->script('/assets/js/table-data', array('block'=>'scriptBottom')
                     <label class="control-label">
                         Grad
                     </label>
-                    <select id="filter-3" class="form-control">
+                    <select id="filter-2" class="form-control">
                         <option value="">Svi gradovi</option>
                     </select>
                 </div>
@@ -41,7 +41,7 @@ echo $this->Html->script('/assets/js/table-data', array('block'=>'scriptBottom')
                     <label class="control-label">
                         Status
                     </label>
-                    <select id="filter-7" class="form-control">
+                    <select id="filter-6" class="form-control">
                         <option value="">Sve</option>
                         <option value="0">Offline</option>
                         <option value="1">Pending</option>
@@ -51,7 +51,7 @@ echo $this->Html->script('/assets/js/table-data', array('block'=>'scriptBottom')
             </div>
         </div>
     </div>
-</div>-->
+</div>
 <?php
 echo $this->DataTable->render('Location', array('class' => 'table table-hover dataTable'));
 

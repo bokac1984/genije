@@ -44,11 +44,11 @@ class Product extends AppModel {
      * @var array
      */
     public $hasAndBelongsToMany = array(
-        'MapObject' => array(
-            'className' => 'MapObject',
+        'Location' => array(
+            'className' => 'Location',
             'joinTable' => 'map_objects_products',
-            'foreignKey' => 'product_id',
-            'associationForeignKey' => 'map_object_id',
+            'foreignKey' => 'fk_id_products',
+            'associationForeignKey' => 'fk_id_map_objects',
             'unique' => 'keepExisting',
         )
     );

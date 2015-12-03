@@ -11,47 +11,53 @@ class LocationsController extends AppController {
                         'label' => '#',
                         'sWidth' => '5%',
                         'sClass' => 'center',
-                        'bSortable' => 'true'
+                        'bSortable' => 'true',
+                        'bSearchable' => false
                     ), 
                     'name' => array(
                         'label' => 'Naziv',
                         'sWidth' => '20%',
-                        'bSortable' => 'false'
+                        'bSortable' => 'false',
+                        'bSearchable' => false
                     ), 
                     'fk_id_cities' => array(
                         'label' => 'Grad',
                         'sWidth' => '10%',
                         'bSortable' => 'false',
-                        'bSearchable' => true
+                        'bSearchable' => 'true'
                     ), 
                     'address' => array(
                         'label' => 'Adresa',
                         'sWidth' => '30%',
-                        'bSortable' => 'false'
+                        'bSortable' => 'false',
+                        'bSearchable' => false
                     ),
                     'users_rating' => array(
                         'label' => 'Ocjena',
                         'sWidth' => '5%',
                         'sClass' => 'center',
-                        'bSortable' => 'true'
+                        'bSortable' => 'true',
+                        'bSearchable' => false
                     ), 
                     'admin_rating' => array(
                         'label' => 'Rejting',
                         'sWidth' => '5%',
                         'sClass' => 'center',
-                        'bSortable' => 'true'
+                        'bSortable' => 'true',
+                        'bSearchable' => false
                     ),
                     'online_status' => array(
                         'label' => 'Status',
                         'sWidth' => '10%',
                         'sClass' => 'center',
-                        'bSortable' => 'false',
-                        'bSearchable' => true
+                        'bSortable' => false,
+                        'bSearchable' => 'true'
                     ),
                     'Actions' => array(
-                        'useField' => false,
                         'sClass' => 'center',
                         'bSortable' => 'false',
+                        'useField' => false,
+                        'bSearchable' => 'false',
                         'label' => 'Akcije',
                         'sWidth' => '10%'
                     ),

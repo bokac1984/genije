@@ -1,7 +1,14 @@
 $(document).ready(function () {
     var table;
     
-    //$('#online_status').editable();
+$.getJSON('/locations/getCitiesForSelect', function(data){
+    var options = '';
+    data.forEach( function (city)
+    {
+        options += '<option value="' + city["City"].id + '">' + city["City"].name + '</option>';
+    });
+    $('#filter-2').html(options);
+});
 
     $('.dataTable').each(function () {
         table = $(this);
@@ -22,10 +29,48 @@ $(document).ready(function () {
                         $("#filter-" + i).val(value);
                     }
                 }
-            },            
+            }           
         };
         jQuery.extend(settings, options);
         table.dataTable(settings);
+        
+        /* {
+            "sDom": "lrtip",
+            "bProcessing": true,
+            "bServerSide": true,
+            "bStateSave": true,
+            "sAjaxSource": "/locations/processDataTableRequest?config=Location",
+            "aoColumns": [
+                {"sClass": "center", "bSortable": true},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"bSortable": false},
+                {"sClass": "center", "bSortable": true},
+                {"sClass": "center", "bSortable": true},
+                {"sClass": "center", "bSortable": false},
+                {"sClass": "center", "bSortable": false}
+            ],
+            oLanguage: {
+                "sUrl": "//cdn.datatables.net/plug-ins/1.10.7/i18n/Serbian.json"
+            },
+            "fnDrawCallback": function () {
+                initDialogs();
+                initOnlineStatus();
+            },
+            "fnInitComplete": function (oSettings, json) {
+                var cols = oSettings.aoPreSearchCols;
+                for (var i = 0; i < cols.length; i++) {
+                    var value = cols[i].sSearch;
+                    console.log(i + '  i vrijednost = ' + value);
+                    if (value.length > 0) {
+                        console.log('ima vrijednost');
+                        $("#filter-" + i).val(value);
+                    } else {
+                        console.log('nema vrijednost');
+                    }
+                }
+            }            
+        } */
         
         var initOnlineStatus = function () {
             $('.online-status').editable({
@@ -111,16 +156,14 @@ $(document).ready(function () {
     var initCustomFilter = function () {
         // Apply the search
 
-        $('#filter-3').change(function () {
-            console.log('grad');
-            table.fnFilter(this.value, 3);
+        $('#filter-2').change(function () {
+            table.fnFilter(this.value, 2);
         });
 
-        $('#filter-7').change(function () {
-            console.log('online');
-            table.fnFilter(this.value, 7);
+        $('#filter-6').change(function () {
+            table.fnFilter(this.value, 6);
         });
-    }
+    };
 
     initCustomFilter();
     });

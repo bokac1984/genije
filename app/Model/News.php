@@ -37,12 +37,6 @@ class News extends AppModel {
             'foreignKey' => 'fk_id_news',
             'associationForeignKey' => 'fk_id_gallery',
             'unique' => 'keepExisting',
-            'conditions' => '',
-            'fields' => '',
-            'order' => '',
-            'limit' => '',
-            'offset' => '',
-            'finderQuery' => '',
         )
     );
 

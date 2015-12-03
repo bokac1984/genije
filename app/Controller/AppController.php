@@ -67,7 +67,7 @@ class AppController extends Controller {
             'controller' => 'users',
             'action' => 'login'
         );
-        $this->Auth->authError = __('Ta stranica nije dozvoljena.');
+        $this->Auth->authError = __('Morate biti ulogovani da vidite tu stranicu.');
         $this->Auth->loginError = __('Korisničko ime ili lozinaka nisu validni.');
         $this->Auth->flash['element'] = "flash_error";
         
