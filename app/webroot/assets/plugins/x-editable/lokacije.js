@@ -1,14 +1,14 @@
 $(document).ready(function () {
     var table;
-    
-$.getJSON('/locations/getCitiesForSelect', function(data){
-    var options = '';
-    data.forEach( function (city)
-    {
-        options += '<option value="' + city["City"].id + '">' + city["City"].name + '</option>';
+
+    $.getJSON('/locations/getCitiesForSelect', function (data) {
+        var options = '';
+        data.forEach(function (city)
+        {
+            options += '<option value="' + city["City"].id + '">' + city["City"].name + '</option>';
+        });
+        $('#filter-2').html(options);
     });
-    $('#filter-2').html(options);
-});
 
     $('.dataTable').each(function () {
         table = $(this);
@@ -29,49 +29,11 @@ $.getJSON('/locations/getCitiesForSelect', function(data){
                         $("#filter-" + i).val(value);
                     }
                 }
-            }           
+            }
         };
         jQuery.extend(settings, options);
         table.dataTable(settings);
-        
-        /* {
-            "sDom": "lrtip",
-            "bProcessing": true,
-            "bServerSide": true,
-            "bStateSave": true,
-            "sAjaxSource": "/locations/processDataTableRequest?config=Location",
-            "aoColumns": [
-                {"sClass": "center", "bSortable": true},
-                {"bSortable": false},
-                {"bSortable": false},
-                {"bSortable": false},
-                {"sClass": "center", "bSortable": true},
-                {"sClass": "center", "bSortable": true},
-                {"sClass": "center", "bSortable": false},
-                {"sClass": "center", "bSortable": false}
-            ],
-            oLanguage: {
-                "sUrl": "//cdn.datatables.net/plug-ins/1.10.7/i18n/Serbian.json"
-            },
-            "fnDrawCallback": function () {
-                initDialogs();
-                initOnlineStatus();
-            },
-            "fnInitComplete": function (oSettings, json) {
-                var cols = oSettings.aoPreSearchCols;
-                for (var i = 0; i < cols.length; i++) {
-                    var value = cols[i].sSearch;
-                    console.log(i + '  i vrijednost = ' + value);
-                    if (value.length > 0) {
-                        console.log('ima vrijednost');
-                        $("#filter-" + i).val(value);
-                    } else {
-                        console.log('nema vrijednost');
-                    }
-                }
-            }            
-        } */
-        
+
         var initOnlineStatus = function () {
             $('.online-status').editable({
                 url: '/locations/updateStatus',
@@ -107,65 +69,65 @@ $.getJSON('/locations/getCitiesForSelect', function(data){
                         .attr('pk', $(this).attr("data-pk"));
             });
         };
-        
-    var deleteLocation = function (pk) {
-        $.ajax({
-            url: '/locations/deleteLoc',
-            method: 'POST',
-            data: 'pk=' + pk
-        }).done(function (response) {
-            if (parseInt(response) === 200)
-                table.fnDraw(false);
-        }).fail(function () {
-            alert('Error! Contact Urban Genie');
-        });
-    }
 
-    //Search Input function
-    var initCustomSearch = function () {
-        var search_input = $('.sidebar-search input');
-        var search_button = $('.sidebar-search button');
-        search_input.attr('data-default', $(search_input).outerWidth()).focus(function () {
-            $(this).addClass('open');
-            $(this).animate({
-                width: 200
-            }, 200);
-            $(this).select();
-        }).blur(function () {
-            if ($(this).val() == "") {
+        var deleteLocation = function (pk) {
+            $.ajax({
+                url: '/locations/deleteLoc',
+                method: 'POST',
+                data: 'pk=' + pk
+            }).done(function (response) {
+                if (parseInt(response) === 200)
+                    table.fnDraw(false);
+            }).fail(function () {
+                alert('Error! Contact Urban Genie');
+            });
+        }
+
+        //Search Input function
+        var initCustomSearch = function () {
+            var search_input = $('.sidebar-search input');
+            var search_button = $('.sidebar-search button');
+            search_input.attr('data-default', $(search_input).outerWidth()).focus(function () {
+                $(this).addClass('open');
                 $(this).animate({
-                    width: $(this).attr('data-default')
+                    width: 200
                 }, 200);
-                $(this).removeClass('open');
-                table.fnFilter('', null);
-            }
-        });
-        search_button.bind('click', function () {
-            if ($(search_input).hasClass('open')) {
-                if (search_input.val() != '')
-                    table.fnFilter(search_input.val(), null, false, true, false);
-                else
+                $(this).select();
+            }).blur(function () {
+                if ($(this).val() == "") {
+                    $(this).animate({
+                        width: $(this).attr('data-default')
+                    }, 200);
+                    $(this).removeClass('open');
                     table.fnFilter('', null);
-            }
-            else
-                $(search_input).focus();
-            return false;
-        });
-    };
+                }
+            });
+            search_button.bind('click', function () {
+                if ($(search_input).hasClass('open')) {
+                    if (search_input.val() != '')
+                        table.fnFilter(search_input.val(), null, false, true, false);
+                    else
+                        table.fnFilter('', null);
+                }
+                else
+                    $(search_input).focus();
+                return false;
+            });
+        };
 
-    var initCustomFilter = function () {
-        // Apply the search
+        var initCustomFilter = function () {
+            // Apply the search
 
-        $('#filter-2').change(function () {
-            table.fnFilter(this.value, 2);
-        });
+            $('#filter-2').change(function () {
+                table.fnFilter(this.value, 2);
+            });
 
-        $('#filter-6').change(function () {
-            table.fnFilter(this.value, 6);
-        });
-    };
+            $('#filter-6').change(function () {
+                table.fnFilter(this.value, 6);
+            });
+        };
 
-    initCustomFilter();
+        initCustomFilter();
     });
 });
 

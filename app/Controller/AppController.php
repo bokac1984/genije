@@ -47,14 +47,13 @@ class AppController extends Controller {
         'Session',
         'RequestHandler',
         'Cookie',
+        'Upload'
     );
 
     public function beforeFilter() {
-        //$this->Session->destroy();
         //Configure AuthComponent
         $this->Auth->autoRedirect = false;
         $this->Auth->authorize = array('Controller');
-        $this->Auth->autoRedirect = false;
         $this->Auth->loginAction = array(
             'prefix' => null,
             'plugin' => null,
@@ -79,7 +78,7 @@ class AppController extends Controller {
         $this->layout = 'genie';
         
         // za sad ne radi, provjeriti sa Hrkijem koja je verzija PHP, ovo na serveru moze
-        //$this->autoCookieLogin();
+        $this->autoCookieLogin();
     }
 
     public function isAuthorized($user) {
@@ -112,26 +111,7 @@ class AppController extends Controller {
     }
     
     public function uploadFile($uploadedImage, $location = '/photos/') {
-        $fileName = '';
-        debug($uploadedImage    );
-        if (!empty($uploadedImage) && $uploadedImage['size'] > 0) {
-            echo '1';
-            $fileData = pathinfo($uploadedImage['name']);
-            $arr_ext = array('jpg', 'jpeg','png');
-            if (in_array($fileData['extension'], $arr_ext)) {
-                echo '2';
-                $fileName = hash('sha512', $fileData['filename']);
-                $fileName = substr($fileName, 0, 10)."-";
-                $fileName = uniqid ($fileName, false).".".strtolower($fileData['extension']);
-                $uploadLocation = WWW_ROOT . $location;
-                if (!move_uploaded_file($uploadedImage['tmp_name'],  $uploadLocation . $fileName))
-                {
-                    $fileName = 'error';
-                }
-            }
-        }
-        
-        return $fileName;
+        return $this->Upload->uploadFile($uploadedImage, $location);
     }
 
     /**

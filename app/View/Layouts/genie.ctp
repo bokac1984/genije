@@ -43,6 +43,9 @@
             .table {
                 width: 100% !important;
             }
+            .dataTables_filter label, .dataTables_paginate ul {
+                float: right;
+            }
         </style>
         <!-- end: MAIN CSS -->
         <!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
