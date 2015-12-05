@@ -1,9 +1,32 @@
 var FormValidator = function () {
     var summernoteCodeValue;
     var loadAllElements = function () {
+        
+        $('#city_id').change(function () {
+            $.ajax({
+              method: "POST",
+              dataType: "json",
+              url: "/events/locations.json",
+              data: { city: $(this).val() }
+            })
+            .done(function( result ) {
+                var options = $("#map_object");
+                options.empty().append('<option selected="selected" value=""></option>');
+                $.each(result, function () {
+                    options.append($("<option />").val(this.id).text(this.name));
+                });
+            });
+        });
+        
+        $("#map_object").select2({
+            placeholder: "Izaberite tip lokacije",
+            allowClear: true,
+            theme: "bootstrap"
+        });
 
+        
         $(document).on('click', '.dodaj_red', function(e){
-            e.preventDefault()
+            e.preventDefault();
 
             var $row = $(this);
             var $table = $("table.feature tbody tr").last();

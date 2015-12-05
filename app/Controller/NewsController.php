@@ -49,13 +49,6 @@ class NewsController extends AppController {
                         'bSortable' => 'false',
                         'bSearchable' => true
                     ),
-                    'show_products' => array(
-                        'label' => 'Prikaži proizvode',
-                        'sWidth' => '8%',
-                        'sClass' => 'center',
-                        'bSortable' => 'false',
-                        'bSearchable' => true
-                    ),
                     'Actions' => array(
                         'useField' => false,
                         'sClass' => 'center',

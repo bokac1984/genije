@@ -75,13 +75,8 @@ class DataTableComponent extends Component {
                             $row[] = null;
                         }
                     } else {
-                        if ($column === 'News.show_products') {
-                            $row[] = $this->setProductHtml($config->model,$result);
-                        } else {
-                            
-                            $value = Hash::extract($result, $column);
-                            $row[] = $value ? $value[0] : null;
-                        }
+                        $value = Hash::extract($result, $column);
+                        $row[] = $value ? $value[0] : null;
                     }
                 }
                 $aaData[] = $row;
@@ -176,19 +171,6 @@ class DataTableComponent extends Component {
             </div>';
         return $row;
     }
-    /**
-     * Prikazi ono dugme za "prikazi proizvode"
-     * @param type $model
-     * @param type $result
-     * @return string
-     */
-    public function setProductHtml($model, $result) {
-        $product = $result[$model]['show_products'] ? "checked" : "";
-        $row = '<div class="switch switch-mini" data-on-label="Da" data-pk="'.$result[$model]['id'].'" data-off-label="Ne" data-on="success" data-off="danger">
-                            <input type="checkbox" id="show_products" name="show_products" '.$product.'>
-                        </div>';
-        return $row; 
-    }
 
     /**
      * Sets view vars needed for the helper
@@ -232,33 +214,52 @@ class DataTableComponent extends Component {
         $conditions = array();
         $params = $this->_getParams();
         $searchTerm = Hash::get($params, 'sSearch');
+        
         foreach ($config->columns as $column => $options) {
+            $condition = array();
             if ($options['useField']) {
                 $searchable = (boolean)$options['bSearchable'];
                 if ($searchable === false) {
                     $i++;
                     continue;
                 }
+                $searchById = isset($options['searchById']) 
+                        ? (bool)$options['searchById']
+                        : false;
+                
                 $searchKey = "sSearch_$i";
                 $columnSearchTerm = Hash::get($params, $searchKey);
-
-                if ($searchTerm && ($searchable === true || $searchable === DataTableConfig::SEARCH_GLOBAL)) {
-                    $conditions[] = array("$column LIKE" => '%' . $searchTerm . '%');
+                $this->log(!empty($columnSearchTerm));
+                // ako postoji filter i search
+                if (!empty($searchTerm) 
+                        && !$searchById
+                        && ($searchable === true || $searchable === DataTableConfig::SEARCH_GLOBAL)) {
+                    $condition = array("$column LIKE" => '%' . $searchTerm . '%');
                 }
-                if ($columnSearchTerm && ($searchable === true || $searchable === DataTableConfig::SEARCH_COLUMN)) {
-                    $conditions[] = array("$column LIKE" => '%' . $columnSearchTerm . '%');
-                }
-                if ($columnSearchTerm === '0' && ($searchable === true || $searchable === DataTableConfig::SEARCH_COLUMN)) {
-                    $conditions[] = array("$column LIKE" => '%' . $columnSearchTerm . '%');
+                if ( ($columnSearchTerm === '0' || !empty($columnSearchTerm))
+                        && $searchById
+                        && ($searchable === true || $searchable === DataTableConfig::SEARCH_COLUMN)) {  
+                    $condition = array("$column LIKE" => '%' . $columnSearchTerm . '%');
                 }
                 if (is_callable(array($Model, $searchable))) {
                     $Model->$searchable($column, $searchTerm, $columnSearchTerm, $config);
                 }
+                
+                if (!empty($condition)) {
+                    if (!$searchById) {
+                        $conditions['OR'][] = $condition;
+                    } else {
+                        $conditions['AND'][] = $condition;
+                    } 
+                }
+
             }
+
             $i++;
         }
+
         if (!empty($conditions)) {
-            $config->conditions['AND'] = Hash::merge((array) Hash::get($config->conditions, 'AND'), $conditions);
+            $config->conditions = Hash::merge($config->conditions, $conditions);
         }
     }
 

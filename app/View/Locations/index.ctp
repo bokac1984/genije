@@ -32,7 +32,7 @@ echo $this->Html->script('/assets/js/table-data', array('block'=>'scriptBottom')
                         Grad
                     </label>
                     <select id="filter-2" class="form-control">
-                        <option value="">Svi gradovi</option>
+                        
                     </select>
                 </div>
             </div>

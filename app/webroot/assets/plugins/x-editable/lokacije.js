@@ -3,6 +3,7 @@ $(document).ready(function () {
 
     $.getJSON('/locations/getCitiesForSelect', function (data) {
         var options = '';
+        options += '<option value="">Svi gradovi</option>';
         data.forEach(function (city)
         {
             options += '<option value="' + city["City"].id + '">' + city["City"].name + '</option>';
@@ -25,7 +26,9 @@ $(document).ready(function () {
                 var cols = oSettings.aoPreSearchCols;
                 for (var i = 0; i < cols.length; i++) {
                     var value = cols[i].sSearch;
+                    console.log(cols);
                     if (value.length > 0) {
+                        console.log(i);
                         $("#filter-" + i).val(value);
                     }
                 }

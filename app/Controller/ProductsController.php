@@ -131,7 +131,19 @@ class ProductsController extends AppController {
      * @return void
      */
     public function add() {
-
+        if ($this->request->is('post')) {
+            debug($this->request->data);
+            $this->Product->create();
+            if ($this->Product->saveAll($this->request->data)) {
+                $this->Flash->success(__('Uspješno ste dodali podatke o proizvodu. Molimo Vas dodajte nove fotografije za proizvod.'));
+                $id = $this->Product->getLastInsertID();
+                $this->redirect(array('action' => 'gallery', $id));
+            } else {
+                $this->Flash->error(__('Nije moguće sačuvati podatke, molimo Vas pokušajte ponovo!'));
+            }
+        }        
+        $locations = $this->Product->Location->find('list');
+        $this->set(compact('locations'));
     }
 
     /**
@@ -200,6 +212,13 @@ class ProductsController extends AppController {
             }
         }
     }
+    
+    public function location() {
+        $this->autoRender = false;
+        if ($this->request->is('ajax')) {
+            return $this->Product->Location->find('all');
+        }
+    }    
 
     public function uploadPhotos() {
         $this->autoRender = false;

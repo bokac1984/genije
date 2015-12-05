@@ -6,7 +6,7 @@ App::uses('AppModel', 'Model');
  * Product Model
  *
  * @property ProductFeature $ProductFeature
- * @property MapObject $MapObject
+ * @property Location $Location
  * @property ProductImage $ProductImage
  */
 class Product extends AppModel {

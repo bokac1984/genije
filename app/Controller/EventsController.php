@@ -36,7 +36,7 @@ class EventsController extends AppController {
                         'bSortable' => 'true'
                     ),
                     'fk_id_map_objects' => array(
-                        'label' => 'Vazi do',
+                        'label' => 'Lokacija',
                         'sWidth' => '10%',
                         'sClass' => 'center',
                         'bSortable' => 'true'

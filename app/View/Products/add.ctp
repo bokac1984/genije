@@ -71,7 +71,7 @@ $this->Form->inputDefaults(array(
                     'placeholder' => 'Naziv'
                 ));
 
-                echo $this->Form->input('label', array(
+                echo $this->Form->input('', array(
                     'label' => 'Labela',
                     'placeholder' => 'Labela'
                 ));
@@ -79,6 +79,18 @@ $this->Form->inputDefaults(array(
                     'label' => 'Cijena (KM)',
                 ));
                 ?>
+                <div class="form-group">
+                    <label for="control-label">
+                        Lokacija <span class="symbol required"></span> 
+                    </label>
+                    <select multiple="multiple" id="map_object" name="data[Location][fk_id_map_objects]" class="form-control search-select">
+                    <?php
+                        foreach ($locations as $k => $v) {
+                            echo '<option value="' . $k . '">' . $v . '</option>';
+                        }
+                        ?>
+                    </select>                    
+                </div>
             </div>
         </div>
         <div class="row">

@@ -18,19 +18,21 @@ class LocationsController extends AppController {
                         'label' => 'Naziv',
                         'sWidth' => '20%',
                         'bSortable' => 'false',
-                        'bSearchable' => false
+                        'bSearchable' => 'true'
                     ), 
                     'fk_id_cities' => array(
                         'label' => 'Grad',
                         'sWidth' => '10%',
                         'bSortable' => 'false',
-                        'bSearchable' => 'true'
+                        'bSearchable' => 'true',
+                        'searchById' => 'true'
                     ), 
                     'address' => array(
                         'label' => 'Adresa',
                         'sWidth' => '30%',
                         'bSortable' => 'false',
-                        'bSearchable' => false
+                        'bSearchable' => false,
+                        'bSearchable' => 'true'
                     ),
                     'users_rating' => array(
                         'label' => 'Ocjena',
@@ -51,7 +53,8 @@ class LocationsController extends AppController {
                         'sWidth' => '10%',
                         'sClass' => 'center',
                         'bSortable' => false,
-                        'bSearchable' => 'true'
+                        'bSearchable' => 'true',
+                        'searchById' => 'true'
                     ),
                     'Actions' => array(
                         'sClass' => 'center',
