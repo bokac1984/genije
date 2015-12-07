@@ -1,14 +1,17 @@
 $(document).ready(function () {
     var table;
     
-    //$('#online_status').editable();
+        $('.dataTable tbody').on('click', 'tr td:not(:last-child)', function () {
+            console.log($(this).parent().find(':last-child'));
+            alert( 'You clicked on  row' );
+        } );
 
     $('.dataTable').each(function () {
         table = $(this);
         var settings = dataTableSettings[table.attr('data-config')];
         var options = {
             oLanguage: {
-                "sUrl": "cdn.datatables.net/plug-ins/1.10.7/i18n/Serbian.json"
+                "sUrl": "/js/Serbian.json"
             },
             "fnDrawCallback": function () {
                 initDialogs();
@@ -56,7 +59,7 @@ $(document).ready(function () {
             $(".btn-delete").click(function (event) {
                 $modal.modal()
                         .find('.modal-body')
-                        .html('<p>Da li ste sigurni da želite da obrišete lokaciju: </p><strong>' + $(this).attr('name') + '</strong>')
+                        .html('<p>Da li ste sigurni da želite da obrišete proizvod: </p><strong>' + $(this).attr('name') + '</strong>')
                         .parent()
                         .find('.btn-bricky')
                         .attr('pk', $(this).attr("data-pk"));
@@ -74,7 +77,7 @@ $(document).ready(function () {
         }).fail(function () {
             alert('Error! Contact Urban Genie');
         });
-    }
+    };
 
     //Search Input function
     var initCustomSearch = function () {

@@ -21,6 +21,14 @@ var FormValidator = function () {
         
         $(".switch").bootstrapSwitch();
         
+        $('.switch').on('switch-change', function (event, state) {
+              if (!state.value) {
+                  alert('on');
+              } else {
+                  alert('off');
+              }
+          });        
+        
         $("#map_object").select2({
             placeholder: "Izaberite lokaciju",
             allowClear: true

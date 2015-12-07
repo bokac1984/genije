@@ -16,8 +16,6 @@ class Location extends AppModel {
     public $useTable = 'map_objects'; 
     public $primaryKey = 'id';
     public $displayField = 'name';
-    
-    public $actsAs = array('Containable');
      
     public $hasMany = array(
         'Contact' => array(

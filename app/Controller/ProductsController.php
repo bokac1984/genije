@@ -88,7 +88,15 @@ class ProductsController extends AppController {
         $options = array(
             'conditions' => array('Product.' . $this->Product->primaryKey => $id),
             'contain' => array(
-                'ProductFeature', 'ProductImage'
+                'ProductFeature', 
+                'ProductImage', 
+                'Location' => array(
+                    'fields' => array(
+                        'Location.id',
+                        'Location.name',
+                        'Location.fk_id_cities'
+                    )
+                )
             )
         );
         $this->set('product', $this->Product->find('first', $options));
@@ -107,7 +115,7 @@ class ProductsController extends AppController {
             throw new NotFoundException(__('Ne postoji proizvod za dati id'));
         }
         $this->Product->recursive = -1;
-        $mainImage = $this->Product->find('first', array(
+        $mainImageQuery = $this->Product->find('first', array(
             'fields' => array(
                 'Product.img_name'
             ),
@@ -115,7 +123,7 @@ class ProductsController extends AppController {
                 'Product.id' => $id
             )
         ));
-        $mainImage = $mainImage['Product']['img_name'];
+        $mainImage = $mainImageQuery['Product']['img_name'];
 
         $images = $this->Product->ProductImage->find('all', array(
             'conditions' => array(
@@ -183,7 +191,7 @@ class ProductsController extends AppController {
             throw new NotFoundException(__('Invalid product'));
         }
         $this->request->allowMethod('post', 'delete');
-        if ($this->Product->delete()) {
+        if ($this->Product->deleteAll()) {
             $this->Flash->success(__('The product has been deleted.'));
         } else {
             $this->Flash->error(__('The product could not be deleted. Please, try again.'));
@@ -192,11 +200,11 @@ class ProductsController extends AppController {
     }
 
     // AJAX METHODS
-    public function validateProducts() {
+    public function deleteProduct() {
         $this->request->allowMethod('ajax');
         $this->autoRender = false;
         debug($this->request->data);
-        echo $this->Product->validates($this->request->data);
+        
     }
 
     public function editStatus()

@@ -21,5 +21,29 @@ echo $this->DataTable->render('Product', array('class' => 'table table-hover dat
 echo $this->Html->css('/assets/plugins/x-editable/css/bootstrap-editable', array('block' => 'css'));
 echo $this->Html->script('/assets/plugins/x-editable/js/bootstrap-editable.min', array('block' => 'scriptBottom'));
 echo $this->Html->scriptBlock("$.fn.editable.defaults.mode = 'popup';", array('block'=>'scriptBottom'));
-echo $this->Html->script('/assets/plugins/x-editable/lokacije', array('block' => 'scriptBottom'));
+echo $this->Html->script('/js/products/index', array('block' => 'scriptBottom'));
 ?>
+<!-- DIALOG -->
+<div class="modal fade" id="dialog-delete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title">Brisanje proizvoda</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button aria-hidden="true" data-dismiss="modal" class="btn btn-default">
+                    Odustani
+                </button>
+                <button id="dialogDelete" class="btn btn-bricky" data-dismiss="modal">
+                    Obriši
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

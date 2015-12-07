@@ -52,7 +52,14 @@ echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/boots
 ?>
 <style type="text/css">
     .form-control.search-select {margin-top: -3px; }
-    .select2-container .select2-choice abbr { right: 30px; }</style>
+    .select2-container .select2-choice abbr { right: 30px; }
+    .album-label {
+        font-size: 1.8em;
+    }
+    .switch-css {
+        margin-top: -10px;
+    }    
+</style>
 <form action="#" id="form_new_event">
     <div class="row">
         <div class="col-md-12">
@@ -113,11 +120,11 @@ echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/boots
                 </div>  
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label class="control-label"> 
+                        <label class="control-label album-label"> 
                             Prikaži proizvode? <span class="symbol required"></span> 
                         </label>
-                        <div class="switch" data-on-label="Da" data-off-label="Ne" data-on="success" data-off="danger">
-                            <input type="checkbox" id="show_products" name="data[News][show_products]" checked>
+                        <div class="switch switch-css" data-on-label="Da" data-off-label="Ne" data-on="success" data-off="danger">
+                            <input type="checkbox" id="show_products" name="data[News][show_products]" />
                         </div>
 
                     </div>  

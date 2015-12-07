@@ -207,14 +207,16 @@ var Main = function () {
     };
     //function to reduce the size of the Main Menu
     var runNavigationToggler = function () {
-        if ($.cookie('navigation-type') == 1)
+        var navType = parseInt($.cookie('navigation-type'));
+        console.log(navType);
+        if ( navType === 1)
             $('body').removeClass('navigation-small');
         else {
             if (!$('body').hasClass('navigation-small'))
                 $('body').addClass('navigation-small');
         }
 
-        $('.navigation-toggler').bind('click', function () {
+        $('.navigation-toggler').on('click', function () {
             if (!$('body').hasClass('navigation-small')) {
                 $('body').addClass('navigation-small');
                 $.cookie('navigation-type', 2);
@@ -224,6 +226,7 @@ var Main = function () {
             }
             ;
         });
+        
     };
     //function to activate the panel tools
     var runModuleTools = function () {

@@ -43,6 +43,15 @@ echo $this->Html->css('/assets/plugins/bootstrap-daterangepicker/daterangepicker
 echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/bootstrap-switch', array('block' => 'css'));
 echo $this->Html->css('/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min', array('block' => 'css'));
 ?>
+<style type="text/css">
+    .album-label {
+        font-size: 1.8em;
+        margin-top: 1em;
+    }
+    .switch-css {
+        margin-top: -10px;
+    }
+</style>
 <?php echo $this->Form->create('Event', array('type' => 'file', 'id' => 'form_new_event')); ?>
     <div class="row">
         <div class="col-md-12">
@@ -105,10 +114,10 @@ echo $this->Html->css('/assets/plugins/bootstrap-fileupload/bootstrap-fileupload
             <div class="row">
                 <div class="cold-md-12">
                     <div class="form-group" style="margin-bottom: 0;">
-                        <label class="control-label">
+                        <label class="control-label album-label">
                             Uzmi sliku sa lokacije?
                         </label>
-                        <div class="switch" data-on-label="Da" data-off-label="Ne" data-on="success" data-off="danger">
+                        <div class="switch switch-css" data-on-label="Da" data-off-label="Ne" data-on="success" data-off="danger">
                             <input type="checkbox" id="location_image" checked name="data[Event][use_loc_image]">
                         </div>
                     </div>
