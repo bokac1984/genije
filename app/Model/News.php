@@ -171,4 +171,20 @@ class News extends AppModel {
         $this->Gallery->imageToDelete = $jpg;
         return $this->Gallery->delete($fid);
     }
+    
+    /**
+     * Vrati sve vijesti za odredjenu lokaciju
+     * 
+     * @param int $id
+     * @return arraz
+     */
+    public function locationNews($id = null) {
+        if ($id) {
+            return $this->find('all', array(
+                'conditions' => array(
+                    'News.fk_id_map_objects' => $id
+                )
+            ));
+        }
+    }
 }
