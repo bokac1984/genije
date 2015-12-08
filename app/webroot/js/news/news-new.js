@@ -6,7 +6,7 @@ var FormValidator = function () {
             var $row = $(this);
 
             $("table.feature tbody tr:first").clone().find("input").each(function() {
-                $(this).val('').attr('id', function(_, id) { return id + i });
+                $(this).val('').attr('id', function(_, id) { return id + i; });
             }).end().appendTo("table");
         });
 
@@ -22,11 +22,12 @@ var FormValidator = function () {
         $(".switch").bootstrapSwitch();
         
         $('.switch').on('switch-change', function (event, state) {
-              if (!state.value) {
-                  alert('on');
-              } else {
-                  alert('off');
-              }
+            var idLocation = $("#map_object").val();
+            if (!state.value) {
+                loadLocationProducts(idLocation);
+            } else {
+                loadLocationProducts(idLocation);
+            }
           });        
         
         $("#map_object").select2({
@@ -85,6 +86,10 @@ var FormValidator = function () {
                 });
             });
         });
+    };
+    
+    var loadLocationProducts = function(location) {
+        console.log(location);
     };
 
     // FORM VALIDATION	

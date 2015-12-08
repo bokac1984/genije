@@ -209,24 +209,31 @@ var Main = function () {
     var runNavigationToggler = function () {
         var navType = parseInt($.cookie('navigation-type'));
         console.log(navType);
-        if ( navType === 1)
+        if (navType === 1 || !isNaN(navType)) {
+            console.log('nav type === 1 prvi if ukloni klasu nav small');
             $('body').removeClass('navigation-small');
+        }
         else {
-            if (!$('body').hasClass('navigation-small'))
+            console.log('nav type === 2 valjda i sad ide if');
+            if (!$('body').hasClass('navigation-small')) {
+                console.log('nema klasu nav small dodaj je');
                 $('body').addClass('navigation-small');
+            }     
         }
 
         $('.navigation-toggler').on('click', function () {
             if (!$('body').hasClass('navigation-small')) {
+                console.log('nema klasu dodaj klasu i stavi cookie na 2');
                 $('body').addClass('navigation-small');
                 $.cookie('navigation-type', 2);
             } else {
+                console.log('usao u else ima klasu, ali ovo na klick');
                 $.cookie('navigation-type', 1);
                 $('body').removeClass('navigation-small');
             }
             ;
         });
-        
+
     };
     //function to activate the panel tools
     var runModuleTools = function () {

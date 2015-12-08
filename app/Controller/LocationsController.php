@@ -127,15 +127,32 @@ class LocationsController extends AppController {
             ),
             'contain' => array(
                 'City' => array(
+                    'fields' => array('name')
+                ),
+                'Contact' => array(
                     'fields' => array(
-                        'id', 'name'
+                        'value'
+                    ),
+                    'order' => array(
+                        'Contact.fk_id_contact_types' => 'asc'
+                    ),
+                    'ContactType' => array(
+                        'fields' => array('name')
                     )
                 ),
-                'Contact'
+                'LocationDescription',
+                'MapObjectSubtypeRelation' => array(
+                    'fields' => array('id'),
+                    'ObjectSubtype' => array(
+                        'fields' => array('name')
+                    )
+                )
             )
         );
-        $this->Location->recursive = -1;
-        $this->set('location', $this->Location->find('first', $options));
+        $location = $this->Location->find('first', $options);
+        $events = $this->Location->Event->getAllLocationEvents($id);
+        $news = $this->Location->News->locationNews($id);
+        $this->set(compact('location', 'events', 'news'));
     }
     
     public function getSubtypes() {

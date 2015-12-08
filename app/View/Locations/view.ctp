@@ -15,24 +15,21 @@ echo $this->Html->script('/assets/js/maps.js', array('block' => 'scriptBottom'))
 $lat = $location['Location']['latitude'];
 $long = $location['Location']['longitude'];
 $name = $location['Location']['name'];
-debug($location);
+//debug($location);
 echo $this->Html->script('/js/lokacije/view', array('block' => 'scriptBottom'));
 echo $this->Html->scriptBlock("Maps.init($lat, $long, '$name');", array('block' => 'scriptBottom'));
+echo $this->Html->css('/assets/plugins/revolution_slider/rs-plugin/css/settings', array('block' => 'css'));
+
 ?>
 <div class="row">
-    <div class="col-sm-5 col-md-4">
+    <div class="col-sm-5 col-md-4">      
         <div class="user-left">
             <div class="center">
-                <h4><?php echo $user['ApplicationUser']['display_name'] ?></h4>
+                <h4><?php echo $location['Location']['name'] ?></h4>
                 <div class="fileupload fileupload-new" data-provides="fileupload">
                     <div class="user-image">
                         <div class="fileupload-new thumbnail">
-                            <?php
-                            echo $this->Html->image($user['ApplicationUser']['img_url'], array(
-                                'alt' => 'my image'
-                                    )
-                            );
-                            ?>
+                            <img src="/photos/<?php echo $location['Location']['img_url'] ?>" />
                         </div>
                     </div>
                 </div>
@@ -41,99 +38,144 @@ echo $this->Html->scriptBlock("Maps.init($lat, $long, '$name');", array('block' 
             <table class="table table-condensed table-hover">
                 <thead>
                     <tr>
-                        <th colspan="3">Kontakt Informacije</th>
+                        <th colspan="3">Detalji lokacije</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>URL</td>
+                        <td>Tip</td>
                         <td>
-                            <?php echo $this->Html->link($this->Text->truncate($user['ApplicationUser']['person_url'], 50), $user['ApplicationUser']['person_url']) ?>
+                            <?php foreach ($location['MapObjectSubtypeRelation'] as $tipLokacije) : ?>
+                                <span class="label label-sm label label-inverse">
+                                    <?php echo $tipLokacije['ObjectSubtype']['name']; ?>
+                                &nbsp;</span>
+                            <?php endforeach; ?>
                         </td>
                     </tr>
                     <tr>
-                        <td>Email:</td>
+                        <td>Ocjena korisnika:</td>
                         <td>
-                            <a href="mailto:<?php echo $user['ApplicationUser']['email']; ?>"><?php echo $user['ApplicationUser']['email']; ?></a>
+                            <?php echo $location['Location']['users_rating'] ?>
                         </td>
                     </tr>
-                </tbody>
-            </table>
-            <table class="table table-condensed table-hover">
-                <thead>
                     <tr>
-                        <th colspan="3">Osnovne informacije</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Pol</td>
-                        <td><?php echo $user['ApplicationUser']['gender'] == '0' ? 'Muški': 'Ženski'; ?></td>
-                    </tr>
-                    <tr>
-                        <td>Registrovan</td>
-                        <td><?php echo $this->Time->format($user['ApplicationUser']['creation_date'], '%d.%m.%Y %H:%M %p') ?></td>
-                    </tr>
-                    <tr>
-                        <td>Vrsta logina</td>
+                        <td>Ocjena admina:</td>
                         <td>
-                            <?php  if ($user['ApplicationUser']['login_type'] === '1'): ?>
-                                    <a class="btn btn-google-plus btn-sm btn-squared">
-                                        <i class="fa fa-google-plus"></i>
-                                    </a>
-                            <?php else: ?>
-                                    <a class="btn btn-facebook btn-sm btn-squared">
-                                        <i class="fa fa-facebook"></i>
-                                    </a>
-                            <?php endif; ?>
+                            <?php echo $location['Location']['admin_rating'] ?>
                         </td>
                     </tr>                    
-                    <tr>
-                        <td>Status</td>
-                        <td>
-                            <?php  if ($user['ApplicationUser']['status'] === '1'): ?>
-                                <span class="label label-sm label-success">Aktivan</span>
-                            <?php else: ?>
-                                <span class="label label-sm label-danger">Neaktivan</span>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
             <table class="table table-condensed table-hover">
                 <thead>
                     <tr>
-                        <th colspan="3">Dodatne informacije</th>
+                        <th colspan="3">Kontakt informacije</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Datum rođenja</td>
-                        <td><?php echo $this->Time->format($user['ApplicationUser']['birth_date'], '%d.%m.%Y') ?></td>
+                        <td>Adresa</td>
+                        <td><?php echo $location['Location']['address'] . ", " . $location['City']['name']; ?></td>
                     </tr>
+                    <?php foreach ($location['Contact'] as $contact): ?>
+                    <tr>
+                        <td><?php echo $contact['ContactType']['name']; ?></td>
+                        <td><?php echo $contact['value']; ?></td>
+                    </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
     </div>
     <div class="col-sm-7 col-md-8">
-        <h3>Lokacija</h3>
-        <div class="panel-body">
-            <div class="map" id="map2"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-body">
+                    <div class="map" id="map2"></div>
+                </div>
+            </div>
         </div>
     </div> 
 </div>
 <div class="row">
-    <div class="col-sm-12 col-md-2">
-        <h3>Komentari</h3>
-        <div class="row komentari">
-            <div class="col-md-12">
-                <div class="content"></div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <span class="center" id="load-more">Load more</span>
+    <div class="col-sm-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
+                <li class="active">
+                    <a data-toggle="tab" href="#panel_news">
+                        Vijesti
+                    </a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#panel_products">
+                        Proizvodi
+                    </a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#panel_events">
+                        Događaji
+                    </a>
+                </li>                
+                <li>
+                    <a data-toggle="tab" href="#panel_comments">
+                        Komentari
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="panel_news" class="tab-pane in active">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>Pregled vijesti za ovu lokaciju</h3>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <?php ?>
+                        </div>
+                    </div>                    
+                </div>
+                <div id="panel_products" class="tab-pane">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>Pregled proizvoda za ovu lokaciju</h3>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <?php ?>
+                        </div>
+                    </div>    
+                </div>
+                <div id="panel_events" class="tab-pane">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>Pregled dogadjaja za ovu lokaciju</h3>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <?php ?>
+                        </div>
+                    </div>     
+                </div>                
+                <div id="panel_comments" class="tab-pane">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>Pregled komentara za ovu lokaciju</h3>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <?php ?>
+                        </div>
+                    </div>     
+                </div>
             </div>
         </div>
     </div>
-</div>
+</div>  
