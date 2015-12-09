@@ -1,9 +1,11 @@
 $(document).ready(function () {
     var table;
     
-        $('.dataTable tbody').on('click', 'tr td:not(:last-child)', function () {
-            console.log($(this).parent().find(':last-child'));
-            alert( 'You clicked on  row' );
+        $('.dataTable tbody').on('click', 'tr td:not(:last-child):not(:nth-child(5))', function () {
+            var id = parseInt($(this).parent().find(':first-child').html());
+            if (!isNaN(parseFloat(id)) && isFinite(id)) {
+                document.location.href = '/products/view/' + id;
+            }        
         } );
 
     $('.dataTable').each(function () {
