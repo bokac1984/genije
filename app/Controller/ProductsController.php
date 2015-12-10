@@ -203,8 +203,8 @@ class ProductsController extends AppController {
     public function deleteProduct() {
         $this->request->allowMethod('ajax');
         $this->autoRender = false;
-        debug($this->request->data);
-        
+        $id = $this->request->data['pk'];
+        $this->Product->deleteProduct($id);
     }
 
     public function editStatus()
@@ -243,5 +243,23 @@ class ProductsController extends AppController {
         }
         echo '404';
     }
+    
+    /**
+     * Brise sliku iz galerije
+     * TODO: premjestiti sve ovo u neki behavior
+     */
+    public function deleteImage() {
+        $this->autoRender = false;
+        if ($this->request->is('ajax')) {
+            $id = $this->request->data['id'];
+            $fid = $this->request->data['fid'];// id slike
+            $jpg = $this->request->data['jpg'];
+            if ($this->Product->deleteImage($id, $fid, $jpg)) {
+                echo '200';
+            } else {
+                echo '404';
+            }
+        }
+    }    
 
 }

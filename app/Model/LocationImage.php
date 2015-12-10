@@ -32,41 +32,6 @@ class LocationImage extends AppModel {
         return $images;
     }
     
-    
-    /**
-     * Brise sve slike sa nazvima slika sa fajls sistema
-     * Ako ne uspije da obrise jednu sliku, ubaci je u niz koji ce reci da 
-     * treba te slike rucni obrisati
-     * 
-     * @param array $imageNames
-     * @return array Niz nepobrisanih slika
-     */
-    public function deleteAllImages($imageNames = array()) {
-        $notDeleted = array();
-        foreach ($imageNames as $imageName) {
-            if (!$this->deleteImageFile($imageName)) {
-                $notDeleted[] = $imageName;
-            }
-        }
-        
-        return $notDeleted;
-    }
-    
-    /**
-     * Brise jednu sliku sa fajl sistema, ako ne uspiuje vraca false
-     * 
-     * @param string $fileName
-     * @return boolean
-     */
-    public function deleteImageFile($fileName = '') {
-        if ('' !== $fileName) {
-            $file = new File(WWW_ROOT . '/photos/' . $fileName, false, 0777);
-            return $file->delete(); 
-        }
-        
-        return false;
-    }
-    
     /**
      * Vraca niz naziva slika za zadani ID lokacije
      * 

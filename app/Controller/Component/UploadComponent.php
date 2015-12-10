@@ -35,7 +35,7 @@ class UploadComponent extends Component {
             $fileName = 'Ekstenzija nije dozvoljena.';
         }
         
-        $fileName = $this->changeNameOfFile($fileData['filename']) . strtolower($fileData['extension']);
+        $fileName = $this->changeNameOfFile($fileData['filename']) . '.' . strtolower($fileData['extension']);
         $uploadLocation = WWW_ROOT . $location;
         
         if (!move_uploaded_file($uploadedImage['tmp_name'], $uploadLocation . $fileName)) {
@@ -48,8 +48,8 @@ class UploadComponent extends Component {
     public function changeNameOfFile($originalName = '') {
         $temporalName = '';
         if ($originalName !== '') {
-            $temporalName = hash('sha512', $originalName);
-            $temporalName = substr($originalName, 0, 10) . "-";
+            $temporalNameHashed = hash('sha512', $originalName);
+            $temporalName = substr($temporalNameHashed, 0, 10);
         }
         
         return $temporalName;

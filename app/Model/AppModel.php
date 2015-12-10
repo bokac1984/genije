@@ -67,4 +67,39 @@ class AppModel extends Model {
         $lastLog = end($logs['log']);
         return $lastLog['query'];
     }
+    
+    /**
+     * Brise sve slike sa nazvima slika sa fajls sistema
+     * Ako ne uspije da obrise jednu sliku, ubaci je u niz koji ce reci da 
+     * treba te slike rucni obrisati
+     * 
+     * @param string $path Location of image path on disk 
+     * @param array $imageNames
+     * @return array Niz nepobrisanih slika
+     */
+    public function deleteAllImages($path, $imageNames = array()) {
+        $notDeleted = array();
+        foreach ($imageNames as $imageName) {
+            if (!$this->deleteImageFile($imageName, $path)) {
+                $notDeleted[] = $imageName;
+            }
+        }
+        
+        return $notDeleted;
+    }
+    
+    /**
+     * Brise jednu sliku sa fajl sistema, ako ne uspisuje vraca false
+     * 
+     * @param string $fileName
+     * @return boolean
+     */
+    public function deleteImageFile($fileName = '', $path = '/photos/') {
+        if ('' !== $fileName) {
+            $file = new File(WWW_ROOT . $path . $fileName, false, 0777);
+            return $file->delete(); 
+        }
+        
+        return false;
+    }    
 }

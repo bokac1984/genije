@@ -1,12 +1,12 @@
 $(document).ready(function () {
     var table;
-    
-        $('.dataTable tbody').on('click', 'tr td:not(:last-child):not(:nth-child(5))', function () {
-            var id = parseInt($(this).parent().find(':first-child').html());
-            if (!isNaN(parseFloat(id)) && isFinite(id)) {
-                document.location.href = '/products/view/' + id;
-            }        
-        } );
+
+    $('.dataTable tbody').on('click', 'tr td:not(:last-child):not(:nth-child(5))', function () {
+        var id = parseInt($(this).parent().find(':first-child').html());
+        if (!isNaN(parseFloat(id)) && isFinite(id)) {
+            document.location.href = '/products/view/' + id;
+        }
+    });
 
     $('.dataTable').each(function () {
         table = $(this);
@@ -27,11 +27,11 @@ $(document).ready(function () {
                         $("#filter-" + i).val(value);
                     }
                 }
-            },            
+            }
         };
         jQuery.extend(settings, options);
         table.dataTable(settings);
-        
+
         var initOnlineStatus = function () {
             $('.online-status').editable({
                 url: '/products/updateStatus',
@@ -54,7 +54,7 @@ $(document).ready(function () {
 
             // EDIT
             $("#dialogDelete").click(function (event) {
-                deleteLocation($(this).attr('pk'));
+                deleteProduct($(this).attr('pk'));
             });
 
             // DELETE
@@ -67,67 +67,67 @@ $(document).ready(function () {
                         .attr('pk', $(this).attr("data-pk"));
             });
         };
-        
-    var deleteLocation = function (pk) {
-        $.ajax({
-            url: '/products/deleteProduct',
-            method: 'POST',
-            data: 'pk=' + pk
-        }).done(function (response) {
-            if (parseInt(response) === 200)
-                table.fnDraw(false);
-        }).fail(function () {
-            alert('Error! Contact Urban Genie');
-        });
-    };
 
-    //Search Input function
-    var initCustomSearch = function () {
-        var search_input = $('.sidebar-search input');
-        var search_button = $('.sidebar-search button');
-        search_input.attr('data-default', $(search_input).outerWidth()).focus(function () {
-            $(this).addClass('open');
-            $(this).animate({
-                width: 200
-            }, 200);
-            $(this).select();
-        }).blur(function () {
-            if ($(this).val() == "") {
+        var deleteProduct = function (pk) {
+            $.ajax({
+                url: '/products/deleteProduct',
+                method: 'POST',
+                data: 'pk=' + pk
+            }).done(function (response) {
+                if (parseInt(response) === 200)
+                    table.fnDraw(false);
+            }).fail(function () {
+                alert('Error! Contact Urban Genie');
+            });
+        };
+
+        //Search Input function
+        var initCustomSearch = function () {
+            var search_input = $('.sidebar-search input');
+            var search_button = $('.sidebar-search button');
+            search_input.attr('data-default', $(search_input).outerWidth()).focus(function () {
+                $(this).addClass('open');
                 $(this).animate({
-                    width: $(this).attr('data-default')
+                    width: 200
                 }, 200);
-                $(this).removeClass('open');
-                table.fnFilter('', null);
-            }
-        });
-        search_button.bind('click', function () {
-            if ($(search_input).hasClass('open')) {
-                if (search_input.val() != '')
-                    table.fnFilter(search_input.val(), null, false, true, false);
-                else
+                $(this).select();
+            }).blur(function () {
+                if ($(this).val() === "") {
+                    $(this).animate({
+                        width: $(this).attr('data-default')
+                    }, 200);
+                    $(this).removeClass('open');
                     table.fnFilter('', null);
-            }
-            else
-                $(search_input).focus();
-            return false;
-        });
-    };
+                }
+            });
+            search_button.bind('click', function () {
+                if ($(search_input).hasClass('open')) {
+                    if (search_input.val() != '')
+                        table.fnFilter(search_input.val(), null, false, true, false);
+                    else
+                        table.fnFilter('', null);
+                }
+                else
+                    $(search_input).focus();
+                return false;
+            });
+        };
 
-    var initCustomFilter = function () {
-        // Apply the search
+        var initCustomFilter = function () {
+            // Apply the search
 
-        $('#filter-3').change(function () {
-            console.log('grad');
-            table.fnFilter(this.value, 3);
-        });
+            $('#filter-3').change(function () {
+                console.log('grad');
+                table.fnFilter(this.value, 3);
+            });
 
-        $('#filter-7').change(function () {
-            console.log('online');
-            table.fnFilter(this.value, 7);
-        });
-    }
+            $('#filter-7').change(function () {
+                console.log('online');
+                table.fnFilter(this.value, 7);
+            });
+        };
 
-    initCustomFilter();
+        //initCustomFilter();
     });
 });
 

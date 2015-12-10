@@ -16,6 +16,10 @@ class Location extends AppModel {
     public $useTable = 'map_objects'; 
     public $primaryKey = 'id';
     public $displayField = 'name';
+    
+    public $actsAs = array('Deletable' => array(
+        'baseImageLocation' => '/photos/'
+    ));
      
     public $hasMany = array(
         'Contact' => array(
@@ -131,22 +135,22 @@ class Location extends AppModel {
         ));
         return $l['Location']['name'];
     }
-    /**
-     * Brise slike iz baze
-     * 
-     * @param int $id
-     * @param int $fid
-     * @param string $jpg
-     * @return boolean
-     */
-    public function deleteImage($id, $fid, $jpg) {
-        if ($this->LocationImage->delete($fid)) {
-            $file = new File(WWW_ROOT . '/photos/' . $jpg, false, 0777);
-            return $file->delete();
-        }
-        
-        return false;
-    }
+//    /**
+//     * Brise slike iz baze
+//     * 
+//     * @param int $id
+//     * @param int $fid
+//     * @param string $jpg
+//     * @return boolean
+//     */
+//    public function deleteImage($id, $fid, $jpg) {
+//        if ($this->LocationImage->delete($fid)) {
+//            return $this->deleteImageFile($jpg, '/photos/');
+//        }
+//        //TODO: mozda napraviti da se provjeri je li ovo glavna slika, i ako jeste da izbrise i polje tamo
+//        // je ce se na ovaj nacin pobrisati slika i ostace njen naziv i onda ce biti broken file name
+//        return false;
+//    }
     /**
      * 
      * @param type $id

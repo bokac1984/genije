@@ -17,6 +17,12 @@ class Product extends AppModel {
      * @var string
      */
     public $displayField = 'name';
+    
+    /**
+     *
+     * @var int 
+     */
+    public $deletedProductId;
 
     // The Associations below have been created with all possible keys, those that are not needed can be removed
 
@@ -72,10 +78,69 @@ class Product extends AppModel {
             );
 
             if ($this->ProductImage->save($data)) {
-                //return $this->updateMainImage($id, $filename);
+                $this->updateMainImage($id, $filename);
+                return true;
             }
         }
 
         return false;
     }
+    
+    /**
+     * 
+     * @param int $id
+     * @param string $filename
+     */
+    public function updateMainImage($id, $filename) {
+        if (!$this->hasMainImage($id)) {
+            $data = array(
+                'id' => $id,
+                'img_name' => $filename
+            );
+            $this->save($data);
+        }
+    }
+    
+    /**
+     * 
+     * @param int $id
+     * @return bool
+     */
+    public function hasMainImage($id) {
+        $mainImage = $this->find('count', array(
+            'conditions' => array(
+                'Product.id' => $id
+            )
+        ));
+        
+        return $mainImage > 0;
+    }
+    
+    /**
+     * Trebalo bi prvo obrisati podatke sve vezano za proizvod 
+     * pa onda obrisati i slike za ovaj proizvod
+     * 
+     * @param int $id ID proizvoda za brisanje
+     */
+    public function deleteProduct($id = null) {
+        if ($id) {
+            $this->id = $id;
+            $this->deletedProductId = $id;
+            //$this->ProductImage->deleteImages($this->deletedProductId);
+            if ($this->delete()) {
+                return 'success';
+            }
+        }
+    }
+    
+    public function afterDelete() {
+        parent::afterDelete();
+        
+        if ($this->deletedProductId) {
+            $notDeleted = $this->ProductImage->deleteImages();
+            
+            $this->log($notDeleted);
+        }
+    }
+
 }

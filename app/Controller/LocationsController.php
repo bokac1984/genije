@@ -352,7 +352,7 @@ class LocationsController extends AppController {
             $id = $this->request->data['id'];
             $fid = $this->request->data['fid'];// id slike
             $jpg = $this->request->data['jpg'];
-            if ($this->Location->deleteImage($id, $fid, $jpg)) {
+            if ($this->Location->deleteImage($fid, $jpg)) {
                 echo '200';
             } else {
                 echo '404';
