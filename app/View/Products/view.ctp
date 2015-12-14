@@ -63,6 +63,9 @@ $mainImage = $product['Product']['img_name'];
         <?php if (!empty($product['ProductImage'])): ?>
         <div class="row galerija-slika">
             <?php foreach ($product['ProductImage'] as $currentImage) : ?>
+            <?php 
+            $file = WWW_ROOT . "/photos/products/" . $currentImage['img_name'];
+            if (file_exists($file)): ?>
                 <div class="col-md-2 col-sm-2 gallery-img">
                     <div class="wrap-image <?php if ($mainImage == $currentImage['img_name']) echo 'selected'; ?>">
                         <a data-lightbox="galerija" class="group1" href="/photos/products/<?php echo $currentImage['img_name']; ?>" pk="<?php echo $currentImage['fk_id_products']; ?>" title="<?php echo $currentImage['text']; ?>" data-id="<?php echo $currentImage['id']; ?>" data-jpg="<?php echo $currentImage['img_name']; ?>">
@@ -73,6 +76,7 @@ $mainImage = $product['Product']['img_name'];
                         </a>
                     </div>
                 </div>
+            <?php endif; ?>
             <?php endforeach; ?>
         </div>
         <?php else: ?>

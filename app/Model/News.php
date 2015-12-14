@@ -15,6 +15,13 @@ class News extends AppModel {
     
     public $displayField = 'title';
     
+    public $actsAs = array(
+        'Deletable' => array(
+            'baseImageLocation' => '/photos/'
+        ),
+        'Online'
+    );
+    
     public $belongsTo = array(
         'City' => array(
             'className' => 'City',
@@ -38,25 +45,7 @@ class News extends AppModel {
             'associationForeignKey' => 'fk_id_gallery',
             'unique' => 'keepExisting',
         )
-    );
-
-    public function afterFind($results, $primary = false) {
-        parent::afterFind($results, $primary);
-        
-        foreach ($results as $key => $val) {
-            if (isset($val[$this->name]['online_status'])) {
-                $results[$key][$this->name]['online_status'] = $this->modifyOnlineStatus($val[$this->name]['online_status'],$val[$this->name]['id'], '/news/editStatus/');
-            }
-            
-            if (isset($val[$this->name]['fk_id_map_objects'])) {
-                $results[$key][$this->name]['fk_id_map_objects'] = $this->Location->getLocationName($val[$this->name]['fk_id_map_objects']);
-            } 
-            if (isset($val[$this->name]['fk_id_events'])) {
-                $results[$key][$this->name]['fk_id_events'] = $this->Event->getEventName($val[$this->name]['fk_id_events']);
-            }            
-        }
-        return $results;
-    }    
+    );   
     
     public function saveNews($data = array()) {
         $data['News']['show_products'] = $data['News']['show_products'] === 'on' ? true : false;

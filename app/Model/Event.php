@@ -18,7 +18,12 @@ class Event extends AppModel {
      */
     public $imageToDelete;
     
-    public $actsAs = array('Containable');
+    public $actsAs = array(
+        'Deletable' => array(
+            'baseImageLocation' => '/photos/events/'
+        ),
+        'Online'
+    );
 
     public $validate = array(
         'name' => array(
@@ -48,39 +53,6 @@ class Event extends AppModel {
             'foreignKey' => 'fk_id_events',
         )
     );
-    
-    public function afterFind($results, $primary = false) {
-        parent::afterFind($results, $primary);
-        
-        foreach ($results as $key => $val) {
-            if (isset($val['Event']['online_status'])) {
-                $results[$key]['Event']['online_status'] = $this->modifyOnlineStatus($val['Event']['online_status'],$val['Event']['id'], '/events/editStatus/');
-            } 
-            
-            if (isset($val['Event']['start_time'])) {
-                $results[$key]['Event']['start_time'] = $this->formatTimeResult($val['Event']['start_time']);
-            }
-            
-            if (isset($val['Event']['end_time'])) {
-                $results[$key]['Event']['end_time'] = $this->formatTimeResult($val['Event']['end_time']);
-            }
-            
-            if (isset($val['Event']['fk_id_map_objects'])) {
-                $results[$key]['Event']['fk_id_map_objects'] = $this->getLocationName($val['Event']['fk_id_map_objects']);
-            }
-
-            if (isset($val['Event']['img_url'])) {
-                /**
-                 * Trebalo bi napraviti ovdje neki fallback na sliku lokacije, za one lokacije
-                 * koje nisu kreirane sa novim sistemom, gdje bi bilo korisno da postoji slika za njih u folderu events
-                 * Znam da je glupo da se iste slike nalaze na istom mjestu dva puta, ali za sad nema puno dogadjaja, pa
-                 * nije puno prostora. Jer ako ne zelimo sliku lokacije onda
-                 */
-                $results[$key]['Event']['img_url'] = $this->getImage($val['Event']['img_url']);
-            }
-        }
-        return $results;
-    }
 
     /**
      * @param array $options
@@ -126,7 +98,6 @@ class Event extends AppModel {
      * @return boolean Vracamo da li je uspjesno sacuvano ili ne
      */
     public function saveEvent($data = array()) {
-        debug($this->data);
         return $this->save($data);
     }
 

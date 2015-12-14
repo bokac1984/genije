@@ -33,25 +33,7 @@ class AppModel extends Model {
     
     public $recursive = -1;
     
-    public $actsAs = array('Containable');
-    
-    protected function modifyOnlineStatus($value, $key, $url) {
-        $status = 'Nepoznato';
-        switch ($value) {
-            case 0:
-                $status = '<a href="#" id="online_status" data-url="'.$url.'" class="editable editable-click online-status label label-sm label-danger" data-pk="'.$key.'" data-value="0" data-title="Izmjeni status">Offline</a>';
-                break;
-            case 1:
-                $status = '<a href="#" id="online_status" data-url="'.$url.'" class="editable editable-click online-status label label-sm label-warning" data-pk="'.$key.'" data-value="1" data-title="Izmjeni status">Pending</a>';
-                break;
-            case 2;
-                $status = '<a href="#" id="online_status" data-url="'.$url.'" class="editable editable-click online-status label label-sm label-success" data-pk="'.$key.'" data-value="2" data-title="Izmjeni status" data-original-title="" title="">Online</a>';
-                break;
-            default:
-                break;
-        }
-        return $status;
-    }  
+    public $actsAs = array('Containable'); 
     
     public function formatTimeResult($time) {
         return CakeTime::format($time, '%d.%m.%Y %H:%M %p');

@@ -24,8 +24,13 @@ class Product extends AppModel {
      */
     public $deletedProductId;
 
-    // The Associations below have been created with all possible keys, those that are not needed can be removed
-
+    public $actsAs = array(
+        'Deletable' => array(
+            'baseImageLocation' => '/photos/products/'
+        ),
+        'Online'
+    );
+    
     /**
      * hasMany associations
      *
@@ -54,21 +59,9 @@ class Product extends AppModel {
             'className' => 'Location',
             'joinTable' => 'map_objects_products',
             'foreignKey' => 'fk_id_products',
-            'associationForeignKey' => 'fk_id_map_objects',
-            'unique' => 'keepExisting',
+            'associationForeignKey' => 'fk_id_map_objects'
         )
     );
-
-    public function afterFind($results, $primary = false) {
-        parent::afterFind($results, $primary);
-
-        foreach ($results as $key => $val) {
-            if (isset($val[$this->name]['online_status'])) {
-                $results[$key][$this->name]['online_status'] = $this->modifyOnlineStatus($val[$this->name]['online_status'],$val[$this->name]['id'], '/products/editStatus/');
-            }
-        }
-        return $results;
-    }
 
     public function saveImage($id, $filename) {
         if ('' !== $filename) {
@@ -97,22 +90,25 @@ class Product extends AppModel {
                 'id' => $id,
                 'img_name' => $filename
             );
+            $this->log('izgleda da cuva sliku');
             $this->save($data);
         }
     }
     
     /**
+     * Provjeravamo da li ima sliku
      * 
      * @param int $id
-     * @return bool
+     * @return bool Vrati true ako ima sliku
      */
     public function hasMainImage($id) {
         $mainImage = $this->find('count', array(
             'conditions' => array(
-                'Product.id' => $id
+                'Product.id' => $id,
+                'Product.img_name' => NULL
             )
         ));
-        
+        $this->log('vijednost glavne slike je ' . $mainImage);
         return $mainImage > 0;
     }
     
@@ -142,5 +138,16 @@ class Product extends AppModel {
             $this->log($notDeleted);
         }
     }
+    
+    public function saveAllLocationsForProduct($productId, $locationsIds) {
+        $data =  array();
+        foreach ($locationsIds as $subtype) {
+            $data['Location'] = array(
+                'id' => $subtype
+            );
+        }
+        $data['Product']['id'] = $productId;
+        return $this->Location->saveAll($data); 
+    }    
 
 }

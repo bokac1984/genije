@@ -53,15 +53,18 @@ class DataTableComponent extends Component {
         $config->conditions = array_merge($config->conditions, $scope);
         
         $Model = $this->_getModel($config->model);
+        $Model->Behaviors->disable('Online');
         $iTotalRecords = $Model->find('count', $config->getCountQuery());
 
         $this->_sort($config);
         $this->_search($config, $Model);
         $this->_paginate($config);
-
+        
         $iTotalDisplayRecords = $Model->find('count', $config->getCountQuery());
+        
+        $Model->Behaviors->enable('Online');
         $results = $Model->find('all', $config->getQuery());
-
+        
         $aaData = array();
         if ($config->autoData) {
             foreach ($results as $result) {

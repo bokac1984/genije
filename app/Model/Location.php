@@ -17,9 +17,12 @@ class Location extends AppModel {
     public $primaryKey = 'id';
     public $displayField = 'name';
     
-    public $actsAs = array('Deletable' => array(
-        'baseImageLocation' => '/photos/'
-    ));
+    public $actsAs = array(
+        'Deletable' => array(
+            'baseImageLocation' => '/photos/'
+        ),
+        'Online'
+    );
      
     public $hasMany = array(
         'Contact' => array(
@@ -60,24 +63,18 @@ class Location extends AppModel {
     );
     
     /**
-     * 
-     * @param type $results
-     * @param type $primary
-     * @return type
+     * hasAndBelongsToMany associations
+     *
+     * @var array
      */
-    public function afterFind($results, $primary = false) {
-        parent::afterFind($results, $primary);
-        
-        foreach ($results as $key => $val) {
-            if (isset($val['Location']['online_status'])) {
-                $results[$key]['Location']['online_status'] = $this->modifyOnlineStatus($val['Location']['online_status'],$val['Location']['id'], '/locations/editStatus/');
-            } 
-            if (isset($val['Location']['fk_id_cities'])) {
-                $results[$key]['Location']['fk_id_cities'] = $this->getCityName($val['Location']['fk_id_cities']);
-            }
-        }
-        return $results;
-    }
+    public $hasAndBelongsToMany = array(
+        'Product' => array(
+            'className' => 'Product',
+            'joinTable' => 'map_objects_products',
+            'associationForeignKey' => 'fk_id_products',
+            'foreignKey' => 'fk_id_map_objects'
+        )
+    );
     
     /**
      * 
@@ -111,11 +108,11 @@ class Location extends AppModel {
      * @param int $id
      * @return string
      */
-    private function getCityName($id) {
+    public function getCityName($id) {
         $cityName = $this->City->find('first', array(
             'fields' => array('City.name'),
             'conditions' => array('City.id' => $id)
-            ));
+        ));
         
         return $cityName['City']['name'];
     }
@@ -264,5 +261,25 @@ class Location extends AppModel {
         }
         
         return $lokOut;
+    }
+    
+    /**
+     * mainly for selects
+     */
+    public function getAllLocations() {
+        $locations = $this->find('all', array(
+            'fields' => array('id', 'name')
+        ));
+        $temp = array();
+        if (count($locations) > 0) {
+            foreach ($locations as $s) { 
+                $temp[] = array(
+                    'id' => $s['Location']['id'],
+                    'text' => $s['Location']['name']
+                );
+            }
+        }
+        
+        return $temp;
     }
 }

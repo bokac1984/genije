@@ -51,10 +51,13 @@ $mainImage = $news['News']['fk_id_gallery'];
 <div class="row">
     <?php if (count($images) > 0): ?>
     <?php foreach ($images as $currentImage) : ?>
+    <?php 
+        $file = WWW_ROOT . "/photos/news/" . $currentImage['Gallery']['img_name'];
+        if (file_exists($file)): ?>
         <div class="col-md-2 col-sm-3 gallery-img">
             <div class="wrap-image <?php if ($mainImage == $currentImage['Gallery']['id']) echo 'selected'; ?>">
-                <a data-lightbox="galerija" class="group1" href="/gallery/<?php echo $currentImage['Gallery']['img_name']; ?>" pk="<?php echo $currentImage['Gallery']['id']; ?>" title="<?php echo $currentImage['Gallery']['text']; ?>" data-id="<?php echo $currentImage['Gallery']['id']; ?>" data-jpg="<?php echo $currentImage['Gallery']['img_name']; ?>">
-                    <img src="/gallery/<?php echo $currentImage['Gallery']['img_name']; ?>" 
+                <a data-lightbox="galerija" class="group1" href="/photos/news/<?php echo $currentImage['Gallery']['img_name']; ?>" pk="<?php echo $currentImage['Gallery']['id']; ?>" title="<?php echo $currentImage['Gallery']['text']; ?>" data-id="<?php echo $currentImage['Gallery']['id']; ?>" data-jpg="<?php echo $currentImage['Gallery']['img_name']; ?>">
+                    <img src="/photos/news/<?php echo $currentImage['Gallery']['img_name']; ?>" 
                          alt="" 
                          class="img-responsive <?php if ($mainImage == $currentImage['Gallery']['id']) echo 'selected'; ?>"
                          style="max-height: 150px;">
@@ -67,6 +70,7 @@ $mainImage = $news['News']['fk_id_gallery'];
                 </div>
             </div>
         </div> 
+    <?php endif; ?>
     <?php endforeach; ?>
     <?php else: ?>
     <div class="col-md-12 col-sm-12 gallery-img">

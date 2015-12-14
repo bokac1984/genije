@@ -46,7 +46,7 @@ var FormValidator = function () {
                 $(this).val('').attr('id', function(_, id){
                     return idNew;
                 });
-            })
+            });
         });
 
         $(document).on('click', '.ukloni_red', function(e){
@@ -172,7 +172,7 @@ var FormValidator = function () {
                     // Whoops; show an error.
                 });
 
-                //form.submit();
+                form.submit();
             }
         });
     };

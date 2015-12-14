@@ -87,8 +87,8 @@ echo $this->Html->css('/lightbox/css/lightbox', array('block' => 'css'));
             </div>
             <div class="col-md-12">
                 <div class="thumbnail" style="max-width: 200px; margin-bottom:0px;">
-                    <a data-lightbox="galerija" class="group1" href="/gallery/<?php echo $image['Gallery']['img_name']; ?>">
-                        <img src="/gallery/<?php echo $image['Gallery']['img_name']; ?>" alt="" class="img-responsive">
+                    <a data-lightbox="galerija" class="group1" href="/photos/news/<?php echo $image['Gallery']['img_name']; ?>">
+                        <img src="/photos/news/<?php echo $image['Gallery']['img_name']; ?>" alt="" class="img-responsive">
                     </a>
                 </div> 
             </div>

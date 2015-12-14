@@ -140,7 +140,6 @@ class ProductsController extends AppController {
      */
     public function add() {
         if ($this->request->is('post')) {
-            debug($this->request->data);
             $this->Product->create();
             if ($this->Product->saveAll($this->request->data)) {
                 $this->Flash->success(__('Uspješno ste dodali podatke o proizvodu. Molimo Vas dodajte nove fotografije za proizvod.'));
@@ -162,20 +161,25 @@ class ProductsController extends AppController {
      * @return void
      */
     public function edit($id = null) {
-        if (!$this->Product->exists($id)) {
-            throw new NotFoundException(__('Invalid product'));
+        $this->Product->id = $id;
+        if (!$this->Product->exists()) {
+          throw new NotFoundException(__('Ne postoji proizvod'));
         }
-        if ($this->request->is(array('post', 'put'))) {
-            if ($this->Product->save($this->request->data)) {
-                $this->Flash->success(__('The product has been saved.'));
-                return $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Flash->error(__('The product could not be saved. Please, try again.'));
-            }
-        } else {
-            $options = array('conditions' => array('Product.' . $this->Product->primaryKey => $id));
-            $this->request->data = $this->Product->find('first', $options);
-        }
+        
+        $product = $this->Product->find('first', array(
+            'conditions' => array(
+                'Product.id' => $id
+            ),
+            'contain' => array(
+                'Location' => array(
+                    'fields' => array(
+                        'Location.id'
+                    )
+                )
+            )
+        ));  
+        $locations = $this->Product->Location->find('list');
+        $this->set(compact('product', 'locations'));
     }
 
     /**
@@ -204,8 +208,11 @@ class ProductsController extends AppController {
         $this->request->allowMethod('ajax');
         $this->autoRender = false;
         $id = $this->request->data['pk'];
-        $this->Product->deleteProduct($id);
-    }
+        if ($this->Product->deleteProduct($id)) {
+            echo '200';exit();
+        }
+        echo '404';exit();
+    } 
 
     public function editStatus()
     {
@@ -220,6 +227,13 @@ class ProductsController extends AppController {
             }
         }
     }
+    
+    public function getLocations() {
+        $this->autoRender = false;
+        if ($this->request->is('ajax')) {
+            echo json_encode($this->Product->Location->getAllLocations());
+        }
+    }    
     
     public function location() {
         $this->autoRender = false;
@@ -251,10 +265,9 @@ class ProductsController extends AppController {
     public function deleteImage() {
         $this->autoRender = false;
         if ($this->request->is('ajax')) {
-            $id = $this->request->data['id'];
             $fid = $this->request->data['fid'];// id slike
             $jpg = $this->request->data['jpg'];
-            if ($this->Product->deleteImage($id, $fid, $jpg)) {
+            if ($this->Product->deleteImage($fid, $jpg)) {
                 echo '200';
             } else {
                 echo '404';
@@ -262,4 +275,26 @@ class ProductsController extends AppController {
         }
     }    
 
+    public function editable() {
+        $this->autoRender = false;
+        if ($this->request->is('ajax')){
+            $this->Product->id = $this->request->data['pk'];
+            $field = $this->request->data['name'];
+            $value = $this->request->data['value'];
+            if ($this->Product->saveField($field, $value)){
+                echo '200';
+            } else {
+                echo 'error';
+            }
+        }
+    }
+    public function saveLocations() {
+        $this->autoRender = false;
+        $this->request->allowMethod('ajax');
+        $this->Product->id = $this->request->data['pk'];
+        
+        if ($this->Product->exists()) {
+            $this->Product->saveAllLocationsForProduct($this->request->data['pk'], $this->request->data['value']);
+        } 
+    }
 }

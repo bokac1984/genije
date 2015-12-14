@@ -37,7 +37,10 @@ echo $this->Html->css('/lightbox/css/lightbox', array('block' => 'css'));
 </div>
 <div class="row galerija-slika">
     <?php foreach ($images as $currentImage) : ?>
-        <div class="col-md-2 col-sm-3 gallery-img">
+    <?php 
+        $file = WWW_ROOT . "/photos/products/" . $currentImage['ProductImage']['img_name'];
+        if (file_exists($file)): ?>
+        <div class="col-md-3 col-sm-3 gallery-img">
             <div class="wrap-image <?php if ($mainImage == $currentImage['ProductImage']['img_name']) echo 'selected'; ?>">
                 <a data-lightbox="galerija" class="group1" href="/photos/products/<?php echo $currentImage['ProductImage']['img_name']; ?>" pk="<?php echo $currentImage['ProductImage']['fk_id_products']; ?>" title="<?php echo $currentImage['ProductImage']['text']; ?>" data-id="<?php echo $currentImage['ProductImage']['id']; ?>" data-jpg="<?php echo $currentImage['ProductImage']['img_name']; ?>">
                     <img src="/photos/products/<?php echo $currentImage['ProductImage']['img_name']; ?>"
@@ -47,18 +50,13 @@ echo $this->Html->css('/lightbox/css/lightbox', array('block' => 'css'));
                 </a>
                 <div class="chkbox"></div>
                 <div class="tools tools-left">
-<!--                    <a href="#">
-                        <i class="clip-link-4"></i>
-                    </a>
-                    <a href="#">
-                        <i class="clip-pencil-3 "></i>
-                    </a>-->
                     <a class="photo-remove" data-id="<?php echo $currentImage['ProductImage']['id']; ?>" data-jpg="<?php echo $currentImage['ProductImage']['img_name']; ?>" data-name="<?php echo $currentImage['ProductImage']['img_name']; ?>" href="#">
                         <i class="clip-remove"></i>
                     </a>
                 </div>
             </div>
         </div> 
+    <?php endif; ?>
     <?php endforeach; ?>   
 </div>
 <!-- DIALOG -->

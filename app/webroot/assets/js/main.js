@@ -768,9 +768,15 @@ var Main = function () {
         $('.color-text').val('#555555').next('.dropdown').find('i').css('background-color', '#555555');
         $('.color-badge').val('#007AFF').next('.dropdown').find('i').css('background-color', '#007AFF');
     };
+    
+    var bootstrapajSelect = function () {
+        console.log($('.dataTables_length select'));
+        $('.dataTables_length select').addClass('form-control');
+    };    
     return {
         //main function to initiate template pages
         init: function () {
+            bootstrapajSelect();
             runWIndowResize();
             runInit();
             runStyleSelector();

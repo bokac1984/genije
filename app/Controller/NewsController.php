@@ -212,7 +212,7 @@ class NewsController extends AppController {
         $this->autoRender = false;
         if ($this->request->is('ajax')) {
             $newsId = $this->request->data['idNews'];
-            $filename = $this->uploadFile($this->request->params['form']['file'], '/gallery/');
+            $filename = $this->uploadFile($this->request->params['form']['file'], '/photos/news/');
             
             if ($this->News->saveImageData($newsId, $filename)) {
                 exit();

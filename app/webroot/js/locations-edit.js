@@ -57,22 +57,22 @@ $(document).ready(function(){
     });
     
     $.post("/locations/getSubtypes",
-        function (data, status) {
-            $('#sub_types').editable({
-                source: JSON.parse(data),
-                validate: function (value) {
-                    if ($.trim(value) == '') {
-                        return 'This field is required';
-                    }
-                },
-                select2: {
-                    multiple: true,
-                    width: 200,
-                    placeholder: 'Izaberite tip lokacije'
-                },
-                url: '/locations/saveSubtypes',
-            });
+    function (data, status) {
+        $('#sub_types').editable({
+            source: JSON.parse(data),
+            validate: function (value) {
+                if ($.trim(value) == '') {
+                    return 'This field is required';
+                }
+            },
+            select2: {
+                multiple: true,
+                width: 200,
+                placeholder: 'Izaberite tip lokacije'
+            },
+            url: '/locations/saveSubtypes'
         });
+    });
 
     $('#contact_mobile').editable({
         params: function (params) {

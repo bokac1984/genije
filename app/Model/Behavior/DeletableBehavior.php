@@ -12,7 +12,6 @@ class DeletableBehavior extends ModelBehavior {
     
     public $_defaults = array(
         'baseImageLocation' => '/photos/',
-        'imageModel' => ''
     );
     
     public function setup(Model $model, $config = array()) {
@@ -34,14 +33,18 @@ class DeletableBehavior extends ModelBehavior {
      * @param string $jpg
      * @return boolean
      */
-    public function deleteImage(Model $model, $fid, $jpg) {
+    public function deleteImage(Model $model, $fid, $jpg) { 
         if ($model->{$this->settings[$model->alias]['imageModel']}->delete($fid)) {
             return $model->deleteImageFile($jpg, $this->settings[$model->alias]['baseImageLocation']);
         }
-        //TODO: mozda napraviti da se provjeri je li ovo glavna slika, i ako jeste da izbrise i polje tamo
-        // je ce se na ovaj nacin pobrisati slika i ostace njen naziv i onda ce biti broken file name
         return false;
     }
+    
+    /**
+     * Ttrebalo bi da provjeri da li ima glavne slike prije brisanja, i ako ima da i nju pobrise
+     * ali ako brisemo sliku koja je glavna da se odabere prvo neka koja bi trebala biti glavna
+     */
+    public function checkMainImage() {
+        
+    }
 }
-
-?>

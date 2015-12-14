@@ -117,7 +117,7 @@ var FormValidator = function () {
         $('#address').change(function () {
             var address = $(this).val();
             var res = $('#address_geocode').val().split(",");
-            if (res.length == 2)
+            if (res.length === 2)
                 $('#address_geocode').val(res[0] + ', ' + address);
             else
                 $('#address_geocode').val(address);
@@ -142,7 +142,7 @@ var FormValidator = function () {
 
         $.validator.addMethod("getEditorValue", function () {
             $("#html_text").val($('.summernote').code());
-            if ($("#html_text").val() != "" && $("#html_text").val() != "<br>") {
+            if ($("#html_text").val() !== "" && $("#html_text").val() !== "<br>") {
                 $('#html_text').val('');
                 return true;
             } else {
@@ -227,7 +227,7 @@ var FormValidator = function () {
                 successHandler.show();
                 errorHandler.hide();
                 // submit form
-                if ($('.summernote').code() != "<br>")
+                if ($('.summernote').code() !== "<br>")
                     $("#html_text").val($('.summernote').code());
 
                 $('body').modalmanager('loading');

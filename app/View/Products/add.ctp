@@ -31,10 +31,10 @@ echo $this->Html->script('/js/products/new', array('block' => 'scriptBottom'));
 
 $saveProducts = $this->Html->url(array(
     'controller' => 'products',
-    'action' => 'validateProducts'
+    'action' => 'saveProduct'
 ));
 
-echo $this->Html->scriptBlock("var validateProducts = '$saveProducts';", array('block'=>'scriptBottom'));
+echo $this->Html->scriptBlock("var saveProducts = '$saveProducts';", array('block'=>'scriptBottom'));
 echo $this->Html->scriptBlock("FormValidator.init();", array('block'=>'scriptBottom'));
 
 echo $this->Html->css('/assets/plugins/summernote/build/summernote.css', array('block' => 'css'));
@@ -83,7 +83,7 @@ $this->Form->inputDefaults(array(
                     <label for="control-label">
                         Lokacija <span class="symbol required"></span> 
                     </label>
-                    <select multiple="multiple" id="map_object" name="data[Location][fk_id_map_objects]" class="form-control search-select">
+                    <select multiple="multiple" id="map_object" name="data[Location][Location][]" class="form-control search-select">
                     <?php
                         foreach ($locations as $k => $v) {
                             echo '<option value="' . $k . '">' . $v . '</option>';
