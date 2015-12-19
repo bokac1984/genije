@@ -40,12 +40,12 @@ echo $this->Html->css('/lightbox/css/lightbox', array('block' => 'css'));
     <?php 
         $file = WWW_ROOT . "/photos/products/" . $currentImage['ProductImage']['img_name'];
         if (file_exists($file)): ?>
-        <div class="col-md-3 col-sm-3 gallery-img">
+        <div class="col-md-2 col-sm-2 gallery-img">
             <div class="wrap-image <?php if ($mainImage == $currentImage['ProductImage']['img_name']) echo 'selected'; ?>">
                 <a data-lightbox="galerija" class="group1" href="/photos/products/<?php echo $currentImage['ProductImage']['img_name']; ?>" pk="<?php echo $currentImage['ProductImage']['fk_id_products']; ?>" title="<?php echo $currentImage['ProductImage']['text']; ?>" data-id="<?php echo $currentImage['ProductImage']['id']; ?>" data-jpg="<?php echo $currentImage['ProductImage']['img_name']; ?>">
                     <img src="/photos/products/<?php echo $currentImage['ProductImage']['img_name']; ?>"
                          alt="" 
-                         class="img-responsive <?php if ($mainImage == $currentImage['ProductImage']['img_name']) echo 'selected'; ?>"
+                         class="<?php if ($mainImage == $currentImage['ProductImage']['img_name']) echo 'selected'; ?>"
                          style="max-height: 150px;"
                          >
                 </a>

@@ -46,13 +46,16 @@ class LocationComment extends AppModel {
                 'conditions' => array(
                     'LocationComment.fk_id_map_objects' => $locationId
                 ),
-                'limit' => 20,
+                'limit' => 10,
                 'contain' => array(
                     'ApplicationUser' => array(
                         'fields' => array(
                             'ApplicationUser.id', 'ApplicationUser.display_name'
                         )
                     )
+                ),
+                'order' => array(
+                    'LocationComment.datetime DESC'
                 )
             ));
         }

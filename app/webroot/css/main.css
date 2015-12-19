@@ -39,6 +39,16 @@ h1, h2, h3 {
 	font-family: 'Raleway', sans-serif;
 }
 /* ---------------------------------------------------------------------- */
+/*	Animated Elements
+/* ---------------------------------------------------------------------- */
+.animate-if-visible, .animate-group .animate {
+	position: relative;
+	opacity: 0;
+}
+.ie8 .animate-if-visible, .ie8 .animate {
+	filter: alpha(opacity = 0);
+}
+/* ---------------------------------------------------------------------- */
 /*	Forms
  /* ---------------------------------------------------------------------- */
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
@@ -4902,3 +4912,8 @@ td.column-right {
 #page-sidebar .discussion .messages p{
     font-size: 12px;
 }
+
+/***
+ BOKAC DODAO
+*/
+.no-comment { color: #C3C0C0; }

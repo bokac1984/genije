@@ -37,14 +37,14 @@ $this->assign('page-title', 'Korisnici <small>pregled</small>');
                             </div>
                         </td>
                         <td class="center">
-    <?php
-    echo $this->Html->image($user['ApplicationUser']['img_url'], array(
-        'height' => '50',
-        'width' => '50',
-        'alt' => 'my image'
-            )
-    );
-    ?>
+                        <?php
+                        echo $this->Html->image($user['ApplicationUser']['img_url'], array(
+                            'height' => '50',
+                            'width' => '50',
+                            'alt' => 'my image'
+                                )
+                        );
+                        ?>
                         </td>
                         <td>
                             <?php

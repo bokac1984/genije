@@ -16,10 +16,11 @@ $lat = $location['Location']['latitude'];
 $long = $location['Location']['longitude'];
 $name = $location['Location']['name'];
 //debug($location);
+echo $this->Html->script('/js/libs/stars/star-rating', array('block' => 'scriptBottom'));
 echo $this->Html->script('/js/lokacije/view', array('block' => 'scriptBottom'));
 echo $this->Html->scriptBlock("Maps.init($lat, $long, '$name');var locationId = {$location['Location']['id']};", array('block' => 'scriptBottom'));
-echo $this->Html->css('/assets/plugins/revolution_slider/rs-plugin/css/settings', array('block' => 'css'));
 echo $this->Html->css('dots', array('block' => 'css'));
+echo $this->Html->css('/js/libs/stars/star-rating', array('block' => 'css'));
 
 ?>
 <!--<style type="text/css">
@@ -58,14 +59,16 @@ echo $this->Html->css('dots', array('block' => 'css'));
                             <?php foreach ($location['MapObjectSubtypeRelation'] as $tipLokacije) : ?>
                                 <span class="label label-sm label label-inverse">
                                     <?php echo $tipLokacije['ObjectSubtype']['name']; ?>
-                                &nbsp;</span>
+                                </span>&nbsp;
                             <?php endforeach; ?>
                         </td>
                     </tr>
                     <tr>
                         <td>Ocjena korisnika:</td>
-                        <td>
-                            <?php echo $location['Location']['users_rating'] ?>
+                        <td data-toggle="tooltip" title="<?php echo $location['Location']['users_rating'] ?>">
+                            <span>
+                                <input class="stars-location" value="<?php echo $location['Location']['users_rating'] ?>" />
+                            </span>
                         </td>
                     </tr>
                     <tr>
@@ -105,6 +108,11 @@ echo $this->Html->css('dots', array('block' => 'css'));
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Lokacija na mapi</h3>
+            </div>
+        </div>        
     </div> 
 </div>
 <div class="row">
@@ -206,7 +214,7 @@ echo $this->Html->css('dots', array('block' => 'css'));
                 <div id="panel_comments" class="tab-pane">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3>Pregled komentara za ovu lokaciju</h3>
+                            <h3>Pregled nedavnih komentara</h3>
                             <hr>
                         </div>
                     </div>

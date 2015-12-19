@@ -1,4 +1,5 @@
 var Maps = function (lat, long, name) {
+    $('[data-toggle="tooltip"]').tooltip();
     var runMaps = function (lat, long, name) {
         //Markers
         map2 = new GMaps({
@@ -58,10 +59,30 @@ var Maps = function (lat, long, name) {
         }).done(function (response) {
             $loading.hide();
             body.html(response);
+            initStars();
         }).fail(function (response) {
             $loading.hide();
             //body.html('Error! Contact Urban Genie');
         }); 
+    };    
+    var initStars = function(){
+        $('.stars').rating({
+            step: 0.1,
+            readonly: true,
+            showClear: false,
+            showCaption: false,
+            size: 'xxxs'
+        });
+    };
+    
+    var initStarsLocation = function(){
+        $('.stars-location').rating({
+            step: 0.1,
+            readonly: true,
+            showClear: false,
+            showCaption: false,
+            size: 'xxs'
+        });
     };    
     
     return {
@@ -69,6 +90,7 @@ var Maps = function (lat, long, name) {
         init: function (lat, long, name) {
             runMaps(lat, long, name);
             runCommentFetch();
+            initStarsLocation();
         }
     };
 }();

@@ -25,7 +25,9 @@ $this->assign('page-title', 'Komentari <small>pregled podataka</small>');
                 <?php foreach ($LocationComments as $mapObjectsComment): ?>
                     <tr>
                         <td><?php echo h($mapObjectsComment['LocationComment']['id']); ?>&nbsp;</td>
-                        <td><?php echo h($mapObjectsComment['LocationComment']['text']); ?>&nbsp;</td>
+                        <td><?php echo !empty($mapObjectsComment['LocationComment']['text']) ?
+                                $mapObjectsComment['LocationComment']['text'] :
+                                '<i class="no-comment">Nema komenatara</i>'; ?></td>
                         <td><?php echo h($mapObjectsComment['LocationComment']['rating']); ?>&nbsp;</td>
                         <td><?php echo h($mapObjectsComment['LocationComment']['datetime']); ?>&nbsp;</td>
                         <td><?php echo h($mapObjectsComment['LocationComment']['comment_rating']); ?>&nbsp;</td>

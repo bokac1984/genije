@@ -38,7 +38,21 @@ class ApplicationUsersController extends AppController {
         if (!$this->ApplicationUser->exists($id)) {
             throw new NotFoundException(__('Ne postoji korisnik!'));
         }
-        $options = array('conditions' => array('ApplicationUser.' . $this->ApplicationUser->primaryKey => $id));
+        $options = array(
+            'conditions' => array(
+                'ApplicationUser.' . $this->ApplicationUser->primaryKey => $id
+            ),
+            'contain' => array(
+                'LocationComment' => array(
+                    'Location' => array(
+                        'fields' => array(
+                            'Location.id',
+                            'Location.name'
+                        )
+                    )
+                )
+            )
+        );
         $this->set('user', $this->ApplicationUser->find('first', $options));
     }
 

@@ -18,7 +18,7 @@
         echo $this->Html->css('/assets/plugins/bootstrap/css/bootstrap.min');
         echo $this->Html->css('/assets/plugins/font-awesome/css/font-awesome.min');
         echo $this->Html->css('/assets/fonts/style');
-        echo $this->Html->css('/assets/css/main');
+        echo $this->Html->css('main');
         echo $this->Html->css('/assets/css/main-responsive');
         echo $this->Html->css('/assets/plugins/iCheck/skins/all');
         echo $this->Html->css('/assets/plugins/bootstrap-colorpalette/css/bootstrap-colorpalette');
@@ -30,8 +30,13 @@
         echo '<![endif]-->';
 
         echo $this->Html->script('/js/jQuery-lib/2.0.3/jquery.min');
-
+        ?>
+        <!-- Pocetak css posebno za ovu stranicu -->
+        <?php
         echo $this->fetch('css');
+        ?>
+        <!-- Kraj css posebno za ovu stranicu -->
+        <?php        
         echo $this->Html->meta(
             'favicon.ico',
             '/favicon.ico',
@@ -152,7 +157,6 @@
         <!-- end: RIGHT SIDEBAR -->
         <!-- start: MAIN JAVASCRIPTS -->
         <?php
-        echo $this->Html->script('/assets/plugins/jQuery-lib/2.0.3/jquery.min');
         echo $this->Html->script('/assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min');
         echo $this->Html->script('/assets/plugins/bootstrap/js/bootstrap.min');
         echo $this->Html->script('/assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min');

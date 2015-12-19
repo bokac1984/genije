@@ -1,7 +1,4 @@
 var Maps = function (lat, long, name) {
-    //function to initiate GMaps
-    //Gmaps.js allows you to use the potential of Google Maps in a simple way.
-    //For more information, please visit http://hpneo.github.io/gmaps/documentation.html
     var runMaps = function (lat, long, name) {
         //Markers
         map2 = new GMaps({
@@ -19,10 +16,21 @@ var Maps = function (lat, long, name) {
             }
         });
     };
+    
+    var initStars = function(){
+        $('.stars').rating({
+            step: 0.1,
+            readonly: true,
+            showClear: false,
+            showCaption: false,
+            size: 'xs'
+        });
+    };
     return {
         //main function to initiate template pages
         init: function (lat, long, name) {
             runMaps(lat, long, name);
+            initStars();
         }
     };
 }();

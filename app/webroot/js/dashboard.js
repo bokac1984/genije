@@ -130,7 +130,7 @@ var Index = function () {
             $("#x").text(pos.x.toFixed(2));
             $("#y").text(pos.y.toFixed(2));
             if (item) {
-                if (previousPoint != item.dataIndex) {
+                if (previousPoint !== item.dataIndex) {
                     previousPoint = item.dataIndex;
                     $("#tooltip").remove();
                     var x = item.datapoint[0].toFixed(2),
@@ -146,8 +146,6 @@ var Index = function () {
     // function to initiate Chart 2
     var runChart2 = function (promise) {
         promise.success(function(data_pie){
-
-            console.log(data_pie);
             $.plot('#placeholder-h2', data_pie, {
                 series: {
                     pie: {
@@ -456,7 +454,7 @@ var Index = function () {
 
     return {
         init: function () {
-            //runChart1();
+            runChart1();
             var data = getDataForChart();
             runChart2(data);
             //runChart3();

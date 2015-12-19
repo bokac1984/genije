@@ -71,8 +71,9 @@ $mainImage = $product['Product']['img_name'];
                         <a data-lightbox="galerija" class="group1" href="/photos/products/<?php echo $currentImage['img_name']; ?>" pk="<?php echo $currentImage['fk_id_products']; ?>" title="<?php echo $currentImage['text']; ?>" data-id="<?php echo $currentImage['id']; ?>" data-jpg="<?php echo $currentImage['img_name']; ?>">
                             <img src="/photos/products/<?php echo $currentImage['img_name']; ?>"
                                  alt=""
-                                 class="img-responsive <?php if ($mainImage == $currentImage['img_name']) echo 'selected'; ?>"
-                                 >
+                                 class="<?php if ($mainImage == $currentImage['img_name']) echo 'selected'; ?>"
+                                 style="max-height: 150px;"
+                                 />
                         </a>
                     </div>
                 </div>
@@ -107,4 +108,3 @@ $mainImage = $product['Product']['img_name'];
 <?php endif; ?>
     </div>
 </div>
-
