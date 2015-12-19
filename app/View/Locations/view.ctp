@@ -17,10 +17,20 @@ $long = $location['Location']['longitude'];
 $name = $location['Location']['name'];
 //debug($location);
 echo $this->Html->script('/js/lokacije/view', array('block' => 'scriptBottom'));
-echo $this->Html->scriptBlock("Maps.init($lat, $long, '$name');", array('block' => 'scriptBottom'));
+echo $this->Html->scriptBlock("Maps.init($lat, $long, '$name');var locationId = {$location['Location']['id']};", array('block' => 'scriptBottom'));
 echo $this->Html->css('/assets/plugins/revolution_slider/rs-plugin/css/settings', array('block' => 'css'));
+echo $this->Html->css('dots', array('block' => 'css'));
 
 ?>
+<!--<style type="text/css">
+    .tab-padding.tab-blue > li > a, .tab-padding.tab-blue > li > a:focus {
+        background-color: #007AFF;
+    }
+    .tab-padding.tab-blue > li.active > a, .tab-padding.tab-blue > li.active > a:focus, .tab-padding.tab-teal > li.active > a:hover {
+        border-color: #007AFF #DDDDDD transparent;
+        color: #333333;
+    }  
+</style>-->
 <div class="row">
     <div class="col-sm-5 col-md-4">      
         <div class="user-left">
@@ -132,7 +142,28 @@ echo $this->Html->css('/assets/plugins/revolution_slider/rs-plugin/css/settings'
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <?php ?>
+                            <?php if ($news): ?>   
+                            <table class="table table-condensed">
+                                <thead>
+                                    <th>#</th>
+                                    <th>Naslov</th>
+                                    <th>Datum objave</th>
+                                    <th>Akcije</th>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($news as $single): ?>
+                                    <tr>
+                                        <td><?php echo $single['News']['id']; ?></td>
+                                        <td><?php echo $single['News']['title']; ?></td>
+                                        <td><?php echo $this->Time->format($single['News']['created'], '%d.%m.%Y %H:%M %p'); ?></td>
+                                        <td><?php echo $this->Html->link('Detalji', array('controller' => 'news', 'action' => 'view', $single['News']['id'])); ?></td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                            <?php else: ?>
+                                <h4>Nema vijesti za ovu lokaciju</h4>
+                            <?php endif; ?>
                         </div>
                     </div>                    
                 </div>
@@ -143,11 +174,16 @@ echo $this->Html->css('/assets/plugins/revolution_slider/rs-plugin/css/settings'
                             <hr>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <?php ?>
+                    <div class="row loading">
+                        <div class="col-md-12 col-md-offset-5">
+                            <div class="dots-loader">
+                                Loading…
+                            </div>
                         </div>
-                    </div>    
+                    </div>                    
+                    <div class="row">
+                        <div class="col-md-12 products-table"></div>
+                    </div>     
                 </div>
                 <div id="panel_events" class="tab-pane">
                     <div class="row">
@@ -156,10 +192,15 @@ echo $this->Html->css('/assets/plugins/revolution_slider/rs-plugin/css/settings'
                             <hr>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <?php ?>
+                    <div class="row loading">
+                        <div class="col-md-12 col-md-offset-5">
+                            <div class="dots-loader">
+                                Loading…
+                            </div>
                         </div>
+                    </div>                    
+                    <div class="row">
+                        <div class="col-md-12 events-table"></div>
                     </div>     
                 </div>                
                 <div id="panel_comments" class="tab-pane">
@@ -169,10 +210,15 @@ echo $this->Html->css('/assets/plugins/revolution_slider/rs-plugin/css/settings'
                             <hr>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <?php ?>
+                    <div class="row loading">
+                        <div class="col-md-12 col-md-offset-5">
+                            <div class="dots-loader">
+                                Loading…
+                            </div>
                         </div>
+                    </div> 
+                    <div class="row">
+                        <div class="col-md-12 comments-table"></div>
                     </div>     
                 </div>
             </div>

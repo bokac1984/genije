@@ -1,6 +1,10 @@
 <?php
 App::uses('AppController', 'Controller');
 
+/**
+ * Locations controller
+ * @property Location $Location
+ */
 class LocationsController extends AppController {
     public $uses = array('Location');
     public $components = array(
@@ -50,7 +54,7 @@ class LocationsController extends AppController {
                     ),
                     'online_status' => array(
                         'label' => 'Status',
-                        'sWidth' => '10%',
+                        'sWidth' => '5%',
                         'sClass' => 'center',
                         'bSortable' => false,
                         'bSearchable' => 'true',
@@ -62,7 +66,7 @@ class LocationsController extends AppController {
                         'useField' => false,
                         'bSearchable' => 'false',
                         'label' => 'Akcije',
-                        'sWidth' => '10%'
+                        'sWidth' => '15%'
                     ),
                 )
             )
@@ -82,7 +86,7 @@ class LocationsController extends AppController {
         return parent::isAuthorized($user);
     }
     
-    public $helpers =  array('DataTable.DataTable');
+    public $helpers =  array('DataTable.DataTable', 'Time');
 
     public function index() {
         $this->DataTable->setViewVar('Location');
@@ -375,5 +379,55 @@ class LocationsController extends AppController {
             }
             echo $this->Location->deleteLocation($id);
         }
-    }    
+    }  
+    
+    public function getAllEventsForLocation() {
+        $this->request->allowMethod('ajax');
+        $this->viewClass = 'Json';
+        $id = $this->request->data['id'];
+        $this->Location->id = $id;
+        if (!$this->Location->exists()) {
+            throw new NotFoundException(__('Ne postoji lokacija'));
+        }
+        
+        $events = $this->Location->Event->getAllLocationEventsAjax($id);
+        $this->set(compact('events'));
+    }
+    
+    public function getCommentsForLocation() {
+        $this->request->allowMethod('ajax');
+        $this->viewClass = 'Json';
+        $id = $this->request->data['id'];
+        $this->Location->id = $id;
+        if (!$this->Location->exists()) {
+            throw new NotFoundException(__('Ne postoji lokacija'));
+        }
+        
+        $comments = $this->Location->LocationComment->getAllLocationComments($id);
+        $this->set(compact('comments'));
+    }  
+    
+    public function getProductsForLocation() {
+        $this->request->allowMethod('ajax');
+        $this->viewClass = 'Json';
+        $id = $this->request->data['id'];
+        $this->Location->id = $id;
+        if (!$this->Location->exists()) {
+            throw new NotFoundException(__('Ne postoji lokacija'));
+        }
+        $options['joins'] =  array(
+                 array('table' => 'map_objects_products',
+                    'alias' => 'LocationProduct',
+                    'type' => 'INNER',
+                    'conditions' => array(
+                        'LocationProduct.fk_id_products = Product.id'
+                    )
+                )
+            );
+        $options['conditions'] = array(
+            'LocationProduct.fk_id_map_objects' => $id,
+        );
+        $products = $this->Location->Product->find('all', $options);
+        $this->set(compact('products'));
+    }     
 }

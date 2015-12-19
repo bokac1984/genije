@@ -3,7 +3,8 @@ var Index = function () {
     var runChart1 = function () {
         function randValue() {
             return (Math.floor(Math.random() * (1 + 40 - 20))) + 20;
-        };
+        }
+        ;
         var pageviews = [
             [1, randValue()],
             [2, randValue()],
@@ -69,12 +70,12 @@ var Index = function () {
             [30, 31 + randValue()]
         ];
         var plot = $.plot($("#placeholder-h1"), [{
-            data: pageviews,
-            label: "Unique Visits"
-        }, {
-            data: visitors,
-            label: "Page Views"
-        }], {
+                data: pageviews,
+                label: "Unique Visits"
+            }, {
+                data: visitors,
+                label: "Page Views"
+            }], {
             series: {
                 lines: {
                     show: true,
@@ -82,10 +83,10 @@ var Index = function () {
                     fill: true,
                     fillColor: {
                         colors: [{
-                            opacity: 0.05
-                        }, {
-                            opacity: 0.01
-                        }]
+                                opacity: 0.05
+                            }, {
+                                opacity: 0.01
+                            }]
                     }
                 },
                 points: {
@@ -133,7 +134,7 @@ var Index = function () {
                     previousPoint = item.dataIndex;
                     $("#tooltip").remove();
                     var x = item.datapoint[0].toFixed(2),
-                        y = item.datapoint[1].toFixed(2);
+                            y = item.datapoint[1].toFixed(2);
                     showTooltip(item.pageX, item.pageY, item.series.label + " of " + x + " = " + y);
                 }
             } else {
@@ -143,48 +144,44 @@ var Index = function () {
         });
     };
     // function to initiate Chart 2
-    var runChart2 = function () {
-        var data_pie = [],
-            series = Math.floor(Math.random() * 6) + 3;
-        for (var i = 0; i < series; i++) {
-            data_pie[i] = {
-                label: "Series" + (i + 1),
-                data: Math.floor(Math.random() * 100) + 1
-            };
-        }
-        $.plot('#placeholder-h2', data_pie, {
-            series: {
-                pie: {
-                    show: true,
-                    radius: 1,
-                    tilt: 0.5,
-                    label: {
+    var runChart2 = function (promise) {
+        promise.success(function(data_pie){
+
+            console.log(data_pie);
+            $.plot('#placeholder-h2', data_pie, {
+                series: {
+                    pie: {
                         show: true,
                         radius: 1,
-                        formatter: labelFormatter,
-                        background: {
-                            opacity: 0.8
+                        tilt: 0.5,
+                        label: {
+                            show: true,
+                            radius: 1,
+                            formatter: labelFormatter,
+                            background: {
+                                opacity: 0.8
+                            }
+                        },
+                        combine: {
+                            color: '#999',
+                            threshold: 0.1
                         }
-                    },
-                    combine: {
-                        color: '#999',
-                        threshold: 0.1
                     }
+                },
+                legend: {
+                    show: false
                 }
-            },
-            legend: {
-                show: false
+            });
+
+            function labelFormatter(label, series) {
+                return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
             }
         });
-
-        function labelFormatter(label, series) {
-            return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
-        }
     };
     // function to initiate Chart 3
     var runChart3 = function () {
         var data = [],
-            totalPoints = 300;
+                totalPoints = 300;
 
         function getRandomData() {
             if (data.length > 0)
@@ -192,7 +189,7 @@ var Index = function () {
             // Do a random walk
             while (data.length < totalPoints) {
                 var prev = data.length > 0 ? data[data.length - 1] : 50,
-                    y = prev + Math.random() * 10 - 5;
+                        y = prev + Math.random() * 10 - 5;
                 if (y < 0) {
                     y = 0;
                 } else if (y > 100) {
@@ -298,10 +295,11 @@ var Index = function () {
                         throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
                     }
                     var aArgs = Array.prototype.slice.call(arguments, 1),
-                        fToBind = this,
-                        fNOP = function () {}, fBound = function () {
-                            return fToBind.apply(this instanceof fNOP && oThis ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)));
-                        };
+                            fToBind = this,
+                            fNOP = function () {
+                            }, fBound = function () {
+                        return fToBind.apply(this instanceof fNOP && oThis ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)));
+                    };
                     fNOP.prototype = this.prototype;
                     fBound.prototype = new fNOP();
                     return fBound;
@@ -317,14 +315,14 @@ var Index = function () {
             lineWidth: 3,
             barColor: '#35aa47',
             size: 70
-            
+
         });
     };
     // function to initiate Full Calendar
     var runFullCalendar = function () {
         //calendar
         /* initialize the calendar
-		 -----------------------------------------------------------------*/
+         -----------------------------------------------------------------*/
         var $modal = $('#event-management');
         $('#event-categories div.event-category').each(function () {
             // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
@@ -342,7 +340,7 @@ var Index = function () {
             });
         });
         /* initialize the calendar
-		 -----------------------------------------------------------------*/
+         -----------------------------------------------------------------*/
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
@@ -359,20 +357,20 @@ var Index = function () {
                 right: 'month,agendaWeek,agendaDay'
             },
             events: [{
-                title: 'Meeting with Boss',
-                start: new Date(y, m, 1),
-                className: 'label-default'
-            }, {
-                title: 'Bootstrap Seminar',
-                start: new Date(y, m, d - 5),
-                end: new Date(y, m, d - 2),
-                className: 'label-teal'
-            }, {
-                title: 'Lunch with Nicole',
-                start: new Date(y, m, d - 3, 12, 0),
-                className: 'label-green',
-                allDay: false
-            }],
+                    title: 'Meeting with Boss',
+                    start: new Date(y, m, 1),
+                    className: 'label-default'
+                }, {
+                    title: 'Bootstrap Seminar',
+                    start: new Date(y, m, d - 5),
+                    end: new Date(y, m, d - 2),
+                    className: 'label-teal'
+                }, {
+                    title: 'Lunch with Nicole',
+                    start: new Date(y, m, d - 3, 12, 0),
+                    className: 'label-green',
+                    allDay: false
+                }],
             editable: true,
             droppable: true, // this allows things to be dropped onto the calendar !!!
             drop: function (date, allDay) { // this function is called when something is dropped
@@ -412,13 +410,13 @@ var Index = function () {
                     $categoryClass = form.find("select[name='category'] option:checked").val();
                     if (title !== null) {
                         calendar.fullCalendar('renderEvent', {
-                                title: title,
-                                start: start,
-                                end: end,
-                                allDay: allDay,
-                                className: $categoryClass
-                            }, true // make the event "stick"
-                        );
+                            title: title,
+                            start: start,
+                            end: end,
+                            allDay: allDay,
+                            className: $categoryClass
+                        }, true // make the event "stick"
+                                );
                     }
                     $modal.modal('hide');
                     return false;
@@ -447,14 +445,23 @@ var Index = function () {
             }
         });
     };
+
+    var getDataForChart =  function () {
+        return $.ajax({
+            url: '/cities/getNumberOfLocationsPerCity.json',
+            method: 'POST',
+            dataType: "json"
+        });
+    };
+
     return {
         init: function () {
-            runChart1();
-            runChart2();
-            runChart3();
-            runSparkline();
-            runEasyPieChart();
-            runFullCalendar();
+            //runChart1();
+            var data = getDataForChart();
+            runChart2(data);
+            //runChart3();
+            //runSparkline();
+            //runEasyPieChart();
         }
     };
 }();

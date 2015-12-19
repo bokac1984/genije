@@ -18,21 +18,52 @@ var Maps = function (lat, long, name) {
     };
     
     var runCommentFetch = function() {
-        
-        $("#load-more").click(function(){
-            alert('RAdi');
-//            $.ajax({
-//                url: '/news/showproducts',
-//                method: 'POST',
-//                data: 'value=' + value + '&id=' + pk
-//            }).done(function (response) {
-//                
-//            }).fail(function () {
-//                alert('Error! Contact Urban Genie');
-//            }); 
-        });
-
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var target = $(e.target).attr("href"); // activated tab
+            switch(target) {
+                case '#panel_events':
+                    if (!$('.events-table').html().length){
+                        loadData('/locations/getAllEventsForLocation.json', $('.events-table'));
+                    }     else {
+                        console.log('nema nista u events');
+                    }
+                    break;
+                case '#panel_products':
+                    if (!$('.products-table').html().length){
+                        loadData('/locations/getProductsForLocation.json', $('.products-table'));
+                    }              
+                    break;                    
+                case '#panel_comments':
+                    if (!$('.comments-table').html().length){
+                        loadData('/locations/getCommentsForLocation.json', $('.comments-table'));
+                    }              
+                    break;                    
+                default:
+                    break;
+            }
+          });
     };
+    
+    var loadData = function(url, body) {
+        var $loading = $('.loading');
+        body.html('');
+        $loading.show();
+        $.ajax({
+            url: url,
+            method: 'POST',
+            dataType: "html",
+            data: {
+                id: locationId
+            }
+        }).done(function (response) {
+            $loading.hide();
+            body.html(response);
+        }).fail(function (response) {
+            $loading.hide();
+            //body.html('Error! Contact Urban Genie');
+        }); 
+    };    
+    
     return {
         //main function to initiate template pages
         init: function (lat, long, name) {

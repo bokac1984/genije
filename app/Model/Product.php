@@ -28,7 +28,6 @@ class Product extends AppModel {
         'Deletable' => array(
             'baseImageLocation' => '/photos/products/'
         ),
-        'Online'
     );
     
     /**
@@ -64,7 +63,7 @@ class Product extends AppModel {
     );
 
     public function saveImage($id, $filename) {
-        if ('' !== $filename) {
+        if ($filename !== '') {
             $data = array(
                 'fk_id_products' => $id,
                 'img_name' => $filename
@@ -148,6 +147,19 @@ class Product extends AppModel {
         }
         $data['Product']['id'] = $productId;
         return $this->Location->saveAll($data); 
+    }  
+    
+    public function getAllLocationProducts($locationId = null) {
+        if ($locationId) {
+            return $this->find('all', array(
+                'conditions' => array(
+                    'Product.fk_id_map_objects' => $locationId
+                ),
+                'limit' => 20
+            ));
+        }
+        
+        return array();
     }    
 
 }

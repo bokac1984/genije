@@ -7,7 +7,7 @@ App::uses('AppModel', 'Model');
 class LocationProduct extends AppModel {
     public $useTable = 'map_objects_products'; 
     
-    public $belongsTo = array('Product');
+    public $belongsTo = array('Product', 'Location');
     
     public function saveAllLocationsForProduct($productId, $locationsIds) {
         $dataToSave =  array();

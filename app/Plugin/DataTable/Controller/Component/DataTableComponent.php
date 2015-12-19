@@ -62,6 +62,7 @@ class DataTableComponent extends Component {
         
         $iTotalDisplayRecords = $Model->find('count', $config->getCountQuery());
         
+        $Model->Behaviors->load('Online');
         $Model->Behaviors->enable('Online');
         $results = $Model->find('all', $config->getQuery());
         
@@ -132,8 +133,10 @@ class DataTableComponent extends Component {
     public function setLocationColumns($model, $result) {
         $location = $this->base . '/locations/edit/' . $result[$model]['id'];
         $gal = $this->base . '/locations/gallery/' . $result[$model]['id'];
+        $view = $this->base . '/locations/view/' . $result[$model]['id'];
         $row = '<div class="visible-md visible-lg hidden-sm hidden-xs">
                     <a href="' . $location . '" class="btn btn-xs btn-teal tooltips btn-edit" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                        <a href="' . $view . '" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Pictures"><i class="fa fa-eye"></i></a>
                     <a href="' . $gal . '" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Pictures"><i class="fa fa-picture-o"></i></a>
                     <a href="#" class="btn btn-xs btn-bricky tooltips btn-delete" data-placement="top" data-original-title="Remove" data-pk="' . $result[$model]['id'] . '" name=""><i class="fa fa-times fa fa-white"></i></a>
             </div>';
@@ -232,7 +235,7 @@ class DataTableComponent extends Component {
                 
                 $searchKey = "sSearch_$i";
                 $columnSearchTerm = Hash::get($params, $searchKey);
-                $this->log(!empty($columnSearchTerm));
+                
                 // ako postoji filter i search
                 if (!empty($searchTerm) 
                         && !$searchById

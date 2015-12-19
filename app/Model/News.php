@@ -19,7 +19,7 @@ class News extends AppModel {
         'Deletable' => array(
             'baseImageLocation' => '/photos/'
         ),
-        'Online'
+        //'Online'
     );
     
     public $belongsTo = array(

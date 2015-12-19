@@ -8,7 +8,7 @@ App::uses('File', 'Utility');
  * @property LocationDescription $LocationDescription
  * @property MapObjectSubtypeRelation $MapObjectSubtypeRelation
  * @property City $City
- * @property Comment $Comment
+ * @property LocationComment $LocationComment
  * @property LocationImage $LocationImage
  */
 class Location extends AppModel {
@@ -21,7 +21,6 @@ class Location extends AppModel {
         'Deletable' => array(
             'baseImageLocation' => '/photos/'
         ),
-        'Online'
     );
      
     public $hasMany = array(
@@ -37,8 +36,8 @@ class Location extends AppModel {
             'className' => 'MapObjectSubtypeRelation',
             'foreignKey' => 'fk_id_map_objects',
         ),
-        'Comment' => array(
-            'className' => 'Comment',
+        'LocationComment' => array(
+            'className' => 'LocationComment',
             'foreignKey' => 'fk_id_map_objects',
         ),
         'LocationImage' => array(
@@ -282,4 +281,21 @@ class Location extends AppModel {
         
         return $temp;
     }
+    
+    public function locationsPerCity() {
+        return $this->find('all', array(
+            'fields' => array(
+                'COUNT(Location.fk_id_cities) as cityCount'
+            ),
+            'group' => 'Location.fk_id_cities',
+            'contain' => array(
+                'City' => array(
+                    'fields' => array(
+                        'City.id',
+                        'City.name'
+                    )
+                )
+            )
+        ));
+    }    
 }

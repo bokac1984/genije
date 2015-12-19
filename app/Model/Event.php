@@ -22,7 +22,6 @@ class Event extends AppModel {
         'Deletable' => array(
             'baseImageLocation' => '/photos/events/'
         ),
-        'Online'
     );
 
     public $validate = array(
@@ -127,6 +126,15 @@ class Event extends AppModel {
         }
         
         return $eventsOut;        
+    }
+    
+    public function getAllLocationEventsAjax($locationId = null) {
+        $this->recursive = -1;   
+        return $this->find('all', array(
+            'conditions' => array(
+                'Event.fk_id_map_objects' => $locationId
+            )
+        ));
     }
 
     /**

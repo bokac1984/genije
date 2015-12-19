@@ -25,31 +25,32 @@ class UploadComponent extends Component {
 
     public function uploadFile($uploadedImage, $location = '/photos/') {
         $fileName = '';
-        if (!empty($uploadedImage) && $uploadedImage['size'] > 0) {
-            $fileName = 'Ne postoji slika';
+        if (empty($uploadedImage) && $uploadedImage['size'] === 0) {
+            return $fileName;
         }
         
         $fileData = pathinfo($uploadedImage['name']);
         
         if (!$this->checkExtension($fileData['extension'])) {
-            $fileName = 'Ekstenzija nije dozvoljena.';
+            return $fileName;
         }
         
         $fileName = $this->changeNameOfFile($fileData['filename']) . '.' . strtolower($fileData['extension']);
-        $uploadLocation = WWW_ROOT . $location;
-        
-        if (!move_uploaded_file($uploadedImage['tmp_name'], $uploadLocation . $fileName)) {
-            $fileName = 'Nije moguce uploadovati';
+        $uploadLocation = WWW_ROOT . $location . $fileName;
+
+        if (move_uploaded_file($uploadedImage['tmp_name'], $uploadLocation )) {
+            return $fileName;
         }
 
-        return $fileName;
+        return '';
     }
     
     public function changeNameOfFile($originalName = '') {
         $temporalName = '';
         if ($originalName !== '') {
             $temporalNameHashed = hash('sha512', $originalName);
-            $temporalName = substr($temporalNameHashed, 0, 10);
+            $temporalName = substr($temporalNameHashed, 0, 10) . '-';
+            $temporalName = uniqid ($temporalName, false);
         }
         
         return $temporalName;

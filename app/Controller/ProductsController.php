@@ -246,8 +246,8 @@ class ProductsController extends AppController {
         $this->autoRender = false;
         if ($this->request->is('ajax')) {
             $id = $this->request->data['idLocation'];
-            $filename = $this->uploadFile($this->request->params['form']['file'], '/photos/products/');
-
+            $filename = $this->uploadFile($this->request->params['form']['file'], 'photos/products/');
+            
             if ($this->Product->saveImage($id, $filename)) {
                 echo $filename;
                 exit();
@@ -256,7 +256,7 @@ class ProductsController extends AppController {
             }
         }
         echo '404';
-    }
+    }    
     
     /**
      * Brise sliku iz galerije

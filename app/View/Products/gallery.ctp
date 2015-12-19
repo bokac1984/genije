@@ -46,6 +46,7 @@ echo $this->Html->css('/lightbox/css/lightbox', array('block' => 'css'));
                     <img src="/photos/products/<?php echo $currentImage['ProductImage']['img_name']; ?>"
                          alt="" 
                          class="img-responsive <?php if ($mainImage == $currentImage['ProductImage']['img_name']) echo 'selected'; ?>"
+                         style="max-height: 150px;"
                          >
                 </a>
                 <div class="chkbox"></div>

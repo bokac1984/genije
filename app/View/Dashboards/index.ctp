@@ -9,13 +9,12 @@ $this->assign('page-title', 'Komandna tabla <small>pregled & statistike</small>'
 
 $this->assign('breadcrumb-icon', $icon);
 
-echo $this->Html->script('/assets/plugins/flot/jquery.flot', array('block' => 'scriptBottom'));
-echo $this->Html->script('/assets/plugins/flot/jquery.flot.pie', array('block' => 'scriptBottom'));
-echo $this->Html->script('/assets/plugins/flot/jquery.flot.resize.min', array('block' => 'scriptBottom'));
-echo $this->Html->script('/assets/plugins/jquery.sparkline/jquery.sparkline', array('block' => 'scriptBottom'));
-echo $this->Html->script('/assets/plugins/jquery-easy-pie-chart/jquery.easy-pie-chart', array('block' => 'scriptBottom'));
-echo $this->Html->script('/assets/plugins/jquery-ui-touch-punch/jquery.ui.touch-punch.min', array('block' => 'scriptBottom'));
-echo $this->Html->script('/assets/plugins/jquery-ui-touch-punch/jquery.ui.touch-punch.min', array('block' => 'scriptBottom'));
+echo $this->Html->script('/js/libs/flot/jquery.flot.min', array('block' => 'scriptBottom'));
+echo $this->Html->script('/js/libs/flot/jquery.flot.pie.min', array('block' => 'scriptBottom'));
+echo $this->Html->script('/js/libs/flot/jquery.flot.resize.min', array('block' => 'scriptBottom'));
+echo $this->Html->script('/js/libs/jquery.sparkline/jquery.sparkline', array('block' => 'scriptBottom'));
+echo $this->Html->script('/js/libs/jquery-easy-pie-chart/jquery.easy-pie-chart', array('block' => 'scriptBottom'));
+echo $this->Html->script('/js/libs/jquery-ui-touch-punch/jquery.ui.touch-punch.min', array('block' => 'scriptBottom'));
 echo $this->Html->script('/js/dashboard', array('block' => 'scriptBottom'));
 echo $this->Html->scriptBlock("Index.init();", array('block'=>'scriptBottom'));
 ?>
@@ -27,7 +26,7 @@ echo $this->Html->scriptBlock("Index.init();", array('block'=>'scriptBottom'));
                 <h2>Upravljaj korisnicima</h2>
             </div>
             <div class="content">
-                Pregledajte sve korisnike Genie android aplikacije, pogledajte njihove lokacije, saznajte sve relevantne podatke.
+                Pregledajte korisnike Genie android aplikacije, njihove lokacije, saznajte sve relevantne podatke.
             </div>
             <?php echo $this->Html->link('Pogledajte Više <i class="clip-arrow-right-2"></i>', array(
                 'controller' => 'application_users',
@@ -108,7 +107,7 @@ echo $this->Html->scriptBlock("Index.init();", array('block'=>'scriptBottom'));
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <i class="clip-pie"></i>
-                        Acquisition
+                        Procent lokacija po gradovima
                         <div class="panel-tools">
                             <a class="btn btn-xs btn-link panel-collapse collapses" href="#">
                             </a>

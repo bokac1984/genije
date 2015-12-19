@@ -33,4 +33,30 @@ class LocationComment extends AppModel {
             'order' => ''
         )
     );
+    
+    /**
+     * Nadji sve komentare za lokaciju
+     * 
+     * @param int $locationId
+     * @return array results if not empty location id
+     */
+    public function getAllLocationComments($locationId = null) {
+        if ($locationId) {
+            return $this->find('all', array(
+                'conditions' => array(
+                    'LocationComment.fk_id_map_objects' => $locationId
+                ),
+                'limit' => 20,
+                'contain' => array(
+                    'ApplicationUser' => array(
+                        'fields' => array(
+                            'ApplicationUser.id', 'ApplicationUser.display_name'
+                        )
+                    )
+                )
+            ));
+        }
+        
+        return array();
+    }
 }
