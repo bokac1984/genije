@@ -22,6 +22,8 @@ echo $this->Html->scriptBlock("Maps.init($lat, $long, '$name');var locationId = 
 echo $this->Html->css('dots', array('block' => 'css'));
 echo $this->Html->css('/js/libs/stars/star-rating', array('block' => 'css'));
 
+$img = !empty($location['Location']['img_url']) ? '/photos/' . $location['Location']['img_url'] : '/img/no-photo.png';
+
 ?>
 <!--<style type="text/css">
     .tab-padding.tab-blue > li > a, .tab-padding.tab-blue > li > a:focus {
@@ -40,7 +42,7 @@ echo $this->Html->css('/js/libs/stars/star-rating', array('block' => 'css'));
                 <div class="fileupload fileupload-new" data-provides="fileupload">
                     <div class="user-image">
                         <div class="fileupload-new thumbnail">
-                            <img src="/photos/<?php echo $location['Location']['img_url'] ?>" />
+                            <img src="<?php echo $img ?>" />
                         </div>
                     </div>
                 </div>
@@ -91,10 +93,12 @@ echo $this->Html->css('/js/libs/stars/star-rating', array('block' => 'css'));
                         <td><?php echo $location['Location']['address'] . ", " . $location['City']['name']; ?></td>
                     </tr>
                     <?php foreach ($location['Contact'] as $contact): ?>
-                    <tr>
-                        <td><?php echo $contact['ContactType']['name']; ?></td>
-                        <td><?php echo $contact['value']; ?></td>
-                    </tr>
+                        <?php if (!empty($contact['value'])): ?>
+                        <tr>
+                            <td><?php echo $contact['ContactType']['name']; ?></td>
+                            <td><?php echo $contact['value']; ?></td>
+                        </tr>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </tbody>
             </table>
