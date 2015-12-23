@@ -207,15 +207,43 @@ var Main = function () {
     };
     //function to reduce the size of the Main Menu
     var runNavigationToggler = function () {
-        $('.navigation-toggler').on('click', function () {
-            console.log('radi');
-            if (!$('body').hasClass('navigation-small')) {
+        var navType = parseInt($.cookie('navigation-type'));
+        /**
+         * 1 - large navigation type
+         * 2 - small navigation type
+         */
+        console.log(navType);
+        /**
+         * Ako nije NaN, vidi koji je tip u cookie
+         * Ako jeste onda ne radi nista, jer i onako nema klase nav-small
+         */
+        if (!isNaN(navType)) {
+            if (navType === 1) {
+                console.log('1 - removeClass');
+                $('body').removeClass('navigation-small');
+            }  else {
+                console.log('2 - addClass');
                 $('body').addClass('navigation-small');
+            }
+        }
+        /**
+         * Inace je 2 pa nemoj nista raditi onda. Samo u slucaju kad je 1
+         * ukloni klasu navigation small
+         */
+
+        $('.navigation-toggler').on('click', function () {
+            if (!$('body').hasClass('navigation-small')) {
+                console.log('nema klasu dodaj klasu i stavi cookie na 2');
+                $('body').addClass('navigation-small');
+                $.cookie('navigation-type', 2, { path: '/' });
             } else {
+                console.log('usao u else ima klasu, ali ovo na klick');
+                $.cookie('navigation-type', 1, { path: '/' });
                 $('body').removeClass('navigation-small');
             }
             ;
         });
+
     };
     //function to activate the panel tools
     var runModuleTools = function () {
@@ -750,6 +778,11 @@ var Main = function () {
         $('.color-text').val('#555555').next('.dropdown').find('i').css('background-color', '#555555');
         $('.color-badge').val('#007AFF').next('.dropdown').find('i').css('background-color', '#007AFF');
     };
+    
+    var bootstrapajSelect = function () {
+        console.log($('.dataTables_length select'));
+        $('.dataTables_length select').addClass('form-control');
+    };    
     return {
         //main function to initiate template pages
         init: function () {
@@ -759,7 +792,7 @@ var Main = function () {
             runSearchInput();
             runElementsPosition();
             runToDoAction();
-            //runNavigationToggler();
+            runNavigationToggler();
             runNavigationMenu();
             runGoTop();
             runModuleTools();
