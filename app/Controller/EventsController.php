@@ -3,6 +3,16 @@ App::uses('AppController', 'Controller');
 
 class EventsController extends AppController {
     public $uses = array('Event');
+    
+    /**
+     * Lokacija za slike na fajl sistemu
+     * 
+     * @access public
+     *
+     * @var string Putanja u kojoj se cuvaju slike za evenete 
+     */
+    public $photoLocation = '/photos/events/';
+    
     public $components = array(
         'DataTable.DataTable' => array(
             'Event' => array(
@@ -113,11 +123,11 @@ class EventsController extends AppController {
      */
     public function add() {
         if ($this->request->is('post')) {
-
-            if ( !isset($this->request->data['Event']['use_loc_image'])
-                && $this->request->data['Event']['use_loc_image'] !== 'on') {
-                $this->request->data['Event']['img_url'] =
-                    $this->uploadFile($this->request->data['Event']['img_url'], '/photos/events/');
+            if ( !isset($this->request->data['Event']['use_loc_image']) && $this->data['Event']['img_url']['error'] !== 4 ) {
+                $this->request->data['Event']['img_url'] = 'events/' . $this->uploadFile($this->request->data['Event']['img_url'], $this->photoLocation);                
+            } else {
+                echo $image = $this->Event->setLocationsMainImageToEvent($this->request->data['Event']['fk_id_map_objects']);
+                $this->request->data['Event']['img_url'] = $image;
             }
 
             $this->Event->create();
