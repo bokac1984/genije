@@ -297,5 +297,18 @@ class Location extends AppModel {
                 )
             )
         ));
-    }    
+    } 
+    
+    /**
+     * Promjeni status ali vidi ima li slike glavne da se ovo uradi
+     * 
+     * @param int $status
+     * @return int status code for response
+     */
+    public function updateStatus($status) {
+        if ('' === $this->getMainImage($this->id)) {
+            return 400;
+        }
+        return $this->saveField('online_status', $status) ? 200 : 400;
+    }
 }
