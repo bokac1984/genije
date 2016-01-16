@@ -11,7 +11,7 @@ $this->assign('breadcrumb-icon', $icon);
 
 echo $this->Html->css('/lightbox/css/lightbox', array('block' => 'css'));
 echo $this->Html->script('/lightbox/js/lightbox', array('block' => 'scriptBottom'));
-
+//debug($event);
 ?>
 <style type="text/css">
 	.table {
@@ -60,9 +60,7 @@ echo $this->Html->script('/lightbox/js/lightbox', array('block' => 'scriptBottom
 					<td>
 						<div class="thumbnail" style="max-width: 200px; margin-bottom:0px;">
 							<?php
-							$image = strpos($event['Event']['img_url'], '/photos') !== false ?
-								$event['Event']['img_url'] :
-								'/photos/events/' . $event['Event']['img_url'];
+							$image = '/photos/' . $event['Event']['img_url'];
 							if ('' !== $image) { ?>
 								<a data-lightbox="galerija" class="group1"
 								   href="<?php echo $image; ?>"
