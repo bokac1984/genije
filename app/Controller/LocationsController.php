@@ -302,13 +302,11 @@ class LocationsController extends AppController {
     public function editStatus() {
         $this->autoRender = false;
         if ($this->request->is('ajax')){
-
             $this->Location->id = $this->request->data['pk'];
-            if ($this->Location->saveField('online_status', $this->request->data['value'])) {
-                echo 'da';
-            } else {
-                echo 'ne';
-            }
+            $statusCode = $this->Location->updateStatus($this->request->data['value']);
+            
+            $this->response->statusCode($statusCode);
+            return $statusCode == 400 ? "Postavite sliku za lokaciju" : "";
         }
     }
     /**
