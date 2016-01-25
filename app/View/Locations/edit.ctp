@@ -44,7 +44,7 @@ echo $this->Html->script('/assets/plugins/gmaps/gmaps.js', array('block' => 'scr
 echo $this->Html->script('/assets/js/maps.js', array('block' => 'scriptBottom'));
 
 echo $this->Html->scriptBlock("$.fn.editable.defaults.mode = 'popup';$.fn.editable.defaults.send = \"always\";Maps.init();", array('block'=>'scriptBottom'));
-echo $this->Html->script('/js/locations-edit', array('block' => 'scriptBottom'));
+echo $this->Html->script('/js/lokacije/locations-edit', array('block' => 'scriptBottom'));
 
 //debug($location);
 $contacts = $location['Contact'];

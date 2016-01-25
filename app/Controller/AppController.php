@@ -102,11 +102,11 @@ class AppController extends Controller {
                     'AuthToken.selector' => $selector
                 )
             ));
-            
+            /*
             if (hash_equals($token['AuthToken']['token'], hash('sha256', base64_decode($authenticator)))) {
                 $this->Auth->login($token['AuthToken']['fk_id_admin_users']);
                 $this->redirect('/dashboards/');
-            }
+            }*/
         }
     }
     

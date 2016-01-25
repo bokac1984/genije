@@ -9,9 +9,14 @@ $this->assign('breadcrumb-icon', $icon);
 $this->assign('title', 'Proizvodi');
 $this->assign('page-title', 'Proizvodi <small>pregled podataka</small>');
 
-echo $this->Html->script('/lightbox/js/lightbox', array('block' => 'scriptBottom'));
+echo $this->Html->script('/js/products/view', array('block' => 'scriptBottom'));
+//
+//echo $this->Html->css('/lightbox/css/lightbox', array('block' => 'css'));
 
-echo $this->Html->css('/lightbox/css/lightbox', array('block' => 'css'));
+echo $this->Html->script('/js/libs/flexslider/jquery.flexslider', array('block' => 'scriptBottom'));
+
+echo $this->Html->css('/js/libs/flexslider/flexslider', array('block' => 'css'));
+
 $mainImage = $product['Product']['img_name'];
 ?>
 <div class="row">
@@ -108,3 +113,26 @@ $mainImage = $product['Product']['img_name'];
 <?php endif; ?>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-6">
+<!-- Place somewhere in the <body> of your page -->
+<div class="flexslider">
+  <ul class="slides">
+    <li>
+      <img src="/photos/products/540232423d-56706b957d5a5.png" />
+    </li>
+    <li>
+      <img src="/photos/products/540232423d-56706b957d5a5.png" />
+    </li>
+    <li>
+      <img src="/photos/products/540232423d-56706b957d5a5.png" />
+    </li>
+    <li>
+      <img src="/photos/products/540232423d-56706b957d5a5.png" />
+    </li>
+  </ul>
+</div>       
+    </div>
+</div>
+
+

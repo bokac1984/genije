@@ -100,6 +100,7 @@ class ProductsController extends AppController {
             )
         );
         $this->set('product', $this->Product->find('first', $options));
+        $this->render('view2');
     }
 
     /**

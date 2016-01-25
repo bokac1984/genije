@@ -1,0 +1,109 @@
+/* 
+    Created on : Jan 24, 2016, 7:44:47 PM
+    Author     : Bokac
+*/
+.grid-container {
+    margin-top: 50px;
+}
+.grid-item {
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2);
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.grid-item:hover {
+    box-shadow: 0 1px 15px 1px rgba(0, 0, 0, 0.2);
+}
+
+.grid-item a {
+    text-decoration: none;
+}
+.grid-content {
+    background-color: #FFFFFF;
+    color: #666666;
+    padding: 15px;
+    position: relative;
+}
+.grid-content:before {
+    content: "\f0d8";
+    display: inline-block;
+    font-family: FontAwesome;
+    position: absolute;
+    text-align: center;
+    top: -2px;
+    width: 100%;
+    left: 0;
+    line-height: 0;
+    color: #ffffff;
+}
+.grid-image {
+    position: relative;
+    max-height: 120px;
+}
+/* ---------------------------------------------------------------------- */
+/*	Image Overlay
+/* ---------------------------------------------------------------------- */
+.image-overlay {
+    background: #FFFFFF;
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 500;
+    left: 0;
+    top: 0;
+    text-align: center;
+}
+.ie8 .image-overlay {
+    filter: alpha(opacity = 0);
+}
+.image-overlay .circle-icon {
+    height: 80px;
+    line-height: 80px;
+    margin: -40px 0 0 0;
+    position: relative;
+    text-align: center;
+    top: 50%;
+    width: 80px;
+    z-index: 500;
+}
+.image-overlay .circle-icon.circle-small {
+    height: 50px;
+    line-height: 50px;
+    margin: -25px 0 0 0;
+    width: 50px;
+    position: relative;
+}
+.isMobile .image-overlay {
+    display: none;
+}
+.isMobile .team-list .image-overlay {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 3px 3px;
+    bottom: 0;
+    font-size: 15px;
+    height: 60px;
+    left: 0;
+    opacity: 1;
+    position: relative;
+    right: 0;
+    text-align: center;
+    top: auto;
+    visibility: visible;
+    z-index: 1;
+    display: inline-block;
+}
+.isMobile .team-list .image-overlay:hover {
+    opacity: 0.7;
+}
+.isMobile .team-list .image-overlay .circle-icon {
+    height: 50px;
+    line-height: 50px;
+    margin: 4px 0 0 0;
+    position: relative;
+    text-align: center;
+    top: auto;
+    width: 50px;
+    z-index: 500;
+}

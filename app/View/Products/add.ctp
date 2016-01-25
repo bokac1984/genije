@@ -8,12 +8,6 @@ $this->assign('breadcrumb-icon', $icon);
 $this->assign('title', 'Proizvodi');
 $this->assign('page-title', 'Proizvodi <small>novi proizvod</small>');
 
-// zbog neke gluposti nije radilo, pa mora prije svega da se ucita gmaps
-echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=true', array('block' => 'scriptBottom'));
-echo $this->Html->script('/assets/plugins/gmaps/gmaps.js', array('block' => 'scriptBottom'));
-echo $this->Html->script('/assets/js/maps.js', array('block' => 'scriptBottom'));
-
-
 echo $this->Html->script('/assets/plugins/jquery-validation/dist/jquery.validate.min.js', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/jquery-inputlimiter/jquery.inputlimiter.1.3.1.min.js', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/summernote/build/summernote.min.js', array('block' => 'scriptBottom'));

@@ -4,7 +4,8 @@ App::uses('AppController', 'Controller');
 class ApplicationUsersController extends AppController {
     public $uses = array('ApplicationUser');
     
-    public $helpers = array('Time', 'Text');
+    public $helpers = array('Time', 'Text', 'Star');
+    
     public function beforeFilter() {
         parent::beforeFilter();
         $this->set('icon', 'users');

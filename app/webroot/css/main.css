@@ -4917,3 +4917,19 @@ td.column-right {
  BOKAC DODAO
 */
 .no-comment { color: #C3C0C0; }
+
+.page-header h1 {font-weight: 500;}
+.table {
+    width: 100% !important;
+}
+.dataTables_filter label, .dataTables_paginate ul {
+    float: right;
+}
+
+.gallery-img-products {
+    margin-bottom: 1em;
+}
+
+.selected-products {
+    display: none;
+}

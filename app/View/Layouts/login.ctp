@@ -48,18 +48,18 @@
         ?>  
         <!-- start: MAIN JAVASCRIPTS -->
         <?php
-        echo $this->Html->script('/assets/plugins/jQuery-lib/2.0.3/jquery.min');
-        echo $this->Html->script('/assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min');
-        echo $this->Html->script('/assets/plugins/bootstrap/js/bootstrap.min');
-        echo $this->Html->script('/assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min');
-        echo $this->Html->script('/assets/plugins/blockUI/jquery.blockUI');
-        echo $this->Html->script('/assets/plugins/iCheck/jquery.icheck.min');
-        echo $this->Html->script('/assets/plugins/perfect-scrollbar/src/jquery.mousewheel');
-        echo $this->Html->script('/assets/plugins/perfect-scrollbar/src/perfect-scrollbar');
-        echo $this->Html->script('/assets/plugins/less/less-1.5.0.min');
-        echo $this->Html->script('/assets/plugins/jquery-cookie/jquery.cookie');
-        echo $this->Html->script('/assets/plugins/bootstrap-colorpalette/js/bootstrap-colorpalette');
-        echo $this->Html->script('/assets/js/main');
+        echo $this->Html->script('/js/jQuery-lib/2.0.3/jquery.min');        
+        echo $this->Html->script('/js/libs/jquery-ui/jquery-ui-1.10.2.custom.min');
+        echo $this->Html->script('bootstrap.min');
+        echo $this->Html->script('bootstrap-hover-dropdown.min');
+        echo $this->Html->script('jquery.blockUI');
+        echo $this->Html->script('jquery.icheck.min');
+        echo $this->Html->script('jquery.mousewheel');
+        echo $this->Html->script('perfect-scrollbar');
+        echo $this->Html->script('less-1.5.0.min');
+        echo $this->Html->script('jquery.cookie');
+        echo $this->Html->script('bootstrap-colorpalette');
+        echo $this->Html->script('main');
         echo '<!-- start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->';
         echo $this->fetch('scriptBottom');
         echo '<!-- end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->';

@@ -27,8 +27,6 @@ echo $this->Html->script('/assets/plugins/ladda-bootstrap/dist/ladda.min.js', ar
 echo $this->Html->scriptBlock("$.fn.editable.defaults.pk = {$event['id']};", array('block'=>'scriptBottom'));
 echo $this->Html->script('/js/event-edit', array('block' => 'scriptBottom'));
 
-
-
 echo $this->Html->css('/assets/plugins/select2/select2', array('block' => 'css'));
 echo $this->Html->css('/assets/plugins/bootstrap-datetimepicker/css/datetimepicker', array('block' => 'css'));
 echo $this->Html->css('/assets/plugins/x-editable/css/bootstrap-editable', array('block' => 'css'));
@@ -37,6 +35,9 @@ echo $this->Html->css('/assets/plugins/jquery-address/address', array('block' =>
 echo $this->Html->css('/assets/plugins/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2', array('block' => 'css'));
 echo $this->Html->css('/assets/plugins/wysihtml5/bootstrap-wysihtml5-0.0.2/wysiwyg-color', array('block' => 'css'));
 
+// file upload
+echo $this->Html->script('/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min', array('block' => 'scriptBottom'));
+echo $this->Html->css('/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min', array('block' => 'css'));
 ?>
 <div class="row">
     <div class="col-md-6"> 
@@ -80,9 +81,11 @@ echo $this->Html->css('/assets/plugins/wysihtml5/bootstrap-wysihtml5-0.0.2/wysiw
             </tbody>
         </table>
     </div>
-    <div class="col-md-6">                                  
-
-
-
+    <div class="col-md-6">  
+        <div class="row">
+            <div class="col-md-2 col-sm-2">
+                <img src="<?php echo $event['img_url']; ?>"/>
+            </div>
+        </div>
     </div>
 </div>

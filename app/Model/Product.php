@@ -45,7 +45,12 @@ class Product extends AppModel {
             'className' => 'ProductImage',
             'foreignKey' => 'fk_id_products',
             'dependent' => false,
-        )
+        ),
+        'NewsProduct' => array(
+            'className' => 'NewsProduct',
+            'foreignKey' => 'fk_product_id',
+            'dependent' => false,
+        )        
     );
 
     /**
@@ -59,7 +64,13 @@ class Product extends AppModel {
             'joinTable' => 'map_objects_products',
             'foreignKey' => 'fk_id_products',
             'associationForeignKey' => 'fk_id_map_objects'
-        )
+        ),
+        'News' => array(
+            'className' => 'News',
+            'joinTable' => 'news_products',
+            'foreignKey' => 'fk_product_id',
+            'associationForeignKey' => 'fk_news_id'
+        )        
     );
 
     public function saveImage($id, $filename) {

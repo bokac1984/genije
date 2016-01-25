@@ -83,9 +83,13 @@ var FormValidator = function () {
 
         $.validator.addMethod("getEditorValue", function () {
             var $text = $("#text");
+            var $noteEditable = $('.note-editable');
             $text.val($('.summernote').code());
+            
             if ($text.val() !== "" && $text.val() !== "<br>") {
                 $text.val('');
+                return true;
+            } else if ($noteEditable.html().length > 0){
                 return true;
             } else {
                 return false;
@@ -149,28 +153,14 @@ var FormValidator = function () {
                 successHandler.show();
                 errorHandler.hide();
                 // submit form
-                if ($('.summernote').code() !== "<br>"){
+                if ($('.summernote').code() !== "<br>"){  
                     $("#text").val($('.summernote').code());
+                    if ($("#text").val().length <= 0 && $('.note-editable').html().length > 0) {
+                        $("#text").val($('.note-editable').html());
+                    }
                 }
 
                 $('body').modalmanager('loading');
-
-                console.log($('#ProductAddForm').serialize());
-
-                $.ajax({
-                    url: saveProducts,
-                    method: 'POST',
-                    data: $('#ProductAddForm').serialize()
-                }).done(function (response) {
-                    if (parseInt(response) === 200) {
-                        //window.location.href = afterSubmit;
-                    } else {
-                        alert('Greska se desila');
-                    }
-                }).fail(function () {
-                    alert('fail');
-                    // Whoops; show an error.
-                });
 
                 form.submit();
             }

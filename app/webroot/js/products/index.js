@@ -18,6 +18,7 @@ $(document).ready(function () {
             "fnDrawCallback": function () {
                 initDialogs();
                 initOnlineStatus();
+                $('.dataTables_length select').addClass('form-control');
             },
             "fnInitComplete": function (oSettings, json) {
                 var cols = oSettings.aoPreSearchCols;

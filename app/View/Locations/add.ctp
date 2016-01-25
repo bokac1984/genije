@@ -18,15 +18,14 @@ echo $this->Html->script('/assets/plugins/jquery-validation/dist/jquery.validate
 echo $this->Html->script('/assets/plugins/jquery-inputlimiter/jquery.inputlimiter.1.3.1.min.js', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/summernote/build/summernote.min.js', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/select2/select2.min.js', array('block' => 'scriptBottom'));
-echo $this->Html->script('/assets/plugins/gmaps/gmaps.js', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/jQuery-Knob/js/jquery.knob.js', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/bootstrap-modal/js/bootstrap-modal.js', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/bootstrap-modal/js/bootstrap-modalmanager.js', array('block' => 'scriptBottom'));
 
 
 
-echo $this->Html->script('/js/location-new', array('block' => 'scriptBottom'));
-echo $this->Html->script('/js/add-location-map', array('block' => 'scriptBottom'));
+echo $this->Html->script('/js/lokacije/location-new', array('block' => 'scriptBottom'));
+echo $this->Html->script('/js/lokacije/add-location-map', array('block' => 'scriptBottom'));
 echo $this->Html->scriptBlock("FormValidator.init();", array('block'=>'scriptBottom'));
 
 echo $this->Html->css('/assets/plugins/summernote/build/summernote.css', array('block' => 'css'));

@@ -7,11 +7,12 @@ $(document).ready(function () {
 
         var options = {
             oLanguage: {
-                "sUrl": "//cdn.datatables.net/plug-ins/1.10.7/i18n/Serbian.json"
+                "sUrl": "/js/Serbian.json"
             },
             "fnDrawCallback": function () {
                 initDialogs();
                 initOnlineStatus();
+                $('.dataTables_length select').addClass('form-control');
             },
             "fnInitComplete": function (oSettings, json) {
                 var cols = oSettings.aoPreSearchCols;
@@ -25,7 +26,7 @@ $(document).ready(function () {
                         console.log('nema vrijednost')
                     }
                 }
-            },            
+            }           
         };
         jQuery.extend(settings, options);
         table.dataTable(settings);

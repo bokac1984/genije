@@ -5,13 +5,14 @@ $(".switch").bootstrapSwitch();
         table = $(this);
         var settings = dataTableSettings[table.attr('data-config')];
         var options = {
-//            oLanguage: {
-//                "sUrl": "//cdn.datatables.net/plug-ins/1.10.7/i18n/Serbian.json"
-//            },
+            oLanguage: {
+                "sUrl": "/js/Serbian.json"
+            },
             "fnDrawCallback": function () {
                 initDialogs();
                 initOnlineStatus();
                 initShowProductsStatus();
+                $('.dataTables_length select').addClass('form-control');
             },
             "fnInitComplete": function (oSettings, json) {
                 var cols = oSettings.aoPreSearchCols;

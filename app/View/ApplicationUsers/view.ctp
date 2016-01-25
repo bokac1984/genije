@@ -15,12 +15,12 @@ $lat = $user['ApplicationUser']['latitude'];
 $long = $user['ApplicationUser']['longitude'];
 $name = $user['ApplicationUser']['display_name'];
 
-echo $this->Html->script('/js/libs/stars/star-rating', array('block' => 'scriptBottom'));
+//echo $this->Html->script('/js/libs/stars/star-rating', array('block' => 'scriptBottom'));
 echo $this->Html->script('/js/app_users/view', array('block' => 'scriptBottom'));
 echo $this->Html->scriptBlock("Maps.init($lat, $long, '$name');", array('block' => 'scriptBottom'));
 
 echo $this->Html->css('/assets/plugins/bootstrap-social-buttons/social-buttons-3', array('block' => 'css'));
-echo $this->Html->css('/js/libs/stars/star-rating', array('block' => 'css'));
+//echo $this->Html->css('/js/libs/stars/star-rating', array('block' => 'css'));
 ?>
 <div class="row">
     <div class="col-sm-5 col-md-4">
@@ -157,9 +157,10 @@ echo $this->Html->css('/js/libs/stars/star-rating', array('block' => 'css'));
                                     <tbody>
                                         <?php foreach ($user['LocationComment'] as $comment): ?>
                                         <tr>
-                                            <td><?php echo $comment['text']; ?>&nbsp;</td>
+                                            <td><?php echo !empty($comment['text']) ?
+                                                $comment['text'] : '<i class="no-comment">Nema komentara</i>'; ?></td>
                                             <td>
-                                                <input class="stars" value="<?php echo $comment['rating']; ?>" />
+                                                <?php echo $this->Star->star($comment['rating'], array('size' => 'xxxs')); ?>
                                             </td>
                                             <td><?php echo $comment['comment_rating']; ?>&nbsp;</td>
                                             <td><?php echo $this->Time->format($comment['datetime'], '%d.%m.%Y %H:%M %p'); ?></td>

@@ -56,6 +56,13 @@ class OnlineBehavior extends ModelBehavior {
             if (isset($val[$model->alias]['online_status'])) {
                 $results[$key][$model->alias]['online_status'] = $this->modifyOnlineStatus($val[$model->alias]['online_status'],$val[$model->alias]['id'], '/products/editStatus/');
             }
+            
+            if (isset($val[$model->alias]['price'])) {
+                /**
+                 * @todo Povezati sa nekom tabelom vezanom za drzave pa da chita podatak o valuti odatle
+                 */
+                $results[$key][$model->alias]['price'] = $val[$model->alias]['price'] . " KM";
+            }            
         }
     }
     
@@ -113,6 +120,9 @@ class OnlineBehavior extends ModelBehavior {
             } 
             if (isset($val[$model->name]['fk_id_events'])) {
                 $results[$key][$model->name]['fk_id_events'] = $model->Event->getEventName($val[$model->name]['fk_id_events']);
+            } 
+            if (isset($val[$model->alias]['created'])) {
+                $results[$key][$model->alias]['created'] = $model->formatTimeResult($val[$model->alias]['created']);
             }            
         } 
     }

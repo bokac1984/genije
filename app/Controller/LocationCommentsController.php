@@ -17,7 +17,9 @@ class LocationCommentsController extends AppController {
      *
      * @var array
      */
-    public $components = array('Paginator', 'Flash', 'Session');
+    public $components = array('Paginator', 'Flash', 'Session', 'RequestHandler');
+    
+    public $helpers = array('Js', 'Star');
 
     /**
      * index method
@@ -89,6 +91,34 @@ class LocationCommentsController extends AppController {
         $locations = $this->LocationComment->Location->find('list');
         $applicationUsers = $this->LocationComment->ApplicationUser->find('list');
         $this->set(compact('locations', 'applicationUsers'));
+    }
+    
+    public function location($id = null) {
+        $this->LocationComment->Location->id = $id;
+        
+        if (!$this->LocationComment->Location->exists()) {
+            throw new NotFoundException(__('Unijeli ste pogrešnu lokaciju, vratite se nazad i pokušajte ponovo!'));
+        }
+
+        $this->Paginator->settings = array(
+            'limit' => 15,
+            'conditions' => array(
+                'LocationComment.fk_id_map_objects' => $id
+            ),
+            'contain' => array(
+                'ApplicationUser' => array(
+                    'fields' => array(
+                        'ApplicationUser.id',
+                        'ApplicationUser.display_name'
+                    )
+                )
+            ),
+            'order' => array(
+                'LocationComment.datetime DESC'
+            )
+        );
+        
+        $this->set('comments', $this->Paginator->paginate('LocationComment'));
     }
 
     /**

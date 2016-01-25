@@ -44,13 +44,33 @@ class News extends AppModel {
             'foreignKey' => 'fk_id_news',
             'associationForeignKey' => 'fk_id_gallery',
             'unique' => 'keepExisting',
-        )
-    );   
+        ),
+        'Product' => array(
+            'className' => 'Product',
+            'joinTable' => 'news_products',
+            'foreignKey' => 'fk_news_id',
+            'associationForeignKey' => 'fk_product_id',
+            'unique' => 'keepExisting',            
+        ),         
+    );
     
+    public function beforeSave($options = array()) {
+        // it's an insert, so add `created`
+        if(empty($this->data[$this->alias][$this->primaryKey])) {
+            $this->data[$this->alias]['creation_date'] = $this->getDataSource()->expression('NOW()');
+        }
+
+        // modified is set anyway
+        $this->data[$this->alias]['modified_date'] = $this->getDataSource()->expression('NOW()');
+
+        return parent::beforeSave($options);
+    }
+
+
     public function saveNews($data = array()) {
-        $data['News']['show_products'] = $data['News']['show_products'] === 'on' ? true : false;
+        $data['News']['show_products'] = isset($data['News']['show_products']) ? true : false;
         
-        if ($this->save($data)) {
+        if ($this->saveAll($data)) {
             return $this->getLastInsertID();
         }
         return 0;

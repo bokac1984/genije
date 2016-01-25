@@ -15,16 +15,16 @@
         <?php
         echo $this->fetch('meta');
 
-        echo $this->Html->css('/assets/plugins/bootstrap/css/bootstrap.min');
-        echo $this->Html->css('/assets/plugins/font-awesome/css/font-awesome.min');
+        echo $this->Html->css('bootstrap.min');
+        echo $this->Html->css('font-awesome.min');
         echo $this->Html->css('/assets/fonts/style');
         echo $this->Html->css('main');
-        echo $this->Html->css('/assets/css/main-responsive');
+        echo $this->Html->css('main-responsive');
         echo $this->Html->css('/assets/plugins/iCheck/skins/all');
-        echo $this->Html->css('/assets/plugins/bootstrap-colorpalette/css/bootstrap-colorpalette');
-        echo $this->Html->css('/assets/plugins/perfect-scrollbar/src/perfect-scrollbar');
-        echo $this->Html->css('/assets/css/theme_light', array('id' => 'skin_color'));
-        echo $this->Html->css('/assets/css/print', array('media' => 'print'));
+        echo $this->Html->css('bootstrap-colorpalette');
+        echo $this->Html->css('perfect-scrollbar');
+        echo $this->Html->css('theme_light', array('id' => 'skin_color'));
+        echo $this->Html->css('print', array('media' => 'print'));
         echo '<!--[if IE 7]>';
         echo $this->Html->css('/assets/plugins/font-awesome/css/font-awesome-ie7.min');
         echo '<![endif]-->';
@@ -44,13 +44,7 @@
         );
         ?>
         <style>
-            .page-header h1 {font-weight: 500;}
-            .table {
-                width: 100% !important;
-            }
-            .dataTables_filter label, .dataTables_paginate ul {
-                float: right;
-            }
+
         </style>
         <!-- end: MAIN CSS -->
         <!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
@@ -157,17 +151,17 @@
         <!-- end: RIGHT SIDEBAR -->
         <!-- start: MAIN JAVASCRIPTS -->
         <?php
-        echo $this->Html->script('/assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min');
-        echo $this->Html->script('/assets/plugins/bootstrap/js/bootstrap.min');
-        echo $this->Html->script('/assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min');
-        echo $this->Html->script('/assets/plugins/blockUI/jquery.blockUI');
-        echo $this->Html->script('/assets/plugins/iCheck/jquery.icheck.min');
-        echo $this->Html->script('/assets/plugins/perfect-scrollbar/src/jquery.mousewheel');
-        echo $this->Html->script('/assets/plugins/perfect-scrollbar/src/perfect-scrollbar');
-        echo $this->Html->script('/assets/plugins/less/less-1.5.0.min');
-        echo $this->Html->script('/assets/plugins/jquery-cookie/jquery.cookie');
-        echo $this->Html->script('/assets/plugins/bootstrap-colorpalette/js/bootstrap-colorpalette');
-        echo $this->Html->script('/assets/js/main');
+        echo $this->Html->script('/js/libs/jquery-ui/jquery-ui-1.10.2.custom.min');
+        echo $this->Html->script('bootstrap.min');
+        echo $this->Html->script('bootstrap-hover-dropdown.min');
+        echo $this->Html->script('jquery.blockUI');
+        echo $this->Html->script('jquery.icheck.min');
+        echo $this->Html->script('jquery.mousewheel');
+        echo $this->Html->script('perfect-scrollbar');
+        echo $this->Html->script('less-1.5.0.min');
+        echo $this->Html->script('jquery.cookie');
+        echo $this->Html->script('bootstrap-colorpalette');
+        echo $this->Html->script('main');
         echo '<!-- start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->';
         echo $this->fetch('scriptBottom');
         echo '<!-- end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->';

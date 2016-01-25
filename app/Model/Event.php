@@ -68,15 +68,7 @@ class Event extends AppModel {
             $this->data['Event']['end_time'] = date("Y-m-d H:i:s", strtotime($times[1]));
             unset($this->data['Event']['value_time']);
         }
-
-        if (isset($this->data['Event']['img_url']) && 4 === $this->data['Event']['img_url']['error']) {
-            $image = $this->setLocationsMainImageToEvent($this->data['Event']['fk_id_map_objects']);
-
-            //$this->copyLocationImageToEventFolder($image);
-
-            $this->data['Event']['img_url'] = $image;
-        }
-
+        
         // unset some variable to have clean data for saving
         unset($this->data['Event']['city_id']);
     }
@@ -145,7 +137,7 @@ class Event extends AppModel {
      */
     public function setLocationsMainImageToEvent($id = null) {
         if (null !== $id) {
-            return '/photos/' . $this->Location->getMainImage($id);
+            return $this->Location->getMainImage($id);
         }
 
         return '';

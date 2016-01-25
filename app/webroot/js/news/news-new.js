@@ -1,47 +1,42 @@
 var FormValidator = function () {
     var loadAllElements = function () {
-
-        $(document).on('click', '.dodaj_red', function(e){
-            e.preventDefault();
-            var $row = $(this);
-
-            $("table.feature tbody tr:first").clone().find("input").each(function() {
-                $(this).val('').attr('id', function(_, id) { return id + i; });
-            }).end().appendTo("table");
-        });
-
-        $(document).on('click', '.ukloni_red', function(e){
-            e.preventDefault();
-            var $row = $(this).closest('tr');
-
-            if (!$row.is(":last-child")) {
-                $row.remove();
-            }
-        });
-        
         $(".switch").bootstrapSwitch();
         
         $('.switch').on('switch-change', function (event, state) {
-            var idLocation = $("#map_object").val();
+            
             if (!state.value) {
+                $('.proizvodi-opener').hide();
+            } else {
+                $('.proizvodi-opener').show();
+            }
+        }); 
+          
+        $(document).on('click', '#otvori-proizvode', function(e){
+            e.preventDefault();
+            
+            var idLocation = $("#map_object").val();
+            if (idLocation) {
                 loadLocationProducts(idLocation);
             } else {
-                loadLocationProducts(idLocation);
+                $('.no-location').show(function(){
+                    $(this).fadeOut('slow');
+                });
             }
-          });        
+
+        });        
         
         $("#map_object").select2({
             placeholder: "Izaberite lokaciju",
             allowClear: true
         }).on("select2-selecting", function (e) {
-
+            $('#show_products').show();
         });
         
         $("#fk_id_events").select2({
             placeholder: "Izaberite dogadjaj",
             allowClear: true
         }).on("select2-selecting", function (e) {
-
+            //$('#choose-product-modal').attr('pk', $(this).attr("data-pk"));
         });        
 
         $('.limited').inputlimiter({
@@ -89,8 +84,32 @@ var FormValidator = function () {
     };
     
     var loadLocationProducts = function(location) {
-        console.log(location);
+        var $modall = $('#choose-products-modal');
+        //$modall.show();
+        $.ajax({
+          method: "POST",
+          dataType: "html",
+          url: "/news/locationproducts.json",
+          data: { id: location }
+        })
+        .done(function( result ) {
+            
+            $modall.modal().find('.modal-body').html( result);
+            var selected = [];
+            $('.selected-products .hidden-selected-products').each(function(i, obj) {
+                selected.push($(obj).val());
+            });
+            
+            $('#choose-products-modal .modal-body .grid-item').each(function(i, obj){
+                var id = $(obj).attr('data-id');
+                if(jQuery.inArray(id,selected) !== -1){
+                    $(obj).addClass('selected');
+                };
+            });
+        });
     };
+    
+    
 
     // FORM VALIDATION	
     var runValidator = function () {
@@ -110,6 +129,11 @@ var FormValidator = function () {
 
         $.validator.addMethod("getEditorValue", function () {
             $("#text").val($('.summernote').code());
+            $mapObject = $("#map_object");
+            $event = $("#fk_id_events");
+            if ($mapObject.val() || $event.val()) {
+                return true;
+            }
             if ($("#text").val() !== "" && $("#text").val() !== "<br>") {
                 $('#text').val('');
                 return true;
@@ -117,6 +141,16 @@ var FormValidator = function () {
                 return false;
             }
         }, 'Molimo unesite detaljan info o događaju.');
+        
+        $.validator.addMethod("checkIsOptional", function(){
+            $mapObject = $("#map_object");
+            $event = $("#fk_id_events");
+            if ($mapObject.val() || $event.val()) {
+                return true;
+            }
+            return false;
+            
+        }, 'Ovaj podatak morate unijeti');
 
         form.validate({
             errorElement: "span", // contain the error msg in a span tag
@@ -130,25 +164,12 @@ var FormValidator = function () {
             },
             ignore: "",
             rules: {
-                "data[News][title]": {
-                    minlength: 2,
-                    required: true
-                },
-                "data[News][lid]": {
-                    required: true
-                },
-                "data[News][fk_id_cities]": {
-                    required: true
-                },                
+                "data[News][title]": "checkIsOptional",
+                "data[News][lid]": "checkIsOptional",               
                 "data[News][text]": "getEditorValue"
             },
             messages: {
-                "data[News][title]": {
-                    required: "Molimo unesite naslov vijesti"
-                },
-                "data[News][fk_id_cities]": {
-                    required: "Molimo odaberite jedan grad"
-                },
+                "data[News][title]": "Molimo unesite naslov vijesti",
                 "data[News][lid]": "Molimo vas unesite skrećeni opis",
                 "data[News][text]": "Molimo vas unesite tekst vijesti",
             },
@@ -186,6 +207,7 @@ var FormValidator = function () {
                     method: 'POST',
                     data: $('#form_new_event').serialize()
                 }).done(function (response) {
+                    console.log(response);
                     if (parseInt(response) !== 0) {
                         window.location.href = add_images + '/' + parseInt(response);
                     } else {
@@ -201,12 +223,36 @@ var FormValidator = function () {
         });
     };
 
-
+    var selektujProizvode = function() {
+        $(document).on('click', '.chkbox', function(e){
+            e.preventDefault();
+            var $produkt = $(this).parent();
+            if (!$produkt.hasClass('selected')) {
+                $produkt.addClass('selected');
+            } else {
+                $produkt.removeClass('selected');
+            }
+            
+        }); 
+        
+        $(document).on('click', '#sacuvajproizvode', function(e){
+            e.preventDefault();
+            var selektovani = '';
+            $('.wrap-image.selected').each(function(i, obj) {
+                var id = $(this).attr('data-id');
+                selektovani += '<input type="hidden" class="hidden-selected-products" name="data[NewsProduct][NewsProduct][]" value="'+ id +'">';
+            });
+            
+            $('.selected-products').empty().html(selektovani);
+        }); 
+        
+    };
     return {
         //main function to initiate template pages
         init: function () {
             loadAllElements();
             runValidator();
+            selektujProizvode();
         }
     };
 }();

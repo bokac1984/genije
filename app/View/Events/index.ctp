@@ -15,13 +15,14 @@ echo $this->Html->script('/assets/plugins/select2/select2.min', array('block'=>'
 echo $this->Html->script('/assets/plugins/DataTables/media/js/jquery.dataTables.min', array('block'=>'scriptBottom')); 
 echo $this->Html->script('/assets/plugins/DataTables/media/js/DT_bootstrap', array('block'=>'scriptBottom'));
 echo $this->Html->script('/assets/js/table-data', array('block'=>'scriptBottom'));
+echo $this->Html->script('/assets/plugins/x-editable/js/bootstrap-editable.min', array('block' => 'scriptBottom'));
+echo $this->Html->scriptBlock("$.fn.editable.defaults.mode = 'popup';", array('block'=>'scriptBottom'));
+echo $this->Html->script('/js/events/index', array('block' => 'scriptBottom'));
 
 echo $this->DataTable->render('Event', array('class' => 'table table-hover dataTable'));
 
 echo $this->Html->css('/assets/plugins/x-editable/css/bootstrap-editable', array('block' => 'css'));
-echo $this->Html->script('/assets/plugins/x-editable/js/bootstrap-editable.min', array('block' => 'scriptBottom'));
-echo $this->Html->scriptBlock("$.fn.editable.defaults.mode = 'popup';", array('block'=>'scriptBottom'));
-echo $this->Html->script('/js/events/index', array('block' => 'scriptBottom'));
+
 ?>
 
 <!-- DIALOG -->

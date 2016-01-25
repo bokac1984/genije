@@ -776,7 +776,6 @@ var Main = function () {
     return {
         //main function to initiate template pages
         init: function () {
-            bootstrapajSelect();
             runWIndowResize();
             runInit();
             runStyleSelector();

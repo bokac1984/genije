@@ -27,7 +27,7 @@ echo $this->Html->css('/lightbox/css/lightbox', array('block' => 'css'));
         <button type="button" id="btn-add-photos" class="btn btn-primary btn-sm">
             Dodaj nove slike
         </button>
-        <button type="button" onclick="window.location.href = '/locations/edit/<?php echo $id; ?>'" class="btn btn-success btn-sm">
+        <button type="button" onclick="window.location.href = '/products/edit/<?php echo $id; ?>'" class="btn btn-success btn-sm">
             Izmjeni proizvod
         </button>
     </div>

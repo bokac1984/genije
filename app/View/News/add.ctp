@@ -1,19 +1,13 @@
 <?php
 $root = $this->Html->link('Vijesti', array('controller' => 'news', 'action' => 'index'));
 
-$this->assign('page-breadcrumbroot', $root );
-$this->assign('crumb', 'Nova vijest' );
+$this->assign('page-breadcrumbroot', $root);
+$this->assign('crumb', 'Nova vijest');
 
 $this->assign('title', 'Vijesti');
 $this->assign('page-title', 'Vijesti <small>nova vijest</small>');
 
 $this->assign('breadcrumb-icon', $icon);
-
-// zbog neke gluposti nije radilo, pa mora prije svega da se ucita gmaps
-echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=true', array('block' => 'scriptBottom'));
-echo $this->Html->script('/assets/plugins/gmaps/gmaps.js', array('block' => 'scriptBottom'));
-echo $this->Html->script('/assets/js/maps.js', array('block' => 'scriptBottom'));
-
 
 echo $this->Html->script('/assets/plugins/jquery-validation/dist/jquery.validate.min.js', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/jquery-inputlimiter/jquery.inputlimiter.1.3.1.min.js', array('block' => 'scriptBottom'));
@@ -33,21 +27,21 @@ echo $this->Html->script('/js/news/news-new', array('block' => 'scriptBottom'));
 $saveNews = $this->Html->url(array(
     'controller' => 'news',
     'action' => 'saveNews'
-));
+        ));
 
 $addImages = $this->Html->url(array(
     'controller' => 'news',
     'action' => 'images'
-));
-echo $this->Html->scriptBlock("var saveNews = '$saveNews', add_images = '$addImages';", array('block'=>'scriptBottom'));
-echo $this->Html->scriptBlock("FormValidator.init();", array('block'=>'scriptBottom'));
+        ));
+echo $this->Html->scriptBlock("var saveNews = '$saveNews', add_images = '$addImages';", array('block' => 'scriptBottom'));
+echo $this->Html->scriptBlock("FormValidator.init();", array('block' => 'scriptBottom'));
 
 echo $this->Html->css('/assets/plugins/summernote/build/summernote.css', array('block' => 'css'));
 echo $this->Html->css('/assets/plugins/select2/select2.css', array('block' => 'css'));
 echo $this->Html->css('/assets/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css', array('block' => 'css'));
 echo $this->Html->css('/assets/plugins/bootstrap-modal/css/bootstrap-modal.css', array('block' => 'css'));
 echo $this->Html->css('/assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3', array('block' => 'css'));
-
+echo $this->Html->css('grid', array('block' => 'css'));
 echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/bootstrap-switch', array('block' => 'css'));
 ?>
 <style type="text/css">
@@ -59,6 +53,18 @@ echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/boots
     .switch-css {
         margin-top: -10px;
     }    
+    .no-location {
+        color: #a94442;
+        margin-left: 1em;
+        margin-top: 0.75em;
+        float: left;
+        display: none;
+    }
+    .btn-prpizvodi {
+        float: left;
+    }
+
+    .proizvodi-opener { display: none; }
 </style>
 <form action="#" id="form_new_event">
     <div class="row">
@@ -79,7 +85,7 @@ echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/boots
                     <textarea maxlength="240" placeholder="Uvodna rečenica" name="data[News][lid]" class="form-control limited"></textarea>
                 </div>                    
             </div>
-            
+
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -111,14 +117,14 @@ echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/boots
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="control-label">
-                            Dogadjaj
+                            Događaj
                         </label>
                         <select id="fk_id_events" name="data[News][fk_id_events]" class="form-control search-select">
                             <option selected="selected" value=""></option>
                         </select>
                     </div>
                 </div>  
-                <div class="col-md-12">
+                <div class="col-md-12" id="show_products">
                     <div class="form-group">
                         <label class="control-label album-label"> 
                             Prikaži proizvode? <span class="symbol required"></span> 
@@ -128,7 +134,11 @@ echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/boots
                         </div>
 
                     </div>  
-                </div>                
+                </div>   
+                <div class="col-md-12 proizvodi-opener">
+                    <button id="otvori-proizvode" class="btn btn-default btn-prpizvodi">Pregledajte proizvode</button>
+                    <p class="no-location">Morate prvo odabrati lokaciju</p>
+                </div>               
             </div>
         </div>
         <div class="col-md-6">
@@ -153,16 +163,29 @@ echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/boots
             <button class="btn btn-yellow btn-block" type="submit"> Sačuvaj vijest <i class="fa fa-arrow-circle-right"></i> </button>
         </div>    
     </div>
+    <div class="selected-products"></div>
 </form>
 <!-- DIALOG -->
 <div id="ajax-modal" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" style="display: none;">
-	<div class="modal-body alert alert-success" style="margin-bottom:0">
-    	<i class="fa fa-check-circle"></i>
+    <div class="modal-body alert alert-success" style="margin-bottom:0">
+        <i class="fa fa-check-circle"></i>
         <strong>Uspješno ste dodali vijest!</strong> Molimo izaberite vaš sledeći korak.
     </div>
     <div class="modal-footer" style="margin-top:0">       
-       <button type="button" data-dismiss="modal" onClick="window.location.href = '<?php echo $this->Html->url(array('controller' => 'news', 'action' => 'index')) ?>';" class="btn btn-default">Pregled vijesti</button> 
-       <button type="button" data-dismiss="modal" onClick="window.location.href = '<?php echo $this->Html->url(array('controller' => 'news', 'action' => 'images')) ?>';" class="btn btn-primary">Dodajte slike za ovu vijest</button>
-       <button type="button" data-dismiss="modal" onClick="window.location.href = '<?php echo $this->Html->url(array('controller' => 'news', 'action' => 'add')) ?>';" class="btn btn-primary">Kreiraj novu</button>
+        <button type="button" data-dismiss="modal" onClick="window.location.href = '<?php echo $this->Html->url(array('controller' => 'news', 'action' => 'index')) ?>';" class="btn btn-default">Pregled vijesti</button> 
+        <button type="button" data-dismiss="modal" onClick="window.location.href = '<?php echo $this->Html->url(array('controller' => 'news', 'action' => 'images')) ?>';" class="btn btn-primary">Dodajte slike za ovu vijest</button>
+        <button type="button" data-dismiss="modal" onClick="window.location.href = '<?php echo $this->Html->url(array('controller' => 'news', 'action' => 'add')) ?>';" class="btn btn-primary">Kreiraj novu</button>
+    </div>
+</div>
+
+<div id="choose-products-modal" data-width="760" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" style="display: none;">
+    <div class="modal-header" style="margin-bottom:0">
+        Odaberite proizvode
+    </div>
+    <div class="modal-body" style="margin-bottom:0; overflow: auto;">
+    </div>
+    <div class="modal-footer" style="margin-top:0">       
+        <button type="button" data-dismiss="modal" class="btn btn-default"> Odustani </button>
+        <button id="sacuvajproizvode" type="button" data-dismiss="modal" class="btn btn-primary"> Sačuvaj </button>
     </div>
 </div>
