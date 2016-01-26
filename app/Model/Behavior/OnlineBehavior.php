@@ -118,13 +118,22 @@ class OnlineBehavior extends ModelBehavior {
             if (isset($val[$model->name]['fk_id_map_objects'])) {
                 $results[$key][$model->name]['fk_id_map_objects'] = $model->Location->getLocationName($val[$model->name]['fk_id_map_objects']);
             } 
+            
             if (isset($val[$model->name]['fk_id_events'])) {
                 $results[$key][$model->name]['fk_id_events'] = $model->Event->getEventName($val[$model->name]['fk_id_events']);
             } 
-            if (isset($val[$model->alias]['created'])) {
-                $results[$key][$model->alias]['created'] = $model->formatTimeResult($val[$model->alias]['created']);
+            
+            if (isset($val[$model->alias]['creation_date'])) {
+                //$results[$key][$model->alias]['creation_date'] = $model->formatTimeResult($val[$model->alias]['creation_date']);
+            }
+
+            if ($val[$model->alias]['title'] == null || empty($val[$model->alias]['title'])) {
+                $results[$key][$model->alias]['title'] = '<i class="no-comment">Prazno</i>';
+            }
+            if ($val[$model->alias]['lid'] == null || empty($val[$model->alias]['lid'])) {
+                $results[$key][$model->alias]['lid'] = '<i class="no-comment">Prazno</i>';
             }            
-        } 
+        }
     }
     
     

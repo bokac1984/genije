@@ -72,7 +72,7 @@ class NewsController extends AppController {
         }
     }
 
-    public $helpers = array('DataTable.DataTable');
+    public $helpers = array('DataTable.DataTable', 'MyHtml', 'Time');
 
     public function index() {
         $this->DataTable->setViewVar('News');
@@ -119,8 +119,34 @@ class NewsController extends AppController {
         if (!$this->News->exists()) {
             throw new NotFoundException(__('Ne postoji lokacija'));
         }
-        $this->News->recursive = 1;
-        $news = $this->News->find('first', array('conditions' => array('News.id' => $id)));
+        
+        $news = $this->News->find('first', 
+            array(
+                'conditions' => array(
+                    'News.id' => $id
+                ),
+                'contain' => array(
+                    'NewsComment',
+                    'Product',
+                    'Gallery' => array(
+                        'fields' => array(
+                            'Gallery.id',
+                            'Gallery.img_name'
+                        )
+                    ),
+                    'Event' => array(
+                        'fields' => array(
+                            'Event.id', 'Event.name'
+                        )
+                    ),
+                    'Location' => array(
+                        'fields' => array(
+                            'Location.id', 'Location.name'
+                        )
+                    )                    
+                )
+            )
+        );
         $this->set(compact('news'));
     }
 

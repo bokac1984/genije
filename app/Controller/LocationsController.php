@@ -86,7 +86,7 @@ class LocationsController extends AppController {
         return parent::isAuthorized($user);
     }
     
-    public $helpers =  array('DataTable.DataTable', 'Time');
+    public $helpers =  array('DataTable.DataTable', 'Time', 'MyHtml');
 
     public function index() {
         $this->DataTable->setViewVar('Location');

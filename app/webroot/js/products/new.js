@@ -19,7 +19,7 @@ var FormValidator = function () {
         });
         
         $("#map_object").select2({
-            placeholder: "Izaberite tip lokacije",
+            placeholder: "Izaberite lokaciju",
             allowClear: true,
             theme: "bootstrap"
         });

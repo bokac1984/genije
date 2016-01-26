@@ -18,9 +18,7 @@ var FormValidator = function () {
             if (idLocation) {
                 loadLocationProducts(idLocation);
             } else {
-                $('.no-location').show(function(){
-                    $(this).fadeOut('slow');
-                });
+                $('.no-location').show().delay(3000).fadeOut();
             }
 
         });        
@@ -129,9 +127,10 @@ var FormValidator = function () {
 
         $.validator.addMethod("getEditorValue", function () {
             $("#text").val($('.summernote').code());
-            $mapObject = $("#map_object");
-            $event = $("#fk_id_events");
-            if ($mapObject.val() || $event.val()) {
+            var $mapObject = $("#map_object");
+            var $event = $("#fk_id_events");
+            var $city_id = $('#city_id');
+            if ($mapObject.val() || $event.val() || $city_id.val()) {
                 return true;
             }
             if ($("#text").val() !== "" && $("#text").val() !== "<br>") {
@@ -143,9 +142,10 @@ var FormValidator = function () {
         }, 'Molimo unesite detaljan info o događaju.');
         
         $.validator.addMethod("checkIsOptional", function(){
-            $mapObject = $("#map_object");
-            $event = $("#fk_id_events");
-            if ($mapObject.val() || $event.val()) {
+            var $mapObject = $("#map_object");
+            var $event = $("#fk_id_events");
+            var $city_id = $('#city_id');
+            if ($mapObject.val() || $event.val() || $city_id.val()) {
                 return true;
             }
             return false;
@@ -171,7 +171,7 @@ var FormValidator = function () {
             messages: {
                 "data[News][title]": "Molimo unesite naslov vijesti",
                 "data[News][lid]": "Molimo vas unesite skrećeni opis",
-                "data[News][text]": "Molimo vas unesite tekst vijesti",
+                "data[News][text]": "Molimo vas unesite tekst vijesti"
             },
             invalidHandler: function (event, validator) { //display error alert on form submit
                 successHandler.hide();

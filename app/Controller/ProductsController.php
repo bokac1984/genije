@@ -139,7 +139,7 @@ class ProductsController extends AppController {
      *
      * @return void
      */
-    public function add() {
+    public function add($idLocation = null) {
         if ($this->request->is('post')) {
             $this->Product->create();
             if ($this->Product->saveAll($this->request->data)) {
@@ -150,8 +150,26 @@ class ProductsController extends AppController {
                 $this->Flash->error(__('Nije moguće sačuvati podatke, molimo Vas pokušajte ponovo!'));
             }
         }        
-        $locations = $this->Product->Location->find('list');
-        $this->set(compact('locations'));
+        
+        $cities = $this->Product->Location->City->find('list');
+        
+        $cityForLocation = '';
+        if ($idLocation !== null) {
+            $cityForLocation = $this->Product->Location->find('first', array(
+                'conditions' => array(
+                    'Location.id' => $idLocation
+                ),
+                'fields' => array(
+                    'Location.fk_id_cities'
+                )
+            ));
+            $locationsForCity = $this->Product->Location->getCityLocations($cityForLocation['Location']['fk_id_cities']);
+            $this->set('location', (int)$idLocation);
+            $this->set('cityId', (int)$cityForLocation['Location']['fk_id_cities']);
+            $this->set('locationsForCity', $locationsForCity);
+        }
+        
+        $this->set(compact('cities', 'locationForCity'));
     }
 
     /**

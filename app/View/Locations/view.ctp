@@ -166,8 +166,8 @@ $img = !empty($location['Location']['img_url']) ? '/photos/' . $location['Locati
                                     <?php foreach ($news as $single): ?>
                                     <tr>
                                         <td><?php echo $single['News']['id']; ?></td>
-                                        <td><?php echo $single['News']['title']; ?></td>
-                                        <td><?php echo $this->Time->format($single['News']['created'], '%d.%m.%Y %H:%M %p'); ?></td>
+                                        <td><?php echo $this->MyHtml->displayEmpty($single['News']['title'], 'Nema naslova'); ?></td>
+                                        <td><?php echo $this->Time->format($single['News']['creation_date'], '%d.%m.%Y %H:%M %p'); ?></td>
                                         <td><?php echo $this->Html->link('Detalji', array('controller' => 'news', 'action' => 'view', $single['News']['id'])); ?></td>
                                     </tr>
                                     <?php endforeach; ?>
@@ -182,8 +182,16 @@ $img = !empty($location['Location']['img_url']) ? '/photos/' . $location['Locati
                 <div id="panel_products" class="tab-pane">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3>Pregled proizvoda za ovu lokaciju</h3>
+                            <h3>Pregled proizvoda za ovu lokaciju <?php echo $this->Html->link('Dodajte novi proizvod',
+                                    array(
+                                        'controller' => 'products',
+                                        'action' => 'add',
+                                        $location['Location']['id']
+                                    ), array(
+                                        'class' => 'btn btn-primary'
+                                    )); ?></h3> 
                             <hr>
+                            <p></p>
                         </div>
                     </div>
                     <div class="row loading">

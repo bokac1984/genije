@@ -38,10 +38,8 @@ echo $this->Html->css('/assets/plugins/bootstrap-modal/css/bootstrap-modal.css',
 echo $this->Html->css('/assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3', array('block' => 'css'));
 
 echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/bootstrap-switch', array('block' => 'css'));
-?>
-<?php
 echo $this->Form->create('Product');
-
+//debug($locationsForCity);
 $this->Form->inputDefaults(array(
         'error' => array(
             'attributes' => array(
@@ -75,14 +73,31 @@ $this->Form->inputDefaults(array(
                 ?>
                 <div class="form-group">
                     <label for="control-label">
+                        Grad <span class="symbol"></span> 
+                    </label>
+                    <select id="city_id" name="data[City][id]" class="form-control">
+                        <option value="-1">Odaberite grad</option>
+                    <?php
+                        foreach ($cities as $k => $v) {
+                            $selected = $k === $cityId ? 'selected' : '';
+                            echo "<option value=\"$k\" $selected>" . $v . "</option>";
+                        }
+                        ?>
+                    </select>                    
+                </div>                
+                <div class="form-group">
+                    <label for="control-label">
                         Lokacija <span class="symbol required"></span> 
                     </label>
                     <select multiple="multiple" id="map_object" name="data[Location][Location][]" class="form-control search-select">
-                    <?php
-                        foreach ($locations as $k => $v) {
-                            echo '<option value="' . $k . '">' . $v . '</option>';
+                        <?php
+                        if (!empty($locationsForCity)) {
+                            foreach ($locationsForCity as $loc) {
+                                $selected = (int)$loc['id'] === $location ? 'selected' : '';
+                                echo "<option value=\"{$loc['id']}\" $selected>{$loc['name']}</option>";
+                            }
                         }
-                        ?>
+                         ?>
                     </select>                    
                 </div>
             </div>

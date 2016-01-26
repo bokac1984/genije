@@ -1,6 +1,6 @@
 <?php
 App::uses('AppModel', 'Model');
-App::uses('CakeTime', 'Utility');
+
 /**
  * Contact Model
  * @property Location $Location

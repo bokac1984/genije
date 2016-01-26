@@ -54,14 +54,21 @@ class News extends AppModel {
         ),         
     );
     
+    public $hasMany = array(
+        'NewsComment' => array(
+            'className' => 'NewsComment',
+            'foreignKey' => 'fk_id_news',
+        ),        
+    );    
+    
     public function beforeSave($options = array()) {
-        // it's an insert, so add `created`
-        if(empty($this->data[$this->alias][$this->primaryKey])) {
-            $this->data[$this->alias]['creation_date'] = $this->getDataSource()->expression('NOW()');
+        if (isset($this->data[$this->alias]['title']) && empty($this->data[$this->alias]['title'])) {
+            $this->data[$this->alias]['title'] = null;
         }
-
-        // modified is set anyway
-        $this->data[$this->alias]['modified_date'] = $this->getDataSource()->expression('NOW()');
+        
+        if (isset($this->data[$this->alias]['lid']) && empty($this->data[$this->alias]['lid'])) {
+            $this->data[$this->alias]['lid'] = null;
+        }
 
         return parent::beforeSave($options);
     }

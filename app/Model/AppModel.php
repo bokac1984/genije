@@ -20,7 +20,7 @@
  */
 
 App::uses('Model', 'Model');
-
+App::uses('CakeTime', 'Utility');
 /**
  * Application model for Cake.
  *
@@ -83,5 +83,23 @@ class AppModel extends Model {
         }
         
         return false;
+    }  
+    
+    /**
+     * Hrki se bori protiv ovog frameworka :D
+     * 
+     * @param type $options
+     * @return type
+     */
+    public function beforeSave($options = array()) {
+        // it's an insert, so add `created`
+        if(empty($this->data[$this->alias][$this->primaryKey])) {
+            $this->data[$this->alias]['creation_date'] = $this->getDataSource()->expression('NOW()');
+        }
+
+        // modified is set anyway
+        $this->data[$this->alias]['modified_date'] = $this->getDataSource()->expression('NOW()');
+
+        return parent::beforeSave($options);
     }    
 }
