@@ -41,8 +41,34 @@ var FormEditable = function () {
             $('#html_text').editable('toggle');
         });
 
-        // MAP
-
+        $("#main-image").fileinput({
+            uploadUrl: "/events/changemainimage", // server upload action
+            uploadAsync: true,
+            maxFileCount: 1,
+            language: 'cr',
+            uploadExtraData: function() {
+                return {
+                    event: $("#main-image").attr('data-id')
+                };
+            }
+        });
+        
+        $("#change-event-img").click(function(){
+            var $modal = $('#choose-products-modal');
+            
+            $modal.modal();
+        });
+        $("#main-image").on('fileuploaded', function(event, data, previewId, index) {
+            var form = data.form, files = data.files, extra = data.extra,
+                response = data.response, reader = data.reader;
+            console.log(response);
+            var $modal = $('#choose-products-modal');
+            
+            $('#link-slika').attr('href', response);
+            $('#slika-slika').attr('src', response);
+            //$(this).fileinput('refresh');
+            $modal.modal('hide');
+        });
     };
 
 

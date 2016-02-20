@@ -7,7 +7,7 @@ App::uses('AppModel', 'Model');
 class LocationDescription extends AppModel {
        
     public $useTable = 'map_objects_description'; 
-    public $primaryKey = 'id';
+    public $primaryKey = 'fk_id_map_objects';
     public $displayField = 'html_text';
 
 }

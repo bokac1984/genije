@@ -11,7 +11,7 @@ $i = 1;
         if (file_exists($file)):
             ?>
             <div class="col-md-3 col-sm-6">
-                <div class="grid-item wrap-image" data-id="<?php echo $product['Product']['id']; ?>">
+                <div class="grid-item wrap-image" data-id="<?php echo $product['Product']['id']; ?>" data-name="<?php echo $product['Product']['name']; ?>">
                     <a href="#">
                         <div class="grid-image">
                             <img src="/photos/products/<?php echo $product['Product']['img_name']; ?>" class="img-responsive"/>

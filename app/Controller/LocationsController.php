@@ -251,7 +251,7 @@ class LocationsController extends AppController {
         $this->autoRender = false;
         if ($this->request->is('ajax')){
             $data = array(
-                'id' => $this->request->data['pk'],
+                'fk_id_map_objects' => $this->request->data['pk'],
                 'html_text' => $this->request->data['value']
             );
             if ($this->Location->LocationDescription->save($data)) {

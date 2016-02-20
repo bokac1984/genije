@@ -22,7 +22,7 @@ echo $this->Html->script('/assets/plugins/bootstrap-daterangepicker/daterangepic
 echo $this->Html->script('/assets/plugins/bootstrap-switch/static/js/bootstrap-switch', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min', array('block' => 'scriptBottom'));
 
-echo $this->Html->script('/js/event-new', array('block' => 'scriptBottom'));
+echo $this->Html->script('/js/events/event-new', array('block' => 'scriptBottom'));
 
 $validateEvent = $this->Html->url(array('controller' => 'events', 'action' => 'validateEvent'));
 

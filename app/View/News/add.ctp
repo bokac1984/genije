@@ -14,6 +14,9 @@ echo $this->Html->script('/assets/plugins/jquery-inputlimiter/jquery.inputlimite
 echo $this->Html->script('/assets/plugins/summernote/build/summernote.min.js', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/select2/select2.min.js', array('block' => 'scriptBottom'));
 
+echo $this->Html->script('/assets/plugins/nestable/jquery.nestable', array('block' => 'scriptBottom'));
+echo $this->Html->script('/assets/js/ui-nestable', array('block' => 'scriptBottom'));
+
 echo $this->Html->script('/assets/plugins/bootstrap-modal/js/bootstrap-modal.js', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/bootstrap-modal/js/bootstrap-modalmanager.js', array('block' => 'scriptBottom'));
 
@@ -34,7 +37,7 @@ $addImages = $this->Html->url(array(
     'action' => 'images'
         ));
 echo $this->Html->scriptBlock("var saveNews = '$saveNews', add_images = '$addImages';", array('block' => 'scriptBottom'));
-echo $this->Html->scriptBlock("FormValidator.init();", array('block' => 'scriptBottom'));
+echo $this->Html->scriptBlock("FormValidator.init();UINestable.init();", array('block' => 'scriptBottom'));
 
 echo $this->Html->css('/assets/plugins/summernote/build/summernote.css', array('block' => 'css'));
 echo $this->Html->css('/assets/plugins/select2/select2.css', array('block' => 'css'));
@@ -65,29 +68,31 @@ echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/boots
     }
 
     .proizvodi-opener { display: none; }
+
+    #show_products {
+        margin-top: 2em;
+    }
+
+    .proizvodi-tabela {
+        margin-top: 1em;
+    }
 </style>
 <form action="#" id="form_new_event">
+    <div class="row">
+        <div class="col-md-6">
+
+        </div>
+
+    </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="errorHandler alert alert-danger no-display"> <i class="fa fa-times-sign"></i> Imate greške. Molimo provjerite podatke ispod. </div>
             <div class="successHandler alert alert-success no-display"> <i class="fa fa-ok"></i> Podaci su uspješno popunjeni! </div>
         </div>
-        <div class="col-md-6">                
-            <div class="form-group">
-                <label class="control-label"> 
-                    Naslov <span class="symbol required"></span> 
-                </label>
-                <input type="text" placeholder="Naslov vijesti" class="form-control" id="name" name="data[News][title]">
-            </div>                
-            <div class="form-group">
-                <label class="control-label"> Lid <span class="symbol required"></span>  </label>
-                <div>
-                    <textarea maxlength="240" placeholder="Uvodna rečenica" name="data[News][lid]" class="form-control limited"></textarea>
-                </div>                    
-            </div>
-
+        <div class="col-md-6"> 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label" for="form-field-city"> 
                             Grad <span class="symbol required"></span> 
@@ -102,7 +107,7 @@ echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/boots
                         </select>
                     </div>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="control-label">
                             Lokacija
@@ -123,8 +128,31 @@ echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/boots
                             <option selected="selected" value=""></option>
                         </select>
                     </div>
-                </div>  
-                <div class="col-md-12" id="show_products">
+                </div>                
+            </div>            
+            <div class="form-group">
+                <label class="control-label"> 
+                    Naslov <span class="symbol required"></span> 
+                </label>
+                <input type="text" placeholder="Naslov vijesti" class="form-control" id="name" name="data[News][title]">
+            </div>                
+            <div class="form-group">
+                <label class="control-label"> Lid <span class="symbol required"></span>  </label>
+                <div>
+                    <textarea maxlength="240" placeholder="Uvodna rečenica" name="data[News][lid]" class="form-control limited"></textarea>
+                </div>                    
+            </div>
+            <div class="form-group">
+                <label class="control-label"> 
+                    Text <span class="symbol required"></span> 
+                </label>
+                <div class="summernote"></div>
+                <textarea class="form-control no-display" id="text" name="data[News][text]" cols="10" rows="10"></textarea>          
+            </div>              
+        </div>
+        <div class="col-md-6" id="show_products">
+            <div class="row">
+                <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label album-label"> 
                             Prikaži proizvode? <span class="symbol required"></span> 
@@ -133,24 +161,24 @@ echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/boots
                             <input type="checkbox" id="show_products" name="data[News][show_products]" />
                         </div>
 
-                    </div>  
-                </div>   
-                <div class="col-md-12 proizvodi-opener">
-                    <button id="otvori-proizvode" class="btn btn-default btn-prpizvodi">Pregledajte proizvode</button>
-                    <p class="no-location">Morate prvo odabrati lokaciju</p>
-                </div>               
+                    </div>                      
+                </div>
+                <div class="col-md-12">
+                    <div class="proizvodi-opener">
+                        <button id="otvori-proizvode" class="btn btn-default btn-prpizvodi">Pregledajte proizvode</button>
+                        <p class="no-location">Morate prvo odabrati lokaciju</p>
+                    </div> 
+                </div>
+                <div class="col-md-6">
+                    <div class="proizvodi-opener">
+                        <div class="dd" id="nestable">
+                            <ol class="dd-list">
+                            </ol>
+                        </div>                        
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label class="control-label"> 
-                    Text <span class="symbol required"></span> 
-                </label>
-                <div class="summernote"></div>
-                <textarea class="form-control no-display" id="text" name="data[News][text]" cols="10" rows="10"></textarea>          
-            </div>    
-
-        </div>
+        </div>   
     </div>     
     <div class="row">
         <div class="col-md-12">

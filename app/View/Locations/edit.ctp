@@ -136,7 +136,11 @@ $idLocation = $location['id'];
                 <tr>
                     <td>Lid</td>
                     <td>
-                        <a href="#" id="lid" data-url="/locations/ajaxEdit"  data-type="textarea" data-original-title="Unesite lid"><?php echo $location['lid']; ?></a>
+                        <a href="#" 
+                           id="lid" 
+                           data-url="/locations/ajaxEdit" 
+                           data-pk="<?php echo $idLocation; ?>" 
+                           data-type="textarea" data-original-title="Unesite lid"><?php echo $location['lid']; ?></a>
                     </td>
                 </tr>
                 <tr>
@@ -223,7 +227,10 @@ $idLocation = $location['id'];
                 <tr>
                     <td>Detaljan info <a id="pencil" href="#"><i class="fa fa-pencil"></i> [uredi]</a>
                     <td>
-                        <div data-original-title="Enter notes" data-url="/locations/updateDescription" data-toggle="manual" data-type="wysihtml5" data-pk="<?php echo $idLocation ?>" id="note" class="editable" tabindex="-1" style="display: block;">
+                        <div data-original-title="Enter notes" 
+                             data-url="/locations/updateDescription" 
+                             data-toggle="manual" data-type="wysihtml5" 
+                             data-pk="<?php echo $idLocation ?>" id="note" class="editable" tabindex="-1" style="display: block;">
                             <?php echo $description['html_text']; ?>
                         </div></td>
                 </tr>

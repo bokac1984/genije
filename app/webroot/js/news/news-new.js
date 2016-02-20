@@ -237,12 +237,14 @@ var FormValidator = function () {
         
         $(document).on('click', '#sacuvajproizvode', function(e){
             e.preventDefault();
-            var selektovani = '';
+            var selektovani = '', tabela = '';
             $('.wrap-image.selected').each(function(i, obj) {
                 var id = $(this).attr('data-id');
+                var productName = $(this).attr('data-name');
+                tabela += '<li class="dd-item" data-id="'+ id +'"><div class="dd-handle">'+ productName +'</div></li>';
                 selektovani += '<input type="hidden" class="hidden-selected-products" name="data[NewsProduct][NewsProduct][]" value="'+ id +'">';
             });
-            
+            $('#nestable').html(tabela);
             $('.selected-products').empty().html(selektovani);
         }); 
         

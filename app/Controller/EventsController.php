@@ -11,7 +11,7 @@ class EventsController extends AppController {
      *
      * @var string Putanja u kojoj se cuvaju slike za evenete 
      */
-    public $photoLocation = '/photos/events/';
+    public $photoLocation = '/photos/';
     
     public $components = array(
         'DataTable.DataTable' => array(
@@ -191,4 +191,21 @@ class EventsController extends AppController {
 
         echo '303';
     }
+    
+    public function changemainimage() {
+        $this->request->allowMethod('ajax');
+        $this->autoRender = false;
+        
+        $novi = $this->request->form['main-image']; 
+        foreach ($novi as $k=>$v) {
+            $novi[$k] = $v[0];
+        }
+        
+        $slika = $this->uploadFile($novi, $this->photoLocation);
+        
+        $this->Event->id = $this->request->data['event'];
+        if ($this->Event->saveField('img_url', $slika)){
+            echo json_encode("/photos/$slika") ;
+        }
+    }    
 }

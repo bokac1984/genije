@@ -70,7 +70,7 @@ echo $this->Html->script('/lightbox/js/lightbox', array('block' => 'scriptBottom
 										 class="img-responsive"
 										>
 								</a>
-								<?php
+                                                        <?php
 							} else {
 								echo $this->Html->image('no-photo.png');
 							}
