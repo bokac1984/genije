@@ -2,7 +2,7 @@
 //debug($products); exit();   
 $i = 1;
 ?>
-
+<?php if (!empty($products)): ?>
 <div class="row">
     <?php foreach ($products as $product) : ?>
         <?php
@@ -27,3 +27,6 @@ $i = 1;
     <?php 
     endforeach; ?>
 </div>
+<?php else: ?>
+    Nema proizvoda za ovu lokaciju
+<?php endif; ?>
