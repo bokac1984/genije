@@ -6,7 +6,7 @@ $this->assign('crumb', 'Pregled proizvoda' );
 $this->assign('breadcrumb-icon', $icon);
 
 $this->assign('title', 'Proizvodi');
-$this->assign('page-title', 'Proizvodi <small>pregled fotografija</small>');
+$this->assign('page-title', $productName . ' <small>pregled fotografija</small>');
 
 echo $this->Html->script('/assets/plugins/dropzone/downloads/dropzone.min', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/bootstrap-modal/js/bootstrap-modal', array('block' => 'scriptBottom'));

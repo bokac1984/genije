@@ -118,20 +118,22 @@ class ProductsController extends AppController {
         $this->Product->recursive = -1;
         $mainImageQuery = $this->Product->find('first', array(
             'fields' => array(
-                'Product.img_name'
+                'Product.img_name',
+                'Product.name'
             ),
             'conditions' => array(
                 'Product.id' => $id
             )
         ));
         $mainImage = $mainImageQuery['Product']['img_name'];
+        $productName = $mainImageQuery['Product']['name'];
 
         $images = $this->Product->ProductImage->find('all', array(
             'conditions' => array(
                 'ProductImage.fk_id_products' => $id
             )
         ));
-        $this->set(compact('images', 'mainImage', 'id'));
+        $this->set(compact('images', 'mainImage', 'id', 'productName'));
     }
 
     /**

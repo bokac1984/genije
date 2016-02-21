@@ -100,8 +100,18 @@ $this->Form->inputDefaults(array(
                          ?>
                     </select>                    
                 </div>
+                <?php
+                echo $this->Form->input('description', array(
+                    'label' => 'Opis',
+                    'class' => 'summernote',
+                    'id' => 'text'
+                ));
+                ?>
             </div>
         </div>
+
+    </div>
+    <div class="col-md-6">
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
@@ -144,16 +154,7 @@ $this->Form->inputDefaults(array(
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <?php
-        echo $this->Form->input('description', array(
-            'label' => 'Opis',
-            'class' => 'summernote',
-            'id' => 'text'
-        ));
-        ?>
+        </div>        
     </div>
 </div>
 
@@ -169,4 +170,8 @@ $this->Form->inputDefaults(array(
         ));
         echo $this->Form->end(); ?>
     </div>
+</div>
+<div class="row">
+    <div class="separator"></div>
+    <div class="col-md-6"></div>
 </div>
