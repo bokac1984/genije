@@ -118,7 +118,7 @@ $img = !empty($location['Location']['img_url']) ? '/photos/' . $location['Locati
     <div class="col-sm-7 col-md-8">
         <div class="row">
             <div class="col-sm-12">
-                <div class="tabbable">
+                <div class="tabbable" style="margin-top: 10px;">
                     <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
                         <li class="active">
                             <a data-toggle="tab" href="#panel_news">

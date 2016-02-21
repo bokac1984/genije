@@ -116,66 +116,74 @@ echo $this->Html->css('/assets/plugins/bootstrap-social-buttons/social-buttons-3
                     </tr>
                 </tbody>
             </table>
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th colspan="3">Lokacija na mapi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><div class="map" id="map2"></div></td>
+                    </tr>
+                </tbody>
+            </table>             
         </div>
     </div>
     <div class="col-sm-7 col-md-8">
-        <h3>Lokacija</h3>
-        <div class="panel-body">
-            <div class="map" id="map2"></div>
-        </div>
-    </div> 
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <div class="tabbable">
-            <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">             
-                <li class="active">
-                    <a data-toggle="tab" href="#panel_comments">
-                        Komentari
-                    </a>
-                </li>
-            </ul>
-            <div class="tab-content">             
-                <div id="panel_comments"  class="tab-pane in active">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3>Pregled komentara za <strong><?php echo $name ?></strong></h3>
-                            <hr>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="tabbable" style="margin-top: 10px;">
+                    <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">             
+                        <li class="active">
+                            <a data-toggle="tab" href="#panel_comments">
+                                Komentari
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">             
+                        <div id="panel_comments"  class="tab-pane in active">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3>Pregled komentara za <strong><?php echo $name ?></strong></h3>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 comments-table">
+                                    <?php if (!empty($user['LocationComment'])): ?>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <th>Sadržaj</th>
+                                                <th>Ocjena</th>
+                                                <th>Rejting</th>
+                                                <th>Vrijeme</th>
+                                                <th>Lokacija</th>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($user['LocationComment'] as $comment): ?>
+                                                <tr>
+                                                    <td><?php echo !empty($comment['text']) ?
+                                                        $comment['text'] : '<i class="no-comment">Nema komentara</i>'; ?></td>
+                                                    <td>
+                                                        <?php echo $this->Star->star($comment['rating'], array('size' => 'xxxs')); ?>
+                                                    </td>
+                                                    <td><?php echo $comment['comment_rating']; ?>&nbsp;</td>
+                                                    <td><?php echo $this->Time->format($comment['datetime'], '%d.%m.%Y %H:%M %p'); ?></td>
+                                                    <td><?php echo $this->Html->link($comment['Location']['name'], array('controller' => 'locations', 'action' => 'view', $comment['Location']['id'])); ?></td>
+                                                </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    <?php else: ?>
+                                        Ovaj korisnik nije ništa komentarisao.
+                                    <?php endif; ?>
+                                </div>
+                            </div>     
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12 comments-table">
-                            <?php if (!empty($user['LocationComment'])): ?>
-                                <table class="table table-condensed">
-                                    <thead>
-                                        <th>Sadržaj</th>
-                                        <th>Ocjena</th>
-                                        <th>Rejting</th>
-                                        <th>Vrijeme</th>
-                                        <th>Lokacija</th>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($user['LocationComment'] as $comment): ?>
-                                        <tr>
-                                            <td><?php echo !empty($comment['text']) ?
-                                                $comment['text'] : '<i class="no-comment">Nema komentara</i>'; ?></td>
-                                            <td>
-                                                <?php echo $this->Star->star($comment['rating'], array('size' => 'xxxs')); ?>
-                                            </td>
-                                            <td><?php echo $comment['comment_rating']; ?>&nbsp;</td>
-                                            <td><?php echo $this->Time->format($comment['datetime'], '%d.%m.%Y %H:%M %p'); ?></td>
-                                            <td><?php echo $this->Html->link($comment['Location']['name'], array('controller' => 'locations', 'action' => 'view', $comment['Location']['id'])); ?></td>
-                                        </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            <?php else: ?>
-                                Ovaj korisnik nije ništa komentarisao.
-                            <?php endif; ?>
-                        </div>
-                    </div>     
                 </div>
             </div>
-        </div>
-    </div>
-</div> 
+        </div> 
+    </div> 
+</div>
