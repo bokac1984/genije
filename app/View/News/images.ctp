@@ -14,7 +14,6 @@ $id = $news['News']['id'];
 echo $this->Html->script('/assets/plugins/dropzone/downloads/dropzone.min', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/bootstrap-modal/js/bootstrap-modal', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/bootstrap-modal/js/bootstrap-modalmanager', array('block' => 'scriptBottom'));
-echo $this->Html->script('/assets/plugins/colorbox/jquery.colorbox-min', array('block' => 'scriptBottom'));
 echo $this->Html->script('/lightbox/js/lightbox', array('block' => 'scriptBottom'));
 echo $this->Html->script('/js/news/images', array('block' => 'scriptBottom'));
 echo $this->Html->scriptBlock("NewsImages.init(".$id.");", array('block'=>'scriptBottom'));
@@ -22,7 +21,6 @@ echo $this->Html->scriptBlock("NewsImages.init(".$id.");", array('block'=>'scrip
 echo $this->Html->css('/assets/plugins/dropzone/downloads/css/dropzone', array('block' => 'css'));
 echo $this->Html->css('/assets/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch', array('block' => 'css'));
 echo $this->Html->css('/assets/plugins/bootstrap-modal/css/bootstrap-modal', array('block' => 'css'));
-echo $this->Html->css('/assets/plugins/colorbox/example2/colorbox', array('block' => 'css'));
 echo $this->Html->css('/lightbox/css/lightbox', array('block' => 'css'));
 
 //debug($news);

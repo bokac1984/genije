@@ -39,16 +39,6 @@ var NewsImages = function () {
         });
     };
 
-    var runColorBox = function () {
-        $(".group1").colorbox({
-            rel: 'group1',
-            transition: "none",
-            width: "100%",
-            height: "100%",
-            retinaImage: true
-        });
-    };
-
     //function to Image Picker
     var runImagePicker = function (pk) {
         $(document).on('click', '.wrap-image .chkbox', function(e) {
@@ -110,7 +100,6 @@ var NewsImages = function () {
         //main function to initiate template pages
         init: function (pk) {
             brisanjeSlike(pk);
-            runColorBox();
             runImagePicker(pk);
             loadAllElements(pk);
         }
