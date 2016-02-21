@@ -46,7 +46,6 @@ $img = !empty($location['Location']['img_url']) ? '/photos/' . $location['Locati
                         </div>
                     </div>
                 </div>
-                <hr>
             </div>
             <table class="table table-condensed table-hover">
                 <thead>
@@ -102,146 +101,146 @@ $img = !empty($location['Location']['img_url']) ? '/photos/' . $location['Locati
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th colspan="3">Lokacija na mapi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><div class="map" id="map2"></div></td>
+                    </tr>
+                </tbody>
+            </table>            
         </div>
     </div>
     <div class="col-sm-7 col-md-8">
         <div class="row">
-            <div class="col-md-12">
-                <div class="panel-body">
-                    <div class="map" id="map2"></div>
+            <div class="col-sm-12">
+                <div class="tabbable">
+                    <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
+                        <li class="active">
+                            <a data-toggle="tab" href="#panel_news">
+                                Vijesti
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#panel_products">
+                                Proizvodi
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#panel_events">
+                                Događaji
+                            </a>
+                        </li>                
+                        <li>
+                            <a data-toggle="tab" href="#panel_comments">
+                                Komentari
+                            </a>
+                        </li>                
+                    </ul>
+                    <div class="tab-content">
+                        <div id="panel_news" class="tab-pane in active">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3>Pregled vijesti za ovu lokaciju</h3>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <?php if ($news): ?>   
+                                    <table class="table table-condensed">
+                                        <thead>
+                                            <th>#</th>
+                                            <th>Naslov</th>
+                                            <th>Datum objave</th>
+                                            <th>Akcije</th>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($news as $single): ?>
+                                            <tr>
+                                                <td><?php echo $single['News']['id']; ?></td>
+                                                <td><?php echo $this->MyHtml->displayEmpty($single['News']['title'], 'Nema naslova'); ?></td>
+                                                <td><?php echo $this->Time->format($single['News']['creation_date'], '%d.%m.%Y %H:%M %p'); ?></td>
+                                                <td><?php echo $this->Html->link('Detalji', array('controller' => 'news', 'action' => 'view', $single['News']['id'])); ?></td>
+                                            </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                    <?php else: ?>
+                                        <h4>Nema vijesti za ovu lokaciju</h4>
+                                    <?php endif; ?>
+                                </div>
+                            </div>                    
+                        </div>
+                        <div id="panel_products" class="tab-pane">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3>Pregled proizvoda za ovu lokaciju <?php echo $this->Html->link('Dodajte novi proizvod',
+                                            array(
+                                                'controller' => 'products',
+                                                'action' => 'add',
+                                                $location['Location']['id']
+                                            ), array(
+                                                'class' => 'btn btn-primary'
+                                            )); ?></h3> 
+                                    <hr>
+                                    <p></p>
+                                </div>
+                            </div>
+                            <div class="row loading">
+                                <div class="col-md-12 col-md-offset-5">
+                                    <div class="dots-loader">
+                                        Loading…
+                                    </div>
+                                </div>
+                            </div>                    
+                            <div class="row">
+                                <div class="col-md-12 products-table"></div>
+                            </div>     
+                        </div>
+                        <div id="panel_events" class="tab-pane">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3>Pregled dogadjaja za ovu lokaciju</h3>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="row loading">
+                                <div class="col-md-12 col-md-offset-5">
+                                    <div class="dots-loader">
+                                        Loading…
+                                    </div>
+                                </div>
+                            </div>                    
+                            <div class="row">
+                                <div class="col-md-12 events-table"></div>
+                            </div>     
+                        </div>                
+                        <div id="panel_comments" class="tab-pane">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3>Pregled nedavnih komentara</h3>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="row loading">
+                                <div class="col-md-12 col-md-offset-5">
+                                    <div class="dots-loader">
+                                        Loading…
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="row">
+                                <div class="col-md-12 comments-table"></div>
+                            </div>     
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <h3>Lokacija na mapi</h3>
-            </div>
-        </div>        
+        </div>          
     </div> 
 </div>
-<div class="row">
-    <div class="col-sm-12">
-        <div class="tabbable">
-            <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
-                <li class="active">
-                    <a data-toggle="tab" href="#panel_news">
-                        Vijesti
-                    </a>
-                </li>
-                <li>
-                    <a data-toggle="tab" href="#panel_products">
-                        Proizvodi
-                    </a>
-                </li>
-                <li>
-                    <a data-toggle="tab" href="#panel_events">
-                        Događaji
-                    </a>
-                </li>                
-                <li>
-                    <a data-toggle="tab" href="#panel_comments">
-                        Komentari
-                    </a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div id="panel_news" class="tab-pane in active">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3>Pregled vijesti za ovu lokaciju</h3>
-                            <hr>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <?php if ($news): ?>   
-                            <table class="table table-condensed">
-                                <thead>
-                                    <th>#</th>
-                                    <th>Naslov</th>
-                                    <th>Datum objave</th>
-                                    <th>Akcije</th>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($news as $single): ?>
-                                    <tr>
-                                        <td><?php echo $single['News']['id']; ?></td>
-                                        <td><?php echo $this->MyHtml->displayEmpty($single['News']['title'], 'Nema naslova'); ?></td>
-                                        <td><?php echo $this->Time->format($single['News']['creation_date'], '%d.%m.%Y %H:%M %p'); ?></td>
-                                        <td><?php echo $this->Html->link('Detalji', array('controller' => 'news', 'action' => 'view', $single['News']['id'])); ?></td>
-                                    </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                            <?php else: ?>
-                                <h4>Nema vijesti za ovu lokaciju</h4>
-                            <?php endif; ?>
-                        </div>
-                    </div>                    
-                </div>
-                <div id="panel_products" class="tab-pane">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3>Pregled proizvoda za ovu lokaciju <?php echo $this->Html->link('Dodajte novi proizvod',
-                                    array(
-                                        'controller' => 'products',
-                                        'action' => 'add',
-                                        $location['Location']['id']
-                                    ), array(
-                                        'class' => 'btn btn-primary'
-                                    )); ?></h3> 
-                            <hr>
-                            <p></p>
-                        </div>
-                    </div>
-                    <div class="row loading">
-                        <div class="col-md-12 col-md-offset-5">
-                            <div class="dots-loader">
-                                Loading…
-                            </div>
-                        </div>
-                    </div>                    
-                    <div class="row">
-                        <div class="col-md-12 products-table"></div>
-                    </div>     
-                </div>
-                <div id="panel_events" class="tab-pane">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3>Pregled dogadjaja za ovu lokaciju</h3>
-                            <hr>
-                        </div>
-                    </div>
-                    <div class="row loading">
-                        <div class="col-md-12 col-md-offset-5">
-                            <div class="dots-loader">
-                                Loading…
-                            </div>
-                        </div>
-                    </div>                    
-                    <div class="row">
-                        <div class="col-md-12 events-table"></div>
-                    </div>     
-                </div>                
-                <div id="panel_comments" class="tab-pane">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3>Pregled nedavnih komentara</h3>
-                            <hr>
-                        </div>
-                    </div>
-                    <div class="row loading">
-                        <div class="col-md-12 col-md-offset-5">
-                            <div class="dots-loader">
-                                Loading…
-                            </div>
-                        </div>
-                    </div> 
-                    <div class="row">
-                        <div class="col-md-12 comments-table"></div>
-                    </div>     
-                </div>
-            </div>
-        </div>
-    </div>
-</div>  
