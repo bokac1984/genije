@@ -27,7 +27,7 @@ class Contact extends AppModel {
             if (array_key_exists($name,$valuesToSearch)) {
                 $temp[] = array(
                     'fk_id_contact_types' => $valuesToSearch[$name],
-                    'value' => $value
+                    'value' => $value === '' ? ' ' : $value
                 );
             }
         }

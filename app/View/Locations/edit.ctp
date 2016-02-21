@@ -177,6 +177,7 @@ $idLocation = $location['id'];
                            data-tip="<?php echo PHONE ?>" 
                            data-url="/locations/updateContactInfo" 
                            data-pk="<?php echo $idLocation; ?>" 
+                           <?php echo isset($phone['id']) ? 'data-id="' . $phone['id'] . '"' : ''; ?>
                            data-original-title="Telefon Fiksni">
                             <?php echo isset($phone['value']) ? $phone['value'] : ""; ?>
                         </a>
@@ -191,6 +192,7 @@ $idLocation = $location['id'];
                            data-url="/locations/updateContactInfo" 
                            data-type="text" 
                            data-pk="<?php echo $idLocation; ?>" 
+                           <?php echo isset($mobile['id']) ? 'data-id="' . $mobile['id'] . '"' : ''; ?>
                            data-original-title="Mobilni">
                             <?php echo isset($mobile['value']) ? $mobile['value'] : ""; ?>
                         </a>
@@ -205,6 +207,7 @@ $idLocation = $location['id'];
                            data-url="/locations/updateContactInfo" 
                            data-type="text" 
                            data-pk="<?php echo $idLocation; ?>" 
+                           <?php echo isset($email['id']) ? 'data-id="' . $email['id'] . '"' : ''; ?>
                            data-original-title="E-mail">
                                <?php echo isset($email['value']) ? $email['value'] : ""; ?>
                         </a>
@@ -219,6 +222,7 @@ $idLocation = $location['id'];
                            data-url="/locations/updateContactInfo" 
                            data-type="text" 
                            data-pk="<?php echo $idLocation; ?>" 
+                           <?php echo isset($web['id']) ? 'data-id="' . $web['id'] . '"' : ''; ?>
                            data-original-title="Web">
                                <?php echo isset($web['value']) ? $web['value'] : ""; ?>
                         </a>

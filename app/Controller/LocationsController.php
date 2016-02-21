@@ -135,13 +135,16 @@ class LocationsController extends AppController {
                 ),
                 'Contact' => array(
                     'fields' => array(
-                        'value'
+                        'value', 'id'
                     ),
                     'order' => array(
                         'Contact.fk_id_contact_types' => 'asc'
                     ),
                     'ContactType' => array(
                         'fields' => array('name')
+                    ),
+                    'conditions' => array(
+                        'Contact.fk_id_map_objects' => $id
                     )
                 ),
                 'LocationDescription',
@@ -237,7 +240,8 @@ class LocationsController extends AppController {
             $data = array(
                 'fk_id_contact_types' => $this->request->data['tip'],
                 'fk_id_map_objects' => $this->request->data['pk'],
-                'value' => $this->request->data['value']
+                'value' => $this->request->data['value'],
+                'id' => $this->request->data['id']
             );
             if ($this->Location->Contact->save($data)) {
                 echo 'uspej';

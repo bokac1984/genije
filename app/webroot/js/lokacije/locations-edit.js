@@ -77,27 +77,37 @@ $(document).ready(function(){
     $('#contact_mobile').editable({
         params: function (params) {
             params.tip = $(this).attr('data-tip');
+            params.id = $(this).attr('data-id');
             return params;
         }
     });
     $('#contact_phone').editable({
         params: function (params) {
             params.tip = $(this).attr('data-tip');
+            params.id = $(this).attr('data-id');
             return params;
         }
     });
     $('#contact_web').editable({
         params: function (params) {
             params.tip = $(this).attr('data-tip');
+            params.id = $(this).attr('data-id');
             return params;
         }
     });
     $('#contact_email').editable({
         params: function (params) {
             params.tip = $(this).attr('data-tip');
+            params.id = $(this).attr('data-id');
             return params;
         }
     });
+    
+    var vratiParametre = function(params){
+        params.tip = $(this).attr('data-tip');
+        params.id = $(this).attr('data-id');
+        return params;
+    };
 
     $('#note').editable();
     $('#pencil').click(function (e) {
