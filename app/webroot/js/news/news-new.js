@@ -228,10 +228,11 @@ var FormValidator = function () {
                         alert('Greska se desila');
                     }
                 }).fail(function () {
-                    alert('fail');
+                    alert('Kontaktirajte administratora');
                     // Whoops; show an error.
                 });
 
+                // za slucaj da zatreba
                 //form.submit();
             }
         });
@@ -255,7 +256,7 @@ var FormValidator = function () {
             $('.wrap-image.selected').each(function(i, obj) {
                 var id = $(this).attr('data-id');
                 var productName = $(this).attr('data-name');
-                selektovani += '<input type="hidden" class="hidden-selected-products" name="data[NewsProduct][NewsProduct][]" value="'+ id +'">';
+                selektovani = '<input type="hidden" class="hidden-selected-products" name="data[Product][Product][]" value="'+ id +'">';
                 tabela += '<li class="dd-item" data-id="'+ id +'">'
                         + selektovani
                         +'<i class="ukloni-proizvod glyphicon glyphicon-remove" style="float: right; margin-top: 8px; margin-right: 6px;"></i>'
@@ -264,7 +265,6 @@ var FormValidator = function () {
                 
             });
             $('#nestable').html(tabela);
-            //$('.selected-products').empty().html(selektovani);
         }); 
         
         $(document).on('click', '.ukloni-proizvod', function(e){

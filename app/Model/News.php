@@ -77,7 +77,7 @@ class News extends AppModel {
     public function saveNews($data = array()) {
         $data['News']['show_products'] = isset($data['News']['show_products']) ? true : false;
         
-        if ($this->saveAll($data)) {
+        if ($this->saveAll($data) ) {
             return $this->getLastInsertID();
         }
         return 0;

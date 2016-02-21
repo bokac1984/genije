@@ -11,16 +11,11 @@ var UINestable = function () {
         }
     };
     var runNestable = function () {
-        // activate Nestable for list 1
-        $('#nestable').nestable({
-            group: 1
-        }).on('change', updateOutput);
         // activate Nestable for list 2
         $('#nestable2').nestable({
             group: 1
         }).on('change', updateOutput);
         // output initial serialised data
-        updateOutput($('#nestable').data('output', $('#nestable-output')));
         updateOutput($('#nestable2').data('output', $('#nestable2-output')));
         $('#nestable-menu').on('click', function (e) {
             var target = $(e.target),
@@ -32,7 +27,6 @@ var UINestable = function () {
                 $('.dd').nestable('collapseAll');
             }
         });
-        $('#nestable3').nestable();
     };
     return {
         //main function to initiate template pages
