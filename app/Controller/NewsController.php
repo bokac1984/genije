@@ -216,6 +216,17 @@ class NewsController extends AppController {
         $events = $this->News->Event->getAllLocationEvents($this->request->data['location']);
         $this->set(compact('events'));
     }
+    
+    /**
+     * Ajax metoda koja vraca podatke za ovaj event
+     */
+    public function eventinfo() {
+        $this->request->onlyAllow('ajax');
+        $this->viewClass = 'Json';
+        
+        $event = $this->News->Event->findById($this->request->data['event']);
+        $this->set(compact('event'));
+    }
 
     public function deleteNews() {
         $this->autoRender = false;

@@ -66,7 +66,7 @@ var FormEditable = function () {
             
             $('#link-slika').attr('href', response);
             $('#slika-slika').attr('src', response);
-            //$(this).fileinput('refresh');
+            
             $modal.modal('hide');
         });
     };

@@ -13,6 +13,8 @@ class EventsController extends AppController {
      */
     public $photoLocation = '/photos/';
     
+    public $helpers = array('DataTable.DataTable', 'MyHtml', 'Time');
+    
     public $components = array(
         'DataTable.DataTable' => array(
             'Event' => array(
@@ -79,8 +81,6 @@ class EventsController extends AppController {
     public function isAuthorized($user) {
         return parent::isAuthorized($user);
     }
-    
-    public $helpers =  array('DataTable.DataTable');
 
     public function index() {
         $this->DataTable->setViewVar('Event');

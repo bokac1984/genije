@@ -134,12 +134,12 @@ echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/boots
                 <label class="control-label"> 
                     Naslov <span class="symbol required"></span> 
                 </label>
-                <input type="text" placeholder="Naslov vijesti" class="form-control" id="name" name="data[News][title]">
+                <input type="text" placeholder="Naslov vijesti" class="form-control" id="news-title" name="data[News][title]">
             </div>                
             <div class="form-group">
                 <label class="control-label"> Lid <span class="symbol required"></span>  </label>
                 <div>
-                    <textarea maxlength="240" placeholder="Uvodna rečenica" name="data[News][lid]" class="form-control limited"></textarea>
+                    <textarea maxlength="240" placeholder="Uvodna rečenica" id="news-lid" name="data[News][lid]" class="form-control limited"></textarea>
                 </div>                    
             </div>
             <div class="form-group">
@@ -169,7 +169,7 @@ echo $this->Html->css('/assets/plugins/bootstrap-switch/static/stylesheets/boots
                         <p class="no-location">Morate prvo odabrati lokaciju</p>
                     </div> 
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="proizvodi-opener">
                         <div class="dd" id="nestable">
                             <ol class="dd-list">

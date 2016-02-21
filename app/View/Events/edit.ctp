@@ -75,13 +75,17 @@ $id = $event['id'];
                 <tr>
                     <td>Vrijeme početka</td>
                     <td>
-                        <a href="#" data-pk="<?php echo $id; ?>" id="start_time" data-type="datetime" data-original-title="Unesite novi datum"><?php echo $event['start_time']; ?></a>
+                        <a href="#" data-pk="<?php echo $id; ?>" id="start_time" data-type="datetime" data-original-title="Unesite novi datum">
+                            <?php echo $this->Time->format($event['start_time'], '%d.%m.%Y %H:%M'); ?>
+                        </a>
                     </td>
                 </tr>
                 <tr>
                     <td>Vrijeme završetka</td>
                     <td>
-                        <a href="#" data-pk="<?php echo $id; ?>" id="end_time" data-type="datetime" data-original-title="Unesite novi datum"><?php echo $event['end_time']; ?></a>
+                        <a href="#" data-pk="<?php echo $id; ?>" id="end_time" data-type="datetime" data-original-title="Unesite novi datum">
+                            <?php echo $this->Time->format($event['end_time'], '%d.%m.%Y %H:%M'); ?>
+                        </a>
                     </td>
                 </tr>
                 <tr>

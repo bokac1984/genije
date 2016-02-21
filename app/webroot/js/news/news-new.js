@@ -79,6 +79,20 @@ var FormValidator = function () {
                 });
             });
         });
+        
+        $("#fk_id_events").change(function () {
+            $.ajax({
+              method: "POST",
+              dataType: "json",
+              url: "/news/eventinfo.json",
+              data: { event: $(this).val() }
+            })
+            .done(function( resultObject ) {
+                $("#news-title").val(resultObject.Event.name);
+                $("#news-lid").val(resultObject.Event.lid);
+                $('.summernote').code(resultObject.Event.html_text);
+            });
+        });
     };
     
     var loadLocationProducts = function(location) {
@@ -241,12 +255,22 @@ var FormValidator = function () {
             $('.wrap-image.selected').each(function(i, obj) {
                 var id = $(this).attr('data-id');
                 var productName = $(this).attr('data-name');
-                tabela += '<li class="dd-item" data-id="'+ id +'"><div class="dd-handle">'+ productName +'</div></li>';
                 selektovani += '<input type="hidden" class="hidden-selected-products" name="data[NewsProduct][NewsProduct][]" value="'+ id +'">';
+                tabela += '<li class="dd-item" data-id="'+ id +'">'
+                        + selektovani
+                        +'<i class="ukloni-proizvod glyphicon glyphicon-remove" style="float: right; margin-top: 8px; margin-right: 6px;"></i>'
+                        +'<div class="dd-handle">'+ productName +'</div>'
+                        +'</li>';
+                
             });
             $('#nestable').html(tabela);
-            $('.selected-products').empty().html(selektovani);
+            //$('.selected-products').empty().html(selektovani);
         }); 
+        
+        $(document).on('click', '.ukloni-proizvod', function(e){
+            e.preventDefault();
+            $(this).parent().remove();
+        });         
         
     };
     return {
