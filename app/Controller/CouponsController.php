@@ -17,7 +17,9 @@ class CouponsController extends AppController {
      *
      * @var array
      */
-    public $components = array('Paginator', 'Flash', 'Session');
+    public $components = array('Paginator', 'Flash', 'Session', 'CouponSend');
+    
+    public $helpers =  array('MyHtml');
 
     
     public function beforeFilter() {
@@ -36,7 +38,29 @@ class CouponsController extends AppController {
      */
     public function index() {
         $this->Coupon->recursive = 0;
-        $this->set('eventsTickets', $this->Paginator->paginate());
+
+        $this->Paginator->settings = array(
+            'limit' => 15,
+            'contain' => array(
+                'ApplicationUser' => array(
+                    'fields' => array(
+                        'ApplicationUser.id',
+                        'ApplicationUser.display_name'
+                    )
+                ),
+                'Event' => array(
+                    'fields' => array(
+                        'Event.id',
+                        'Event.name'
+                    )
+                )
+            ),
+            'order' => array(
+                'Coupon.creation_date DESC'
+            )
+        );
+        
+        $this->set('eventsTickets', $this->Paginator->paginate('Coupon'));
     }
 
     /**
@@ -142,7 +166,9 @@ class CouponsController extends AppController {
         if ($check) {
             $data = $this->Coupon->checkPossibleCouponCount($couponData);
         } else {
-            $data = $this->Coupon->generateCoupons($couponData);
+            $userGCMregIDs = $this->Coupon->generateCoupons($couponData);
+            //$userGCMregIDs = array();
+            $data = $this->CouponSend->sendNotifications($userGCMregIDs);
         }
         
         $this->set(compact('data'));

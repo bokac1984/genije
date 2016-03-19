@@ -53,6 +53,30 @@ class MyHtmlHelper extends HtmlHelper {
         return "<span class=\"label label-sm {$displayValue['class']}\">{$displayValue['value']}</span>";
     }
     
+    public function displayCouponStatus($status) {
+        $displayValue = array(
+            'class' => 'label-info',
+            'value' => 'Offline'
+        );
+        switch($status) {
+            case 1: 
+                $displayValue = array(
+                    'class' => 'label-warning',
+                    'value' => 'Assigned'
+                );
+                break;
+            case 2: 
+                $displayValue = array(
+                    'class' => 'label-success',
+                    'value' => 'Checked'
+                );
+                break;           
+            default:
+                break;
+        }
+        return "<span class=\"label label-sm {$displayValue['class']}\">{$displayValue['value']}</span>";
+    }    
+    
     public function emptyLink($id, $name, $url, $customText = 'Prazno') {
         if (empty($id)) {
             return $this->displayEmpty(null,$customText);

@@ -88,7 +88,21 @@ $url = $this->request->here;
                 <?php echo $this->Html->link("Pregledaj", array('plugin' => null, 'controller' => 'coupons', 'action' => 'index')); ?>
             </li>            
         </ul>
-    </li>    
+    </li>
+    <li class="<?php echo (preg_match("/\/notifications/", $url))? 'active' : ''?>">
+        <a href="javascript:void(0)"><i class="fa fa-barcode"></i>
+            <span class="title"> Notifikacije </span><i class="icon-arrow"></i>
+            <span class="selected"></span>
+        </a>
+        <ul class="sub-menu">
+            <li>
+                <?php echo $this->Html->link("Kreiraj", array('plugin' => null, 'controller' => 'notifications', 'action' => 'add')); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link("Pregledaj", array('plugin' => null, 'controller' => 'notifications', 'action' => 'index')); ?>
+            </li>            
+        </ul>
+    </li>     
     <li class="">
         <a href="javascript:;">
             <i class="clip-cog-2"></i>

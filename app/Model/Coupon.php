@@ -194,7 +194,7 @@ class Coupon extends AppModel {
                 
                 $Notification->save($notificationData);
                 
-                $users[] = $candidate['CouponCandidate']['user_id'];
+                $users[] = $candidate['CouponCandidate']['gcm_regid'];
             }
             else {
                 debug('nije');exit();
