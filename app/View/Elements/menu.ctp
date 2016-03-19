@@ -91,15 +91,15 @@ $url = $this->request->here;
     </li>
     <li class="<?php echo (preg_match("/\/notifications/", $url))? 'active' : ''?>">
         <a href="javascript:void(0)"><i class="fa fa-barcode"></i>
-            <span class="title"> Notifikacije </span><i class="icon-arrow"></i>
+            <span class="title"> Obaviještenja </span><i class="icon-arrow"></i>
             <span class="selected"></span>
         </a>
         <ul class="sub-menu">
             <li>
-                <?php echo $this->Html->link("Kreiraj", array('plugin' => null, 'controller' => 'notifications', 'action' => 'add')); ?>
+                <?php echo $this->Html->link("Novo obavještenje", array('plugin' => null, 'controller' => 'notifications', 'action' => 'add')); ?>
             </li>
             <li>
-                <?php echo $this->Html->link("Pregledaj", array('plugin' => null, 'controller' => 'notifications', 'action' => 'index')); ?>
+                <?php echo $this->Html->link("Pregled svih", array('plugin' => null, 'controller' => 'notifications', 'action' => 'index')); ?>
             </li>            
         </ul>
     </li>     
@@ -137,7 +137,20 @@ $url = $this->request->here;
             </li>
             <li class="<?php echo (preg_match("/\/application_users\/view/", $url))? 'active' : ''?>">
                 <?php echo $this->Html->link("Pregled korisnika", array('plugin' => null, 'controller' => 'application_users', 'action' => 'index')); ?>
-            </li>            
+            </li>  
+            <li class="<?php echo (preg_match("/\/location_comments/", $url))? 'active' : ''?>">
+                <a href="javascript:;">
+                    Korisnici za ponistavanje kodova <i class="icon-arrow"></i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <?php echo $this->Html->link("Dodaj novog", array('plugin' => null, 'controller' => 'coupon_checkers', 'action' => 'add')); ?>
+                    </li>
+                    <li>
+                        <?php echo $this->Html->link("Pregled svih", array('plugin' => null, 'controller' => 'coupon_checkers', 'action' => 'index')); ?>
+                    </li>                    
+                </ul>
+            </li>           
         </ul>
     </li>    
 </ul>

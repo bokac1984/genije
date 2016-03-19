@@ -16,4 +16,10 @@ class Notification extends AppModel {
             'foreignKey' => 'fk_id_users',
         ),
     );
+    
+    public function beforeSave($options = array()) {
+        $this->data[$this->alias]['date'] = $this->getDataSource()->expression('NOW()');
+
+        return parent::beforeSave($options);
+    }    
 }

@@ -17,7 +17,7 @@ class CouponsController extends AppController {
      *
      * @var array
      */
-    public $components = array('Paginator', 'Flash', 'Session', 'CouponSend');
+    public $components = array('Paginator', 'Flash', 'Session', 'Notify');
     
     public $helpers =  array('MyHtml');
 
@@ -167,7 +167,7 @@ class CouponsController extends AppController {
             $data = $this->Coupon->checkPossibleCouponCount($couponData);
         } else {
             $userGCMregIDs = $this->Coupon->generateCoupons($couponData);
-            $data = $this->CouponSend->sendNotifications(array('text' => $couponData['value']));
+            $data = $this->Notify->sendNotifications(array('text' => $couponData['value']));
             $data = array();
         }
         

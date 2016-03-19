@@ -53,6 +53,36 @@ class MyHtmlHelper extends HtmlHelper {
         return "<span class=\"label label-sm {$displayValue['class']}\">{$displayValue['value']}</span>";
     }
     
+    
+    public function displayStatusNotify($status) {
+        $displayValue = array(
+            'class' => 'label-info',
+            'value' => 'Offline'
+        );
+        switch($status) {
+            case 0: 
+                $displayValue = array(
+                    'class' => 'label-danger',
+                    'value' => 'Deleted'
+                );
+                break;
+            case 1: 
+                $displayValue = array(
+                    'class' => 'label-warning',
+                    'value' => 'Poslana'
+                );
+                break;
+            case 2: 
+                $displayValue = array(
+                    'class' => 'label-success',
+                    'value' => 'Pročitana'
+                );
+                break;           
+            default:
+                break;
+        }
+        return "<span class=\"label label-sm {$displayValue['class']}\">{$displayValue['value']}</span>";
+    }    
     public function displayCouponStatus($status) {
         $displayValue = array(
             'class' => 'label-info',

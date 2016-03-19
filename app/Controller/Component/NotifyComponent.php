@@ -4,12 +4,12 @@ App::uses('Component', 'Controller');
 App::uses('HttpSocket', 'Network/Http');
 
 /**
- * Description of CouponSendComponent
+ * Description of NotificationComponent
  *
  * @author bokac
  * 
  */
-class CouponSendComponent extends Component {
+class NotifyComponent extends Component {
 
     /**
      * Dozvoljene ekstenzije
