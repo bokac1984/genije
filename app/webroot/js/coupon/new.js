@@ -229,11 +229,16 @@ var FormValidator = function () {
                 method: 'POST',
                 data: $('#CouponAddForm').serialize()
             }).done(function (response) {
-
+                    $modal.modal()
+                            .find('.modal-body')
+                            .html('<p>Uspješno podjeljeno: <strong>1</strong> kupona.</p>');
             }).fail(function () {
                 alert('fail');
             });
-        });        
+        });
+        $("#btn-finish").click(function (event) {
+            window.location.href = '/coupons/index';
+        });
     };
 
 

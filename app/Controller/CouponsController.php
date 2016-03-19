@@ -167,8 +167,8 @@ class CouponsController extends AppController {
             $data = $this->Coupon->checkPossibleCouponCount($couponData);
         } else {
             $userGCMregIDs = $this->Coupon->generateCoupons($couponData);
-            //$userGCMregIDs = array();
-            $data = $this->CouponSend->sendNotifications($userGCMregIDs);
+            $data = $this->CouponSend->sendNotifications(array('text' => $couponData['value']));
+            $data = array();
         }
         
         $this->set(compact('data'));

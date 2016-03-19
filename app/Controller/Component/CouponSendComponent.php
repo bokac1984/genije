@@ -51,7 +51,7 @@ class CouponSendComponent extends Component {
         // Disabling SSL Certificate support temporarly
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($body));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
 
         // Execute post
         $result = curl_exec($ch);

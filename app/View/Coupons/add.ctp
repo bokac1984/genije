@@ -172,3 +172,11 @@ echo $this->Html->css('/assets/plugins/bootstrap-modal/css/bootstrap-modal.css',
         <button id="btn-generate-tickets" type="button" data-dismiss="modal" class="btn btn-primary">Nastavi</button>
     </div>
 </div>
+<div id="ajax-modal-finish" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" style="display: none;">
+    <div class="modal-body alert" style="margin-bottom:0">
+
+    </div>
+    <div class="modal-footer" style="margin-top:0">      
+        <button id="btn-finish" type="button" data-dismiss="modal" class="btn btn-primary">U redu</button>
+    </div>
+</div>
