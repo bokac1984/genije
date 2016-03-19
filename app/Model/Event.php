@@ -128,6 +128,37 @@ class Event extends AppModel {
             )
         ));
     }
+    
+    /**
+     * Nadji sve dogadjaje iz nekog grada
+     * 
+     * @param int $cityId
+     * @return array
+     */
+    public function allCityEvents($cityId = null) {
+        if ($cityId !== null) {
+            $events = $this->find('all', array(
+                'contain' => array(
+                    'Location' => array(
+                        'fields' => array(
+                            'id'
+                        )
+                    )
+                ),
+                'conditions' => array(
+                    'Location.fk_id_cities' => $cityId
+                ),
+                'fields' => array(
+                    'Event.name',
+                    'Event.id'
+                )
+            ));
+            
+            return $events;
+        }
+        
+        return array();
+    }
 
     /**
      * Nadji sliku od lokacije ako nema slike u img_url polju kad dodajemo novi event
@@ -235,5 +266,14 @@ class Event extends AppModel {
         }
 
         return false;
+    }
+    
+    public function getImageForEvent($id = null) {
+        return $this->find('first', array(
+            'conditions' => array(
+                'Event.id' => $id
+            ),
+            'fields' => 'Event.img_url'
+        ));
     }
 }

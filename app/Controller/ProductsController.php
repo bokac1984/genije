@@ -65,7 +65,7 @@ class ProductsController extends AppController {
 
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->set('icon', 'barcode');
+        $this->set('icon', 'cart');
     }
 
     public $helpers =  array('DataTable.DataTable', 'Time');

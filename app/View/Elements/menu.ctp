@@ -47,20 +47,6 @@ $url = $this->request->here;
             </li>
         </ul>
     </li>
-    <li class="<?php echo (preg_match("/\/application/", $url))? 'active' : ''?>">
-        <a href="javascript:void(0)"><i class="clip-users"></i>
-            <span class="title"> Korisnici </span><i class="icon-arrow"></i>
-            <span class="selected"></span>
-        </a>
-        <ul class="sub-menu">
-            <li>
-                <?php echo $this->Html->link("Mapa korisnika", array('plugin' => null, 'controller' => 'application_users', 'action' => 'pregled')); ?>
-            </li>
-            <li class="<?php echo (preg_match("/\/application_users\/view/", $url))? 'active' : ''?>">
-                <?php echo $this->Html->link("Pregled korisnika", array('plugin' => null, 'controller' => 'application_users', 'action' => 'index')); ?>
-            </li>            
-        </ul>
-    </li>
     <li class="<?php echo (preg_match("/\/news/", $url))? 'active' : ''?>">
         <a href="javascript:void(0)"><i class="clip-note"></i>
             <span class="title"> Vijesti </span><i class="icon-arrow"></i>
@@ -76,7 +62,7 @@ $url = $this->request->here;
         </ul>
     </li>
     <li class="<?php echo (preg_match("/\/products/", $url))? 'active' : ''?>">
-        <a href="javascript:void(0)"><i class="fa fa-barcode"></i>
+        <a href="javascript:void(0)"><i class="fa clip-cart"></i>
             <span class="title"> Proizvodi </span><i class="icon-arrow"></i>
             <span class="selected"></span>
         </a>
@@ -89,6 +75,20 @@ $url = $this->request->here;
             </li>            
         </ul>
     </li>
+    <li class="<?php echo (preg_match("/\/tickets/", $url))? 'active' : ''?>">
+        <a href="javascript:void(0)"><i class="fa fa-barcode"></i>
+            <span class="title"> Kuponi </span><i class="icon-arrow"></i>
+            <span class="selected"></span>
+        </a>
+        <ul class="sub-menu">
+            <li>
+                <?php echo $this->Html->link("Kreiraj", array('plugin' => null, 'controller' => 'coupons', 'action' => 'add')); ?>
+            </li>
+            <li>
+                <?php echo $this->Html->link("Pregledaj", array('plugin' => null, 'controller' => 'coupons', 'action' => 'index')); ?>
+            </li>            
+        </ul>
+    </li>    
     <li class="">
         <a href="javascript:;">
             <i class="clip-cog-2"></i>
@@ -112,4 +112,18 @@ $url = $this->request->here;
             </li>
         </ul>
     </li>
+    <li class="<?php echo (preg_match("/\/application/", $url))? 'active' : ''?>">
+        <a href="javascript:void(0)"><i class="clip-users"></i>
+            <span class="title"> Korisnici </span><i class="icon-arrow"></i>
+            <span class="selected"></span>
+        </a>
+        <ul class="sub-menu">
+            <li>
+                <?php echo $this->Html->link("Mapa korisnika", array('plugin' => null, 'controller' => 'application_users', 'action' => 'pregled')); ?>
+            </li>
+            <li class="<?php echo (preg_match("/\/application_users\/view/", $url))? 'active' : ''?>">
+                <?php echo $this->Html->link("Pregled korisnika", array('plugin' => null, 'controller' => 'application_users', 'action' => 'index')); ?>
+            </li>            
+        </ul>
+    </li>    
 </ul>
