@@ -25,11 +25,10 @@ echo $this->Html->scriptBlock("FormValidator.init();", array('block'=>'scriptBot
                 <?php
                         echo $this->Form->input('username', array(
                             'label' => 'Username',
-                            'class' => 'form-control'
-                        ));
-                        echo $this->Form->input('full_name', array(
-                            'label' => 'Puno ime',
-                            'class' => 'form-control'
+                            'class' => 'form-control',
+                            'before' => '<div class="form-group">',
+                            'after' => '</div>',
+                            'required' => 'required'
                         ));
                 ?>
             
@@ -56,7 +55,7 @@ echo $this->Html->scriptBlock("FormValidator.init();", array('block'=>'scriptBot
         <div class="row">
             <div class="col-md-12">
                 <button class="btn btn-yellow btn-block" type="submit"> 
-                    Generiši tikete <i class="fa fa-arrow-circle-right"></i> 
+                    Novi QR poništavač <i class="fa fa-arrow-circle-right"></i> 
                 </button>
             </div>
         </div>
