@@ -31,6 +31,19 @@ $url = $this->request->here;
                     </li>
                 </ul>
             </li>
+            <li class="<?php echo (preg_match("/\/location_comments/", $url))? 'active' : ''?>">
+                <a href="javascript:;">
+                    QR poništavači <i class="icon-arrow"></i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <?php echo $this->Html->link("Dodaj novog", array('plugin' => null, 'controller' => 'coupon_checkers', 'action' => 'add')); ?>
+                    </li>
+                    <li>
+                        <?php echo $this->Html->link("Pregled svih", array('plugin' => null, 'controller' => 'coupon_checkers', 'action' => 'index')); ?>
+                    </li>                    
+                </ul>
+            </li>              
         </ul>
     </li>    
     <li class="<?php echo (preg_match("/\/events/", $url))? 'active' : ''?>">
@@ -137,19 +150,6 @@ $url = $this->request->here;
             </li>
             <li class="<?php echo (preg_match("/\/application_users\/view/", $url))? 'active' : ''?>">
                 <?php echo $this->Html->link("Pregled korisnika", array('plugin' => null, 'controller' => 'application_users', 'action' => 'index')); ?>
-            </li>  
-            <li class="<?php echo (preg_match("/\/location_comments/", $url))? 'active' : ''?>">
-                <a href="javascript:;">
-                    Korisnici za ponistavanje kodova <i class="icon-arrow"></i>
-                </a>
-                <ul class="sub-menu">
-                    <li>
-                        <?php echo $this->Html->link("Dodaj novog", array('plugin' => null, 'controller' => 'coupon_checkers', 'action' => 'add')); ?>
-                    </li>
-                    <li>
-                        <?php echo $this->Html->link("Pregled svih", array('plugin' => null, 'controller' => 'coupon_checkers', 'action' => 'index')); ?>
-                    </li>                    
-                </ul>
             </li>           
         </ul>
     </li>    
