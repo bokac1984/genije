@@ -153,3 +153,10 @@ div.flexslider {
 	font-family: "fontawesome" !important;
 	content: "\f104" !important;
 }
+
+.cifre {
+    font-size: 2em;
+    color: #888888;
+    direction: ltr;
+    font-family: 'Open+Sans', sans-serif;    
+}
