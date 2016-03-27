@@ -134,7 +134,7 @@ class DataTableComponent extends Component {
         $location = $this->base . '/locations/edit/' . $result[$model]['id'];
         $gal = $this->base . '/locations/gallery/' . $result[$model]['id'];
         $view = $this->base . '/locations/view/' . $result[$model]['id'];
-        $row = '<div class="visible-md visible-lg hidden-sm hidden-xs">
+        $row = '<div class="visible-md visible-lg visible-sm visible-xs">
                     <a href="' . $location . '" class="btn btn-xs btn-teal tooltips btn-edit" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
                         <a href="' . $view . '" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Pictures"><i class="fa fa-eye"></i></a>
                     <a href="' . $gal . '" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Pictures"><i class="fa fa-picture-o"></i></a>
@@ -146,7 +146,7 @@ class DataTableComponent extends Component {
     public function setEventsColumns($model, $result) {
         $event = $this->base . '/events/edit/' . $result[$model]['id'];
         $view = $this->base . '/events/view/' . $result[$model]['id'];
-        $row = '<div class="visible-md visible-lg hidden-sm hidden-xs">
+        $row = '<div class="visible-md visible-lg visible-sm visible-xs">
                     <a href="' . $event . '" class="btn btn-xs btn-teal tooltips btn-edit" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
                     <a href="' . $view . '" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Pictures"><i class="fa fa-eye"></i></a>
                     <a href="#" class="btn btn-xs btn-bricky tooltips btn-delete" data-placement="top" data-original-title="Remove" data-pk="' . $result[$model]['id'] . '" name=""><i class="fa fa-times fa fa-white"></i></a>
@@ -158,7 +158,7 @@ class DataTableComponent extends Component {
         $event = $this->base . '/news/edit/' . $result[$model]['id'];
         $gal = $this->base . '/news/images/' . $result[$model]['id'];
         $view = $this->base . '/news/view/' . $result[$model]['id'];
-        $row = '<div class="visible-md visible-lg hidden-sm hidden-xs">
+        $row = '<div class="visible-md visible-lg visible-sm visible-xs">
                     <a href="' . $event . '" class="btn btn-xs btn-teal tooltips btn-edit" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
                         <a href="' . $view . '" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Pictures"><i class="fa fa-eye"></i></a>
                         <a href="' . $gal . '" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Pictures"><i class="fa fa-picture-o"></i></a>
@@ -171,7 +171,7 @@ class DataTableComponent extends Component {
         $product = $this->base . '/products/edit/' . $result[$model]['id'];
         $gal = $this->base . '/products/view/' . $result[$model]['id'];
         $img = $this->base . '/products/gallery/' . $result[$model]['id'];
-        $row = '<div class="visible-md visible-lg hidden-sm hidden-xs">
+        $row = '<div class="visible-md visible-lg visible-sm visible-xs">
                     <a href="' . $product . '" class="btn btn-xs btn-teal tooltips btn-edit" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
                         <a href="' . $gal . '" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Pregled"><i class="fa fa-eye"></i></a>
                         <a href="' . $img . '" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Galerija"><i class="fa fa-picture-o"></i></a>
