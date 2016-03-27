@@ -76,23 +76,18 @@ class Location extends AppModel {
     );
     
     /**
-     * 
+     * Snima lokaciju i veze sa tipovima lokacija
      * @param type $data
-     * @return string
+     * @return string HTTP status code
      */
-    public function saveNewLocation($data = array()) {
-        $description = array(
-            'html_text' => $data['Location']['html_text']
-        );
-        unset($data['Location']['html_text']);
-
+    public function saveNewLocation($data = array()) {      
         $dataToSave = array(
             'Location' => $data['Location'],
             'Contact' => $this->Contact->prepareContacts($data['Contact']),
-            'LocationDescription' => $description,
+            'LocationDescription' => $data['LocationDescription'],
         );
         
-        if ($this->saveAll($dataToSave)) {
+        if ($this->saveAll($dataToSave, array('deep' => true))) {
             $id = $this->getLastInsertID();
             if ($this->MapObjectSubtypeRelation->saveObjectSubtypes($id, $data['MapObjectSubtypeRelation']['sub_types'])) {
                 return '200';
@@ -280,6 +275,20 @@ class Location extends AppModel {
         }
         
         return $temp;
+    }
+    
+    /**
+     * 
+     * @param int $status
+     * @return type
+     */
+    public function getLocationsByStatus($status) {
+        return $this->find('list', array(
+            'conditions' => array(
+                'Location.fk_id_cities' => 1,
+                'Location.online_status' => $status
+            )
+        ));
     }
     
     public function locationsPerCity() {
