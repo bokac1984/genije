@@ -169,7 +169,7 @@ echo $this->Html->css('/assets/plugins/bootstrap-modal/css/bootstrap-modal.css',
                     <strong>Detaljan opis</strong> <span class="symbol required"></span> 
                 </label>
                 <div class="summernote"></div>
-                <textarea class="form-control no-display" id="html_text" name="data[Location][html_text]" cols="10" rows="10"></textarea>          
+                <textarea class="form-control no-display" id="html_text" name="data[LocationDescription][0][html_text]" cols="10" rows="10"></textarea>          
             </div>
         </div>
     </div>
