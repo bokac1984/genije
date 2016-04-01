@@ -53,6 +53,20 @@ class MyHtmlHelper extends HtmlHelper {
         return "<span class=\"label label-sm {$displayValue['class']}\">{$displayValue['value']}</span>";
     }
     
+    public function displayCouponCheckerStatus($status) {
+        $displayValue = array(
+            'class' => 'label-danger',
+            'value' => 'Neaktivan'
+        );
+        if ($status) {
+            $displayValue = array(
+                'class' => 'label-success',
+                'value' => 'Aktivan'
+            );
+        }
+        return "<span class=\"label label-sm {$displayValue['class']}\">{$displayValue['value']}</span>";
+    }    
+    
     
     public function displayStatusNotify($status) {
         $displayValue = array(
@@ -63,7 +77,7 @@ class MyHtmlHelper extends HtmlHelper {
             case 0: 
                 $displayValue = array(
                     'class' => 'label-danger',
-                    'value' => 'Deleted'
+                    'value' => 'Obrisana'
                 );
                 break;
             case 1: 
@@ -121,4 +135,52 @@ class MyHtmlHelper extends HtmlHelper {
         }
         return "<span class=\"label label-sm label-success\">Da</span>";
     }
+    
+    /**
+     * 
+     * @param type $value
+     * @param type $key
+     * @param type $url
+     * @return string
+     */
+    public function onlineStatus($value, $key, $url) {
+        $status = 'Nepoznato';
+        switch ($value) {
+            case 0:
+                $status = '<a href="#" data-name="can_do_checks" data-type="select" data-url="'.$url.'" class="editable editable-click can-do-checks label label-sm label-danger" data-pk="'.$key.'" data-value="0" data-title="Promjeni dozvolu">Nedozvoljeno</a>';
+                break;
+            case 1:
+                $status = '<a href="#" data-name="can_do_checks" data-type="select" data-url="'.$url.'" class="editable editable-click can-do-checks label label-sm label-success" data-pk="'.$key.'" data-value="1" data-title="Promjeni dozvolu">Dozvoljeno</a>';
+                break;
+            default:
+                break;
+        }
+        return $status;
+    } 
+    
+    /**
+     * Statusi banera
+     * 
+     * @param int $value Vrijednost status
+     * @param int $key ID datog bannera
+     * @param string $url adresa na kojoj ce se to mijenjati
+     * @return string
+     */
+    public function bannerStatus($value, $key, $url) {
+        $status = 'Nepoznato';
+        switch ($value) {
+            case 0:
+                $status = '<a href="#" data-name="status" data-type="select" data-url="'.$url.'" class="editable editable-click banner-status label label-sm label-danger" data-pk="'.$key.'" data-value="0" data-title="Promjeni status">Offline</a>';
+                break;
+            case 1:
+                $status = '<a href="#" data-name="status" data-type="select" data-url="'.$url.'" class="editable editable-click banner-status label label-sm label-warning" data-pk="'.$key.'" data-value="1" data-title="Promjeni status">Pending</a>';
+                break;
+            case 2:
+                $status = '<a href="#" data-name="status" data-type="select" data-url="'.$url.'" class="editable editable-click banner-status label label-sm label-success" data-pk="'.$key.'" data-value="2" data-title="Promjeni status">Online</a>';
+                break;            
+            default:
+                break;
+        }
+        return $status;
+    }     
 }

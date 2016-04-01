@@ -13,17 +13,15 @@ class UsersController extends AppController {
     }
 
     public function isAuthorized($user) {
+        if (in_array($this->action, array('add', 'delete', 'edit')) 
+                && ($user['group_id'] === '1' || $user['group_id'] === '2')) {
+            return true;
+        }
+        
         if (in_array($this->action, array('password', 'profile'))) {
             return true;
         }
-
-        // The owner of a post can edit and delete it
-        if (in_array($this->action, array('edit', 'delete'))) {
-            $postId = (int) $this->request->params['pass'][0];
-            if ($this->Post->isOwnedBy($postId, $user['id'])) {
-                return true;
-            }
-        }
+        
         return parent::isAuthorized($user);
     }
 
@@ -88,7 +86,19 @@ class UsersController extends AppController {
         $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
       }
     }
-    $groups = $this->User->Group->find('list');
+    
+    // ako nije admin neka samo daje one koje smije da kreira tj
+    $conditions = array();
+    if ($this->Auth->user('group_id') !== '1') {
+        $conditions = array(
+            'conditions' => array(
+                'Group.id' => 3
+            )
+        );
+    }
+    
+
+    $groups = $this->User->Group->find('list', $conditions);
     $this->set(compact('groups'));
   }
   /**

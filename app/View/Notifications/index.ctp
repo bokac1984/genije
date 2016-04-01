@@ -17,7 +17,7 @@ $this->assign('breadcrumb-icon', $icon);
                 <th><?php echo $this->Paginator->sort('title', 'Naslov'); ?></th>
                 <th><?php echo $this->Paginator->sort('text', 'Text'); ?></th>
                 <th><?php echo $this->Paginator->sort('date'); ?></th>
-                <th><?php echo $this->Paginator->sort('fk_id_users', 'ID korisnika'); ?></th>
+                <th><?php echo $this->Paginator->sort('ApplicationUser.id', 'Korisnik'); ?></th>
                 <th><?php echo $this->Paginator->sort('status'); ?></th>
                 <th class="actions"><?php echo __('Actions'); ?></th>
             </tr>
@@ -30,7 +30,7 @@ $this->assign('breadcrumb-icon', $icon);
                     <td><?php echo h($notification['Notification']['text']); ?>&nbsp;</td>
                     <td>
                         <?php echo $this->Time->format($notification['Notification']['date'], '%d.%m.%Y %H:%M %p'); ?>&nbsp;</td>
-                    <td><?php echo h($notification['Notification']['fk_id_users']); ?>&nbsp;</td>
+                    <td><?php echo $this->Html->link($notification['ApplicationUser']['display_name'], array('controller' => 'application_users', 'action' => 'view', $notification['ApplicationUser']['id']));  ?>&nbsp;</td>
                     <td><?php echo $this->MyHtml->displayStatusNotify($notification['Notification']['status']); ?>&nbsp;</td>
                     <td class="actions">
                         <?php echo $this->Html->link(__('View'), array('action' => 'view', $notification['Notification']['id'])); ?>

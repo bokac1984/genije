@@ -21,6 +21,19 @@ class LocationCommentsController extends AppController {
     
     public $helpers = array('Js', 'Star');
 
+    public function isAuthorized($user) {
+        //debug($user);exit();
+        if ($this->locationOperator || $this->operator) {
+            return true;
+        }
+        
+        if (in_array($this->action, array('add', 'delete', 'index')) && $user['group_id'] === 2) {
+            return true;
+        }
+        
+        return parent::isAuthorized($user);
+    }    
+    
     /**
      * index method
      *
@@ -28,6 +41,19 @@ class LocationCommentsController extends AppController {
      */
     public function index() {
         $this->LocationComment->recursive = 0;
+        
+        if ($this->locationOperator || $this->operator) {
+            $this->Paginator->settings = array(
+                'limit' => 25,
+                'contain' => array(
+                    'ApplicationUser' => array(),
+                    'Location' => array()
+                ),
+                'order' => array(
+                    'LocationComment.datetime DESC'
+                )
+            );
+        }
         $this->set('LocationComments', $this->Paginator->paginate());
     }
 

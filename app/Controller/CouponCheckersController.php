@@ -19,7 +19,20 @@ class CouponCheckersController extends AppController {
      */
     public $components = array('Paginator', 'Flash', 'Session');
     
-    public $helpers =  array('Time');
+    public $helpers =  array('Time', 'MyHtml');
+    
+    public function beforeFilter() {
+        parent::beforeFilter();
+        $this->set('icon', 'location');
+    }    
+    
+    public function isAuthorized($user) {
+        if ($user['group_id'] === 2 || $user['group_id'] == 3) {
+            return true;
+        }
+        
+        return parent::isAuthorized($user);
+    }    
 
     /**
      * index method
@@ -27,7 +40,13 @@ class CouponCheckersController extends AppController {
      * @return void
      */
     public function index() {
+        //debug(Configure::read('Location.status.Online'));exit();
         $this->CouponChecker->recursive = 0;
+        $this->Paginator->settings = array(
+            'order' => array(
+                'CouponChecker.creation_date ASC'
+            )
+        );        
         $this->set('mapObjectsUsers', $this->Paginator->paginate());
     }
 
@@ -45,10 +64,17 @@ class CouponCheckersController extends AppController {
         $options = array(
             'conditions' => array('CouponChecker.' . $this->CouponChecker->primaryKey => $id),
             'contain' => array(
-                'CouponCheckerLogin'
+                'CouponCheckerLogin',
+                'Location' => array(
+                    'fields' => array(
+                        'Location.id',
+                        'Location.name',
+                        'Location.img_url'
+                    )
+                )
             )
         );
-        $this->set('mapObjectsUser', $this->CouponChecker->find('first', $options));
+        $this->set('couponChecker', $this->CouponChecker->find('first', $options));
     }
 
     /**
@@ -59,24 +85,21 @@ class CouponCheckersController extends AppController {
     public function add() {
         if ($this->request->is('post')) {
             $this->CouponChecker->create();
-            $code = $this->CouponChecker->generateRandomString();
+            $code = $this->CouponChecker->getRadnomActivationCode();
             $this->request->data['CouponCheckerLogin'] = array(
                 'activation_code' => $code,
-                'activation_status' => 0
+                'activation_status' => 0,
+                'full_name' => ''
             );
             
             if ($this->CouponChecker->saveAll($this->request->data)) {
-                $this->Flash->success(__('Uspesno sacuvano.'));
+                $this->Flash->success(__('Uspješno sačuvan korisnik.'));
                 return $this->redirect(array('action' => 'index'));
             } else {
-                $this->Flash->error(__('Please, try again.'));
+                $this->Flash->error(__('Nešto je pošlo po zlu, nije ni nama jasno, pogledaćemo što prije!'));
             }
         }
-        $locations = $this->CouponChecker->Location->find('list', array(
-            'conditions' => array(
-                'Location.fk_id_cities' => 1
-            )
-        ));
+        $locations = $this->CouponChecker->Location->getLocationsByStatus(Configure::read('Location.status.Online'));
         $this->set(compact('locations'));
     }
 
@@ -127,4 +150,43 @@ class CouponCheckersController extends AppController {
         return $this->redirect(array('action' => 'index'));
     }
 
+    
+    /* AJAX METHOD */
+    
+    /**
+     * Prima podatke u obliku
+     *  array(
+            'name' => 'can_do_checks',
+            'value' => '0',
+            'pk' => '1'
+        )
+     * @throws NotFoundException
+     */
+    public function checkPermission() {
+        $this->request->allowMethod('ajax');
+        $this->viewClass = 'Json';
+        $response = array(
+            'status' => '404',
+            'value' => 'label-danger'
+        );
+
+        $this->CouponChecker->id = $this->request->data['pk'];
+        if (!$this->CouponChecker->exists()) {
+            throw new NotFoundException(__('Ne postoji korisnik!'));
+        }
+        
+        $dataToSave = array(
+            'id' => $this->request->data['pk'],
+            $this->request->data['name'] => $this->request->data['value']
+        );
+        
+        if ($this->CouponChecker->save($dataToSave)) {
+        $response = array(
+            'status' => '200',
+            'value' => 'label-success'
+        );
+        }
+        
+        $this->set(compact('response'));
+    }  
 }

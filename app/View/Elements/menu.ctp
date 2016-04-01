@@ -89,7 +89,7 @@ $url = $this->request->here;
         </ul>
     </li>
     <li class="<?php echo (preg_match("/\/tickets/", $url))? 'active' : ''?>">
-        <a href="javascript:void(0)"><i class="fa fa-barcode"></i>
+        <a href="javascript:void(0)"><i class="fa fa-ticket"></i>
             <span class="title"> Kuponi </span><i class="icon-arrow"></i>
             <span class="selected"></span>
         </a>
@@ -103,7 +103,7 @@ $url = $this->request->here;
         </ul>
     </li>
     <li class="<?php echo (preg_match("/\/notifications/", $url))? 'active' : ''?>">
-        <a href="javascript:void(0)"><i class="fa fa-barcode"></i>
+        <a href="javascript:void(0)"><i class="fa clip-notification"></i>
             <span class="title"> Obaviještenja </span><i class="icon-arrow"></i>
             <span class="selected"></span>
         </a>
@@ -137,6 +137,19 @@ $url = $this->request->here;
                     </li>
                 </ul>
             </li>
+            <li class="<?php echo (preg_match("/\/banners/", $url))? 'active' : ''?>">
+                <a href="javascript:;">
+                    Baneri <i class="icon-arrow"></i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <?php echo $this->Html->link("Dodaj novi", array('plugin' => null, 'controller' => 'banners', 'action' => 'add')); ?>
+                    </li>
+                    <li>
+                        <?php echo $this->Html->link("Pregled svih", array('plugin' => null, 'controller' => 'banners', 'action' => 'index')); ?>
+                    </li>                    
+                </ul>
+            </li>             
         </ul>
     </li>
     <li class="<?php echo (preg_match("/\/application/", $url))? 'active' : ''?>">

@@ -79,7 +79,11 @@ class LocationsController extends AppController {
     }
     
     public function isAuthorized($user) {
-        if ($user['group_id'] === 2 || $user['group_id'] == 3) {
+        if ($user['group_id'] === 2 || $user['group_id'] === 3) {
+            return true;
+        }
+        
+        if (in_array($this->action, array('add', 'delete')) && $user['group_id'] === 1) {
             return true;
         }
         
@@ -235,20 +239,36 @@ class LocationsController extends AppController {
     }
     
     public function updateContactInfo() {
-        $this->autoRender = false;
+        $this->request->allowMethod('ajax');
+        $this->viewClass = 'Json';
+        $this->Location->id = isset($this->request->data['pk']) ? $this->request->data['pk'] : '-1';
+        if (!$this->Location->exists()) {
+            throw new NotFoundException(__('Ne postoji lokacija'));
+        }     
+        
+        $response = array(
+            'status' => '200',
+            'value' => 'prayno'
+        );
+        
         if ($this->request->is('ajax')){
             $data = array(
                 'fk_id_contact_types' => $this->request->data['tip'],
                 'fk_id_map_objects' => $this->request->data['pk'],
                 'value' => $this->request->data['value'],
-                'id' => $this->request->data['id']
+                'id' => isset($this->request->data['id']) ? $this->request->data['id'] : ''
             );
+            
             if ($this->Location->Contact->save($data)) {
-                echo 'uspej';
+
+                $response['value'] = $this->Location->Contact->getLastInsertID() !== null ?
+                        $this->Location->Contact->getLastInsertID() : $data['id'] ;
             } else {
-                echo 'ne radi';
+                $response['status'] = '404';
             }
-        } 
+        }
+        
+        $this->set(compact('response'));
     }
     
     public function updateDescription() {
@@ -259,9 +279,9 @@ class LocationsController extends AppController {
                 'html_text' => $this->request->data['value']
             );
             if ($this->Location->LocationDescription->save($data)) {
-                echo 'upesno sacuvano';
+                echo '200';
             } else {
-                echo 'ne radi description';
+                echo '404';
             }
         }
     }
@@ -295,9 +315,9 @@ class LocationsController extends AppController {
             );
 
             if ($this->Location->save($data)) {
-                echo 'uspjeh';
+                echo '200';
             } else {
-                echo 'ne radi';
+                echo '404';
             }
             
         }

@@ -6,6 +6,7 @@ $this->assign('crumb', 'Pregled kometara');
 
 $this->assign('title', 'Komentari');
 $this->assign('page-title', 'Komentari <small>pregled podataka</small>');
+debug($LocationComments);
 ?>
 <div class="row">
     <div class="col-sm-12 col-md-12">

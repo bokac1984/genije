@@ -10,7 +10,7 @@ class Notification extends AppModel {
     public $primaryKey = 'id';
     public $displayField = 'title';
     
-    public $hasMany = array(
+    public $belongsTo = array(
         'ApplicationUser' => array(
             'className' => 'ApplicationUser',
             'foreignKey' => 'fk_id_users',

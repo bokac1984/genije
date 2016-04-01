@@ -79,6 +79,12 @@ $(document).ready(function(){
             params.tip = $(this).attr('data-tip');
             params.id = $(this).attr('data-id');
             return params;
+        },
+        success: function(response, newValue) {
+            if (response !== '') {
+                $('#contact_mobile').attr('data-id', response.value);
+            }
+            if(response.status == 'error') return response.msg; //msg will be shown in editable form
         }
     });
     $('#contact_phone').editable({
@@ -86,21 +92,41 @@ $(document).ready(function(){
             params.tip = $(this).attr('data-tip');
             params.id = $(this).attr('data-id');
             return params;
-        }
+        },
+        success: function(response, newValue) {
+            if (response.status === '200') {
+                $('#contact_phone').attr('data-id', response.value);
+            }
+            if(response.status == 'error') return response.msg; //msg will be shown in editable form
+        }        
     });
     $('#contact_web').editable({
         params: function (params) {
             params.tip = $(this).attr('data-tip');
             params.id = $(this).attr('data-id');
             return params;
-        }
+        },
+        success: function(response, newValue) {
+            if (response.status === '200') {
+                $('#contact_web').attr('data-id', response.value);
+            }
+            console.log(response);
+            if(response.status == 'error') return response.msg; //msg will be shown in editable form
+        }        
     });
     $('#contact_email').editable({
         params: function (params) {
             params.tip = $(this).attr('data-tip');
             params.id = $(this).attr('data-id');
             return params;
-        }
+        },
+        success: function(response, newValue) {
+            console.log(response);
+            if (response.status === '200') {
+                $('#contact_email').attr('data-id', response.value);
+            }
+            if(response.status == '404') return response.msg; //msg will be shown in editable form
+        }        
     });
     
     var vratiParametre = function(params){

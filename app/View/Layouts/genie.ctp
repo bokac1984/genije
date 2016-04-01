@@ -89,7 +89,10 @@
                     </div>
                     <!-- end: MAIN MENU TOGGLER BUTTON -->
                     <!-- start: MAIN NAVIGATION MENU -->
-                        <?php echo $this->element('menu'); ?>
+                        <?php 
+                        //debug($menuElement);exit();
+                        echo $this->element($menuElement); 
+                        ?>
                     <!-- end: MAIN NAVIGATION MENU -->
                 </div>
                 <!-- end: SIDEBAR -->

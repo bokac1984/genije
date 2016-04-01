@@ -34,6 +34,10 @@ App::uses('DataTableRequestHandlerTrait', 'DataTable.Lib');
 class AppController extends Controller {
 
     use DataTableRequestHandlerTrait;
+    
+    public $admin = false;
+    public $locationOperator = false;
+    public $operator = false;
 
     public $components = array(
         'Auth' => array(
@@ -66,12 +70,15 @@ class AppController extends Controller {
             'controller' => 'users',
             'action' => 'login'
         );
-        $this->Auth->authError = __('Morate biti ulogovani da vidite tu stranicu.');
+        $this->Auth->authError = __('Nemate dozvolu da vidite tu stranicu.');
         $this->Auth->loginError = __('Korisničko ime ili lozinaka nisu validni.');
         $this->Auth->flash['element'] = "flash_error";
+       
+        $this->menuBuilder($this->Auth->user('group_id'));
         
-      
+        $this->set('loggedInUser', $this->Auth->user());
         
+        $this->checkPermissions();
         // zabrani sve stranice, sve su privatne
         $this->Auth->deny();
         
@@ -132,6 +139,36 @@ class AppController extends Controller {
                 }
             }
             exit();
+        }
+    }
+    
+    private function menuBuilder($userLevel) {
+        $menu = '';
+        
+        if ($userLevel == 1) {
+            $menu = 'menu';
+        } else if ($userLevel == 2) {
+            $menu = 'locationEditor';
+        } else {
+            $menu = 'locationEditor';
+        }
+        
+        $this->set('menuElement', $menu);
+    }
+    
+    public function checkPermissions() {
+        switch ($this->Auth->user('Group.group_name')) {
+            case 'Operator':
+                $this->operator = true;
+                break;
+            case 'LocationOperator':
+                $this->locationOperator = true;
+                break;
+            case 'Administrator':
+                $this->admin = true;
+                break;
+            default:
+                break;
         }
     }
 

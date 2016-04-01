@@ -22,8 +22,12 @@ class ApplicationUser extends AppModel {
             'conditions' => '',
             'fields' => '',
             'order' => ''
-        )
-    );
+        ),
+        'Notification' => array(
+            'className' => 'Notification',
+            'foreignKey' => 'fk_id_users'
+        )        
+    );  
 
     public function getAllUsers() {
         $users = $this->find('all', array(

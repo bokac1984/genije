@@ -162,9 +162,6 @@ var FormValidator = function () {
                 "data[Location][fk_id_cities]": {
                     required: true
                 },
-                "data[Location][lid]": {
-                    required: true
-                },
                 "data[MapObjectSubtypeRelation][sub_types][]": {
                     required: true
                 },
@@ -182,8 +179,8 @@ var FormValidator = function () {
                 },
                 "data[Location][latitude]": {
                     required: true
-                },
-                "data[Location][html_text]": "getEditorValue"
+                }//,
+//                "data[Location][html_text]": "getEditorValue"
             },
             messages: {
                 "data[Location][name]": "Molimo unesite naziv lokacije",
@@ -199,10 +196,10 @@ var FormValidator = function () {
                 "data[Location][latitude]": {
                     required: "Odaberite neku lokaciju na mapi da bi se učitala geografska dužina"
                 },                 
-                "data[MapObjectSubtypeRelation][sub_types][]": "Morate izabrati bar jedan tip objekta kome lokacija pripada",
-                "data[Location][html_text]": {
-                    required: "Unesite detaljan opis lokacije"
-                }
+                "data[MapObjectSubtypeRelation][sub_types][]": "Morate izabrati bar jedan tip objekta kome lokacija pripada"//,
+//                "data[Location][html_text]": {
+//                    required: "Unesite detaljan opis lokacije"
+//                }
             },
             invalidHandler: function (event, validator) { //display error alert on form submit
                 successHandler.hide();
