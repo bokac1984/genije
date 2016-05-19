@@ -2,6 +2,11 @@
 
 App::uses('AppController', 'Controller');
 
+/**
+ * Users Controller
+ *
+ * @property User $User
+ */
 class UsersController extends AppController {
 
     public $uses = array('User');
@@ -26,8 +31,13 @@ class UsersController extends AppController {
     }
 
     public function index() {
-        $this->ApplicationUser->recursive = 0;
-        $this->set('users', $this->paginate());
+        $this->Paginator->settings = array(
+            'limit' => 10,
+            'order' => array(
+                'User.creation_date DESC'
+            )
+        );        
+        $this->set('users', $this->Paginator->paginate());
     }
 
 
@@ -78,13 +88,24 @@ class UsersController extends AppController {
    */
   public function add() {
     if ($this->request->is('post')) {
-      $this->User->create();
-      if ($this->User->save($this->request->data)) {
-        $this->Session->setFlash(__('The user has been saved'));
-        $this->redirect(array('action' => 'index'));
-      } else {
-        $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
-      }
+        $this->request->data['User']['group_id'] = 3;
+        $this->User->set($this->request->data);
+        //debug($this->request->data);exit();
+        if ($this->User->validates()) {
+            $filename = $this->uploadFile($this->request->data['User']['img'], '/photos-profiles/');
+            if ($filename !== '') {
+                $this->request->data['User']['img'] = $filename;
+            }
+            $this->User->create();
+            if ($this->User->save($this->request->data, false)) {
+                $this->Flash->success(__('Korisnik je uspjesno dodat.'));
+                return $this->redirect(array('action' => 'index'));
+            } else {
+                $this->Flash->error(__('Korisnika nije moguće dodati, molimo Vas obratite se administratoru!'));
+            }
+        } else {
+            $this->Flash->error(__('Korisnika nije moguće dodati, molimo Vas obratite se administratoru!'));
+        }
     }
     
     // ako nije admin neka samo daje one koje smije da kreira tj
@@ -152,10 +173,55 @@ class UsersController extends AppController {
         if ($this->request->is('post') || $this->request->is('put')) {
             
         } else {
-          $user= $this->User->read(null, $id);
-          unset($user['User']['password']);
-          $this->set(compact('user'));
+            $this->request->data = $this->User->read(null, $id);
+            $birthday = $this->User->splitBirthday($this->request->data['User']['birth_date']);
+            unset($this->request->data['User']['password']);
+            $this->set(compact('birthday'));
         } 
+    }
+    
+    /**
+     * Pregled korisnika i uredjivanje 
+     * 
+     * @param int $id
+     */
+    public function overview($id = null) {
+        $this->User->id = $id;
+        if (!$this->User->exists()) {
+            throw new NotFoundException(__('Nepostojeći korisnik!!!'));
+        }  
+        if ($this->request->is('post') || $this->request->is('put')) {
+            debug($this->request->data);
+//            if ($this->User->save($this->request->data)) {
+//                $this->Session->setFlash(__('The user has been saved'));
+//                $this->redirect(array('action' => 'index'));
+//            } else {
+//                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+//            }
+        } else {
+            $this->request->data = $this->User->read(null, $id);
+        }   
+        
+        $City = ClassRegistry::init('City');
+        
+        $cities = $City->find('list');
+        $this->request->data = $this->User->read(null, $id);
+        $birthday = $this->User->splitBirthday($this->request->data['User']['birth_date']);
+        $location = $this->User->Location->find('first', array(
+            'conditions' => array(
+                'Location.id' => $this->request->data['User']['map_object_id']
+            )
+        ));
+        $subscription = $this->User->Subscription->find('all', array(
+            'conditions' => array(
+                'Subscription.admin_users_id' => $id
+            ),
+            'contain' => array(
+                'Plan'
+            )
+        ));
+        unset($this->request->data['User']['password']);
+        $this->set(compact('birthday', 'cities', 'location', 'subscription'));
     }
   /**
    * delete method
@@ -180,6 +246,71 @@ class UsersController extends AppController {
     $this->Session->setFlash(__('User was not deleted'));
     $this->redirect(array('action' => 'index'));
   }
+  
+    public function listLocations() {
+        $this->viewClass = 'Json';
+        $city = $this->request->data['city'];
+        
+        $locationsForCity = $this->User->Location->getCityLocations($city);
+        $this->set(compact('locationsForCity'));
+    }  
+    
+    public function saveUserLocation() {
+        $this->viewClass = 'Json';
+        
+        $data = array( 
+            'id' => $this->request->data['user'],
+            'map_object_id' => $this->request->data['location']
+        );
+        
+        if ($this->User->save($data)) {
+            $location = $this->User->Location->find('first', array(
+                'conditions' => array(
+                    'Location.id' => $data['map_object_id']
+                ),
+                'fields' => array(
+                    'Location.id', 'Location.name'
+                )
+            ));
+            
+            $this->set(compact('location'));
+        } else {
+            echo 'ne radi';
+        }
+    } 
+
+    /**
+     * Ajax metoda za cuvanje pretplate
+     */
+    public function savePlan() {
+        $this->viewClass = 'Json';
+        //debug($this->request->data);exit();
+        $data = array( 
+            'plans_id' => $this->request->data['plan'],
+            'admin_users_id' => $this->request->data['user'],
+            'start_date' => $this->User->getDataSource()->expression('NOW()'),
+            'end_date' => $this->User->getDataSource()->expression('NOW() + INTERVAL 1 MONTH')
+        );
+        
+        if (!$this->User->Subscription->subExists($data['admin_users_id'])) {
+            throw new NotFoundException(__('Ovaj korisnik ima pretplatu!!!'));
+        } 
+        
+        if ($this->User->Subscription->save($data)) {
+            $subscription = $this->User->Subscription->find('all', array(
+                'conditions' => array(
+                    'Subscription.admin_users_id' => $data['admin_users_id']
+                ),
+                'contain' => array(
+                   'Plan'
+               )
+            ));
+            
+            $this->set(compact('subscription'));
+        } else {
+            echo 'ne radi';
+        }
+    } 
   // obrisati kasnije neka za sad stoji da imam evidenciju sta je uradjeno
 //    public function initDB() {
 //        $group = $this->User->Group;

@@ -158,12 +158,32 @@ $url = $this->request->here;
             <span class="selected"></span>
         </a>
         <ul class="sub-menu">
-            <li>
-                <?php echo $this->Html->link("Mapa korisnika", array('plugin' => null, 'controller' => 'application_users', 'action' => 'pregled')); ?>
+            <li class="<?php echo (preg_match("/\/location_comments/", $url))? 'active' : ''?>">
+                <a href="javascript:;">
+                    Mobile korisnici <i class="icon-arrow"></i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <?php echo $this->Html->link("Mapa korisnika", array('plugin' => null, 'controller' => 'application_users', 'action' => 'pregled')); ?>
+                    </li>
+                    <li class="<?php echo (preg_match("/\/application_users\/view/", $url))? 'active' : ''?>">
+                        <?php echo $this->Html->link("Pregled korisnika", array('plugin' => null, 'controller' => 'application_users', 'action' => 'index')); ?>
+                    </li>           
+                </ul>
             </li>
-            <li class="<?php echo (preg_match("/\/application_users\/view/", $url))? 'active' : ''?>">
-                <?php echo $this->Html->link("Pregled korisnika", array('plugin' => null, 'controller' => 'application_users', 'action' => 'index')); ?>
-            </li>           
-        </ul>
+            <li class="<?php echo (preg_match("/\/banners/", $url))? 'active' : ''?>">
+                <a href="javascript:;">
+                    Administracija <i class="icon-arrow"></i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <?php echo $this->Html->link("Dodaj novi", array('plugin' => null, 'controller' => 'users', 'action' => 'add')); ?>
+                    </li>
+                    <li>
+                        <?php echo $this->Html->link("Pregled svih", array('plugin' => null, 'controller' => 'users', 'action' => 'index')); ?>
+                    </li>                    
+                </ul>
+            </li>             
+        </ul>        
     </li>    
 </ul>

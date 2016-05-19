@@ -10,6 +10,7 @@ App::uses('File', 'Utility');
  * @property City $City
  * @property LocationComment $LocationComment
  * @property LocationImage $LocationImage
+ * @property User $User 
  */
 class Location extends AppModel {
        
@@ -59,6 +60,10 @@ class Location extends AppModel {
             'className' => 'City',
             'foreignKey' => 'fk_id_cities',
         ),
+        'User' => array(
+            'className' => 'User',
+            'foreignKey' => 'map_object_id',
+        )
     );
     
     /**
@@ -237,7 +242,8 @@ class Location extends AppModel {
         $lokOut = array();
         $lokacije = $this->find('all', array(
             'conditions' => array(
-                'Location.fk_id_cities' => $cityId
+                'Location.fk_id_cities' => $cityId,
+                'Location.online_status' => 2
             ),
             'fields' => array(
                 'Location.id',

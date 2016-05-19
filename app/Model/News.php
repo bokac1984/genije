@@ -83,6 +83,10 @@ class News extends AppModel {
         return 0;
     }
     
+    public function countPublishedNews($userId = null) {
+        
+    }
+    
     
     public function saveImageData($id, $filename = '') {
         if ('' !== $filename) {

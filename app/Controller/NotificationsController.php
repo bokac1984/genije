@@ -35,7 +35,6 @@ class NotificationsController extends AppController {
      * @return void
      */
     public function index() {
-        $this->Notification->recursive = 0;
         $this->Paginator->settings = array(
             'limit' => 15,
             'contain' => array(

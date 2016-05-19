@@ -177,7 +177,7 @@
                 Main.init();
             });
         </script>
-        <?php //echo $this->element('sql_dump'); ?>
+        <?php echo $this->element('sql_dump'); ?>
     </body>
     <!-- end: BODY -->
 </html>

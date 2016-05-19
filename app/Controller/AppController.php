@@ -51,7 +51,8 @@ class AppController extends Controller {
         'Session',
         'RequestHandler',
         'Cookie',
-        'Upload'
+        'Upload',
+        'Paginator'
     );
 
     public function beforeFilter() {

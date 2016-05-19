@@ -16,10 +16,7 @@ $url = $this->request->here;
         </a>
         <ul class="sub-menu">
             <li>
-                <?php echo $this->Html->link("Pregled Lokacija", array('plugin' => null, 'controller' => 'locations', 'action' => 'index')); ?>
-            </li>
-            <li>
-                <?php echo $this->Html->link("Moja lokacija", array('plugin' => null, 'controller' => 'locations', 'action' => 'add')); ?>
+                <?php echo $this->Html->link("Moja lokacija", array('plugin' => null, 'controller' => 'locations', 'action' => 'mine')); ?>
             </li>            
             <li class="<?php echo (preg_match("/\/location_comments/", $url))? 'active' : ''?>">
                 <a href="javascript:;">

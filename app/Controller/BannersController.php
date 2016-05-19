@@ -159,41 +159,60 @@ class BannersController extends AppController {
     }
 
     public function thumb() {
-        $this->autoRender = false;
-        $folder = new Folder('/photos/thumbnails', true, 0777);
-        $dirPath = WWW_ROOT . 'photos' . DS . 'banners';
-        $dirPhoto = WWW_ROOT . 'photos' . DS;
-        $dirPhotoExit = WWW_ROOT . 'photos' . DS . 'thumbnails' . DS;
-        echo "<br>";
-        $i = 0;
-        $dir = new DirectoryIterator(dirname($dirPath));
-        foreach ($dir as $fileinfo) {
+        if ($this->request->is(array('post', 'put'))) {
+            $sourceDir = !empty($this->request->data['Banner']['source']) ?
+                    $this->request->data['Banner']['source'] :
+                    'photos';
+            $destinationDir = !empty($this->request->data['Banner']['thumb_folder']) ?
+                    $this->request->data['Banner']['thumb_folder'] :
+                    'thumbnails';
+            $percentage = $this->request->data['Banner']['percent'];
 
-            if ($fileinfo->isFile()) {
-                $i++;
-                $fileName = $fileinfo->getFilename();
-                $ext = $fileinfo->getExtension();
-                echo $fileName . " $i <br>";
-                $destination = $dirPhotoExit . $fileName;
-                $source = $dirPhoto . $fileName;
-                if (file_exists($destination)) {
-                    echo "The file $destination exists <br>";
-                    continue;
+            $folderForThumbnails = new Folder($sourceDir . DS . $destinationDir, true, 0777);
+            $dirPath = WWW_ROOT . $sourceDir;
+            $dirPhoto = WWW_ROOT . $sourceDir . DS;
+            $dirPhotoExit = WWW_ROOT . $sourceDir . DS . $destinationDir . DS;
+
+            $folderStructure = array(
+                $dirPath,
+                $dirPhotoExit
+            );
+            $i = 0;
+            $slike = array();
+            $neuspjele = array();
+
+
+            $dir = new FilesystemIterator($dirPath, FilesystemIterator::SKIP_DOTS);       
+            foreach ($dir as $fileinfo) {
+
+                if ($fileinfo->isFile()) {
+                    $i++;
+                    $fileName = $fileinfo->getFilename();
+                    $ext = $fileinfo->getExtension();
+
+                    $destination = $dirPhotoExit . $fileName;
+                    $source = $dirPhoto . $fileName;
+                    $slike[] = $destination;
+                    if (file_exists($destination)) {
+                        continue;
+                    }
+
+                    if ($ext == 'bmp') {
+                        $neuspjele[] = $destination;
+                        continue;
+                    }
+
+                    $s = $this->createthumb($source, $destination, $ext, $percentage);
+                    if ($s) {
+                        $slike[] = $destination;
+                    }
                 }
-
-                if ($ext == 'bmp') {
-                    echo "The file is of wierd extansion exists <br>";
-                    continue;
-                }
-
-                $this->createthumb($source, $destination, $ext);
             }
+            $this->set(compact('slike', 'folderStructure'));
         }
-
-        echo 'done';
     }
 
-    private function createthumb($src, $dest, $file_ext) {
+    private function createthumb($src, $dest, $file_ext, $percent = 0.45) {
         /* read the source image */
         switch ($file_ext) {
             case 'jpg':
@@ -216,30 +235,32 @@ class BannersController extends AppController {
         $height = imagesy($source_image);
 
         /* find the "desired height" of this thumbnail, relative to the desired width  */
-        $desired_height = $height * 0.45;
-        $desired_width = $width * 0.45;
+        $desired_height = $height * $percent;
+        $desired_width = $width * $percent;
 
         /* create a new, "virtual" image */
         $virtual_image = imagecreatetruecolor($desired_width, $desired_height);
 
         /* copy source image at a resized size */
         imagecopyresampled($virtual_image, $source_image, 0, 0, 0, 0, $desired_width, $desired_height, $width, $height);
-
+        $uspjeh = false;
         /* create the physical thumbnail image to its destination */
         switch ($file_ext) {
             case 'jpg' || 'jpeg':
-                imagejpeg($virtual_image, $dest);
+                $uspjeh = imagejpeg($virtual_image, $dest);
                 break;
             case 'png':
-                imagepng($virtual_image, $dest);
+                $uspjeh = imagepng($virtual_image, $dest);
                 break;
 
             case 'gif':
-                imagegif($virtual_image, $dest);
+                $uspjeh = imagegif($virtual_image, $dest);
                 break;
             default:
-                imagejpeg($virtual_image, $dest);
+                $uspjeh = imagejpeg($virtual_image, $dest);
         }
+
+        return $uspjeh;
     }
 
 }

@@ -50,33 +50,13 @@ class Banner extends AppModel {
         'link' => array(
             'notBlank' => array(
                 'rule' => array('notBlank'),
-            //'message' => 'Your custom message here',
-            //'allowEmpty' => false,
-            //'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
         ),
         'status' => array(
             'numeric' => array(
                 'rule' => array('numeric'),
-            //'message' => 'Your custom message here',
-            //'allowEmpty' => false,
-            //'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
-        ),
-//        'link' => array(
-//            'url' => array(
-//                'rule' => array('url'),
-//            'message' => 'Unesite ispravan URL',
-//            //'allowEmpty' => false,
-//            //'required' => false,
-//            //'last' => false, // Stop validation after this rule
-//            //'on' => 'create', // Limit validation to 'create' or 'update' operations
-//            ),
-//        ),        
+        ),     
     );
 
     public function afterDelete() {
@@ -128,7 +108,7 @@ class Banner extends AppModel {
         $uploadedImageRatio = $height/$width;
         //debug($size[1]/$size[0]);exit();
         
-        if ($uploadedImageRatio > $ratio || $uploadedImageRatio < $ratio) {
+        if (($uploadedImageRatio+0.05) > $ratio || ($uploadedImageRatio-0.05) < $ratio) {
             return false;
         }
         
