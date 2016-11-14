@@ -6,7 +6,7 @@ $this->assign('crumb', 'Pregled kometara');
 
 $this->assign('title', 'Komentari');
 $this->assign('page-title', 'Komentari <small>pregled podataka</small>');
-debug($LocationComments);
+//debug($LocationComments);
 ?>
 <div class="row">
     <div class="col-sm-12 col-md-12">
@@ -30,13 +30,27 @@ debug($LocationComments);
                                 $mapObjectsComment['LocationComment']['text'] :
                                 '<i class="no-comment">Nema komenatara</i>'; ?></td>
                         <td><?php echo h($mapObjectsComment['LocationComment']['rating']); ?>&nbsp;</td>
-                        <td><?php echo h($mapObjectsComment['LocationComment']['datetime']); ?>&nbsp;</td>
-                        <td><?php echo h($mapObjectsComment['LocationComment']['comment_rating']); ?>&nbsp;</td>
+                        <td><?php echo h($this->Time->format($mapObjectsComment['LocationComment']['datetime'], '%d.%m.%Y %H:%M %p')); ?>&nbsp;</td>
+                        <td><?php
+                        echo h($mapObjectsComment['LocationComment']['comment_rating']);
+                         ?>&nbsp;</td>
                         <td>
-                            <?php echo $this->Html->link($mapObjectsComment['Location']['name'], array('controller' => 'locations', 'action' => 'view', $mapObjectsComment['Location']['id'])); ?>
+                            <?php 
+                        if ($loggedInUser === '1') {
+                            echo $this->Html->link($mapObjectsComment['Location']['name'], array('controller' => 'locations', 'action' => 'view', $mapObjectsComment['Location']['id']));
+                        } else {
+                            echo $mapObjectsComment['Location']['name'];
+                        }
+                             ?>
                         </td>
                         <td>
-                            <?php echo $this->Html->link($mapObjectsComment['ApplicationUser']['display_name'], array('controller' => 'application_users', 'action' => 'view', $mapObjectsComment['ApplicationUser']['id'])); ?>
+                            <?php 
+                            if ($loggedInUser === '1') {
+                                echo $this->Html->link($mapObjectsComment['ApplicationUser']['display_name'], array('controller' => 'application_users', 'action' => 'view', $mapObjectsComment['ApplicationUser']['id']));
+                            } else {
+                                echo $mapObjectsComment['ApplicationUser']['display_name'];
+                            }                            
+                             ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

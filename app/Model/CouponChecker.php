@@ -20,12 +20,8 @@ class CouponChecker extends AppModel {
     public $validate = array(
         'username' => array(
             'minLength' => array(
-                'rule' => array('minLength'),
-            //'message' => 'Your custom message here',
-            //'allowEmpty' => false,
-            //'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
+                'rule' => array('minLength', 5),
+                'message' => 'Unesite korisničko ime sa najmanje 5 karaktera',
             ),
         ),
         'fk_id_map_objects' => array(

@@ -18,21 +18,24 @@ class CouponCheckersController extends AppController {
      * @var array
      */
     public $components = array('Paginator', 'Flash', 'Session');
-    
-    public $helpers =  array('Time', 'MyHtml');
-    
+    public $helpers = array('Time', 'MyHtml');
+
     public function beforeFilter() {
         parent::beforeFilter();
         $this->set('icon', 'location');
-    }    
-    
+    }
+
     public function isAuthorized($user) {
-        if ($user['group_id'] === 2 || $user['group_id'] == 3) {
+        if ($this->locationOperator || $this->operator) {
             return true;
         }
-        
+
+        if (in_array($this->action, array('add', 'delete')) && $this->admin) {
+            return true;
+        }
+
         return parent::isAuthorized($user);
-    }    
+    }
 
     /**
      * index method
@@ -40,13 +43,21 @@ class CouponCheckersController extends AppController {
      * @return void
      */
     public function index() {
-        //debug(Configure::read('Location.status.Online'));exit();
         $this->CouponChecker->recursive = 0;
+
+        if ($this->locationOperator || $this->operator) {
+            $conditions = array(
+                'Location.id' => $this->userLocation
+            );
+        } else {
+            $conditions = array();
+        }
         $this->Paginator->settings = array(
             'order' => array(
                 'CouponChecker.creation_date ASC'
-            )
-        );        
+            ),
+            'conditions' => $conditions
+        );
         $this->set('mapObjectsUsers', $this->Paginator->paginate());
     }
 
@@ -78,8 +89,13 @@ class CouponCheckersController extends AppController {
     }
 
     /**
-     * add method
-     *
+     * Metod za dodavanje, i ovo je oblik sto nam dolazi sa forme
+    //            array(
+    //                'CouponChecker' => array(
+    //                    'username' => 'dadsadsad',
+    //                    'fk_id_map_objects' => '37'
+    //                )
+    //            )
      * @return void
      */
     public function add() {
@@ -92,6 +108,14 @@ class CouponCheckersController extends AppController {
                 'full_name' => ''
             );
             
+            /**
+             * Dodajem ovaj dio koda da bi se za LocationOperatore dodavali ljudi samo
+             * za one lokacije koje su njihove
+             */
+            if (!$this->admin) {
+                $this->request->data['CouponChecker']['fk_id_map_objects'] = $this->userLocation;
+            }
+
             if ($this->CouponChecker->saveAll($this->request->data)) {
                 $this->Flash->success(__('Uspješno sačuvan korisnik.'));
                 return $this->redirect(array('action' => 'index'));
@@ -150,16 +174,15 @@ class CouponCheckersController extends AppController {
         return $this->redirect(array('action' => 'index'));
     }
 
-    
     /* AJAX METHOD */
-    
+
     /**
      * Prima podatke u obliku
      *  array(
-            'name' => 'can_do_checks',
-            'value' => '0',
-            'pk' => '1'
-        )
+      'name' => 'can_do_checks',
+      'value' => '0',
+      'pk' => '1'
+      )
      * @throws NotFoundException
      */
     public function checkPermission() {
@@ -174,19 +197,20 @@ class CouponCheckersController extends AppController {
         if (!$this->CouponChecker->exists()) {
             throw new NotFoundException(__('Ne postoji korisnik!'));
         }
-        
+
         $dataToSave = array(
             'id' => $this->request->data['pk'],
             $this->request->data['name'] => $this->request->data['value']
         );
-        
+
         if ($this->CouponChecker->save($dataToSave)) {
-        $response = array(
-            'status' => '200',
-            'value' => 'label-success'
-        );
+            $response = array(
+                'status' => '200',
+                'value' => 'label-success'
+            );
         }
-        
+
         $this->set(compact('response'));
-    }  
+    }
+
 }

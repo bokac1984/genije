@@ -171,6 +171,62 @@ class Product extends AppModel {
         }
         
         return array();
-    }    
+    }  
+    
+    /**
+     * Kada je ulogovan korisnik koji ima pravo na samo jednu
+     * lokaciju onda ovdje kreiramo niza za samo njegove podatke
+     * 
+     * @param type $locationId
+     * @param type $cityId
+     * @return type
+     */
+    public function addLocationAndCity($locationId) {
+        $cityId = $this->Location->cityIdLocationIsFrom($locationId);
+        return array(	
+            'Location' => array(
+                    'Location' => array(
+                            (int) 0 => $locationId
+                    )
+            ),
+            'City' => array(
+                    'id' => $cityId
+            )
+        );
+    }
+    
+    /**
+     * 
+     * Provjeravamo da li je proizvod sa datom sifrom pripada 
+     * lokaciji trenutno ulogovanog korisnika
+     * Ako ne pripada onda bi trebalo da ga sprijecimo da gleda te podatke
+     * 
+     * @param int $userLocation
+     * @param int $productId
+     * @return boolean
+     */
+    public function productBelongsToUsersLocation ($userLocation, $productId) {
+        $productLocation = $this->find('all',array(
+                'conditions' => array(
+                    'LocationProduct.fk_id_products' => $productId
+                ),
+                'joins' =>  array(
+                     array(
+                        'table' => 'map_objects_products',
+                        'alias' => 'LocationProduct',
+                        'type' => 'INNER',
+                        'conditions' => array(
+                            'LocationProduct.fk_id_products = Product.id',
+                            'LocationProduct.fk_id_products' => $productId
+                        )
+                    )
+                ),
+            'fields' => array(
+                'LocationProduct.fk_id_map_objects AS location'
+            )
+        ));
+        
+        return $productLocation[0]['LocationProduct']['location'] == $userLocation;
+    }
 
 }

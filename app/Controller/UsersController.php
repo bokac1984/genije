@@ -80,7 +80,7 @@ class UsersController extends AppController {
     
     public function logout() {
         return $this->redirect($this->Auth->logout());
-    }
+    }  
 /**
    * add method
    *

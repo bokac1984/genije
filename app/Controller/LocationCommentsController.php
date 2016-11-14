@@ -18,22 +18,20 @@ class LocationCommentsController extends AppController {
      * @var array
      */
     public $components = array('Paginator', 'Flash', 'Session', 'RequestHandler');
-    
     public $helpers = array('Js', 'Star');
 
     public function isAuthorized($user) {
-        //debug($user);exit();
         if ($this->locationOperator || $this->operator) {
             return true;
         }
-        
-        if (in_array($this->action, array('add', 'delete', 'index')) && $user['group_id'] === 2) {
+
+        if (in_array($this->action, array('add', 'delete')) && $this->admin) {
             return true;
         }
-        
+
         return parent::isAuthorized($user);
-    }    
-    
+    }
+
     /**
      * index method
      *
@@ -41,17 +39,49 @@ class LocationCommentsController extends AppController {
      */
     public function index() {
         $this->LocationComment->recursive = 0;
-        
+
+        $containOptions = array(
+            'ApplicationUser' => array(
+                'fields' => array(
+                    'ApplicationUser.id',
+                    'ApplicationUser.display_name'
+                )
+            ),
+            'Location' => array(
+                'fields' => array(
+                    'Location.name'
+                )
+            )
+        );
+
+        $fields = array(
+            'LocationComment.id',
+            'LocationComment.text',
+            'LocationComment.rating',
+            'LocationComment.datetime',
+            'LocationComment.comment_rating',
+        );
+
         if ($this->locationOperator || $this->operator) {
             $this->Paginator->settings = array(
                 'limit' => 25,
-                'contain' => array(
-                    'ApplicationUser' => array(),
-                    'Location' => array()
-                ),
+                'contain' => $containOptions,
                 'order' => array(
-                    'LocationComment.datetime DESC'
-                )
+                    'LocationComment.datetime' => 'DESC'
+                ),
+                'conditions' => array(
+                    'Location.id' => $this->userLocation
+                ),
+                'fields' => $fields
+            );
+        } else {
+            $this->Paginator->settings = array(
+                'limit' => 25,
+                'contain' => $containOptions,
+                'order' => array(
+                    'LocationComment.datetime' => 'DESC'
+                ),
+                'fields' => $fields
             );
         }
         $this->set('LocationComments', $this->Paginator->paginate());
@@ -118,10 +148,10 @@ class LocationCommentsController extends AppController {
         $applicationUsers = $this->LocationComment->ApplicationUser->find('list');
         $this->set(compact('locations', 'applicationUsers'));
     }
-    
+
     public function location($id = null) {
         $this->LocationComment->Location->id = $id;
-        
+
         if (!$this->LocationComment->Location->exists()) {
             throw new NotFoundException(__('Unijeli ste pogrešnu lokaciju, vratite se nazad i pokušajte ponovo!'));
         }
@@ -143,7 +173,7 @@ class LocationCommentsController extends AppController {
                 'LocationComment.datetime DESC'
             )
         );
-        
+
         $this->set('comments', $this->Paginator->paginate('LocationComment'));
     }
 

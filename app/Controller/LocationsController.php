@@ -79,11 +79,11 @@ class LocationsController extends AppController {
     }
     
     public function isAuthorized($user) {
-        if ($user['group_id'] === 2 || $user['group_id'] === 3) {
+        if ($this->locationOperator || $this->operator) {
             return true;
         }
         
-        if (in_array($this->action, array('add', 'delete')) && $user['group_id'] === 1) {
+        if (in_array($this->action, array('add', 'delete')) && $this->admin) {
             return true;
         }
         
@@ -215,6 +215,46 @@ class LocationsController extends AppController {
         ));
         $this->set(compact('images', 'mainImage', 'id'));
     }
+    
+    
+    public function mine() {
+        $id = $this->Auth->user('map_object_id');
+        $options = array(
+            'conditions' => array(
+                'Location.' . $this->Location->primaryKey => $id
+            ),
+            'contain' => array(
+                'City' => array(
+                    'fields' => array('name')
+                ),
+                'Contact' => array(
+                    'fields' => array(
+                        'value', 'id'
+                    ),
+                    'order' => array(
+                        'Contact.fk_id_contact_types' => 'asc'
+                    ),
+                    'ContactType' => array(
+                        'fields' => array('name')
+                    ),
+                    'conditions' => array(
+                        'Contact.fk_id_map_objects' => $id
+                    )
+                ),
+                'LocationDescription',
+                'MapObjectSubtypeRelation' => array(
+                    'fields' => array('id'),
+                    'ObjectSubtype' => array(
+                        'fields' => array('name')
+                    )
+                )
+            )
+        );
+        $location = $this->Location->find('first', $options);
+        $events = $this->Location->Event->getAllLocationEvents($id);
+        $news = $this->Location->News->locationNews($id);
+        $this->set(compact('location', 'events', 'news')); 
+    }      
     
     /* ajax methods */
     

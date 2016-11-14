@@ -75,7 +75,7 @@ $this->Form->inputDefaults(array(
                     <label for="control-label">
                         Grad <span class="symbol"></span> 
                     </label>
-                    <select id="city_id" name="data[City][id]" class="form-control">
+                    <select <?php echo $loggedInUser['group_id'] === '1' ? "" : 'disabled="disabled"';?> id="city_id" name="data[City][id]" class="form-control">
                         <option value="-1">Odaberite grad</option>
                     <?php
                         foreach ($cities as $k => $v) {
@@ -89,7 +89,7 @@ $this->Form->inputDefaults(array(
                     <label for="control-label">
                         Lokacija <span class="symbol required"></span> 
                     </label>
-                    <select multiple="multiple" id="map_object" name="data[Location][Location][]" class="form-control search-select">
+                    <select <?php echo $loggedInUser['group_id'] === '1' ? "" : 'disabled="disabled"';?> multiple="multiple" id="map_object" name="data[Location][Location][]" class="form-control search-select">
                         <?php
                         if (!empty($locationsForCity)) {
                             foreach ($locationsForCity as $loc) {

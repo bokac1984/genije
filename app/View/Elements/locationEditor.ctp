@@ -78,7 +78,17 @@ $url = $this->request->here;
         </a>
         <ul class="sub-menu">
             <li>
-                <?php echo $this->Html->link("Novi proizvod", array('plugin' => null, 'controller' => 'products', 'action' => 'add')); ?>
+                <?php 
+                if ($loggedInUser !== '1') {
+                    echo $this->Html->link("Novi proizvod", array(
+                    'plugin' => null, 'controller' => 
+                    'products', 'action' => 'add', $loggedInUsersLocation));
+                } else {
+                    echo $this->Html->link("Novi proizvod", array(
+                        'plugin' => null, 'controller' => 
+                        'products', 'action' => 'add')); 
+                }                
+                ?>
             </li>
             <li>
                 <?php echo $this->Html->link("Lista proizvoda", array('plugin' => null, 'controller' => 'products', 'action' => 'index')); ?>

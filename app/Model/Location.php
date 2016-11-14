@@ -233,6 +233,7 @@ class Location extends AppModel {
     }
     
     /**
+     * Pronalazi sve lokacije iz nekog grada
      * 
      * @param int $cityId
      * @return array
@@ -297,6 +298,11 @@ class Location extends AppModel {
         ));
     }
     
+    /**
+     * Broj lokacija za jedan grad
+     * 
+     * @return int
+     */
     public function locationsPerCity() {
         return $this->find('all', array(
             'fields' => array(
@@ -325,5 +331,24 @@ class Location extends AppModel {
             return 400;
         }
         return $this->saveField('online_status', $status) ? 200 : 400;
+    }
+    
+    /**
+     * Daj sifru grada za sifru lokacije
+     * Tj. daj grad za lokaciju
+     * 
+     * @return string cityId
+     */
+    public function cityIdLocationIsFrom($idLocation) {
+        $city = $this->Product->Location->find('first', array(
+            'conditions' => array(
+                'Location.id' => $idLocation
+            ),
+            'fields' => array(
+                'Location.fk_id_cities'
+            )
+        ));
+        
+        return $city['Location']['fk_id_cities'];
     }
 }

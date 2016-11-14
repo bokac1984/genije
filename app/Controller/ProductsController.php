@@ -20,30 +20,41 @@ class ProductsController extends AppController {
     public $components = array(
         'DataTable.DataTable' => array(
             'Product' => array(
+                'joins' =>  array(
+                     array(
+                        'table' => 'map_objects_products',
+                        'alias' => 'LocationProduct',
+                        'type' => 'INNER',
+                        'conditions' => array(
+                            'LocationProduct.fk_id_products = Product.id',
+                            'LocationProduct.fk_id_map_objects' => ''
+                        )
+                    )
+                ),                
                 'columns' => array(
-                    'id' => array(
+                    'Product.id' => array(
                         'label' => '#',
                         'sWidth' => '5%',
                         'sClass' => 'center',
                         'bSortable' => 'true'
                     ),
-                    'name' => array(
+                    'Product.name' => array(
                         'label' => 'Naziv',
                         'sWidth' => '10%',
                         'bSortable' => 'false'
                     ),
-                    'description' => array(
+                    'Product.description' => array(
                         'label' => 'Opis',
                         'sWidth' => '30%',
                         'bSortable' => 'false',
                         'bSearchable' => true
                     ),
-                    'price' => array(
+                    'Product.price' => array(
                         'label' => 'Cijena',
                         'sWidth' => '10%',
                         'bSortable' => 'false'
                     ),
-                    'online_status' => array(
+                    'Product.online_status' => array(
                         'label' => 'Status',
                         'sWidth' => '8%',
                         'sClass' => 'center',
@@ -66,7 +77,43 @@ class ProductsController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
         $this->set('icon', 'cart');
+        
+        $this->Auth->allow('uploadPhotos');
+        
+        /**
+         * we do this to ensure our index page
+         * will have the correct location data for our location operator
+         */
+
+        $this->DataTable->settings['Product']['joins'][0]['conditions']['LocationProduct.fk_id_map_objects'] = 
+                !$this->admin ? $this->userLocation : '';
     }
+    
+    public function isAuthorized($user) {
+        if ($this->locationOperator || $this->operator) {
+            // ako je locOperator pogledaj jesmo li u add akciji
+            // ako da vidi da li ID pripada lokaciji usera ulogovanog
+            if (in_array($this->action, array('add'))) {
+                        
+                return $this->request->params['pass'][0] === $this->userLocation;
+            }
+            //izbaci iz igre index i ovaj za dataTable
+            //gucking strict checking vidim nesto ne daje dobre rezultaet
+            // plus samo udji tu kad imamo pass onda gledaj
+            // inace je to onda idnex akcija, za sve ostalo imamo dozvolu
+            if (!in_array($this->action, array('index'), true) && !empty($this->request->params['pass'])) {
+                return $this->Product->productBelongsToUsersLocation($this->userLocation, $this->request->params['pass'][0]);       
+            }
+            
+            return true;
+        }
+
+        if (in_array($this->action, array('add', 'delete')) && $this->admin) {
+            return true;
+        }
+
+        return parent::isAuthorized($user);
+    }    
 
     public $helpers =  array('DataTable.DataTable', 'Time');
 
@@ -144,6 +191,13 @@ class ProductsController extends AppController {
     public function add($idLocation = null) {
         if ($this->request->is('post')) {
             $this->Product->create();
+            // ako je ulogovan locationOperator onda samo dodaj grad i lokaciju u niz
+            if ($this->locationOperator || $this->operator) {
+                $this->request->data = 
+                        Hash::merge($this->request->data, 
+                                $this->Product->addLocationAndCity($this->userLocation));
+            }
+            
             if ($this->Product->saveAll($this->request->data)) {
                 $this->Flash->success(__('Uspješno ste dodali podatke o proizvodu. Molimo Vas dodajte nove fotografije za proizvod.'));
                 $id = $this->Product->getLastInsertID();
@@ -155,23 +209,16 @@ class ProductsController extends AppController {
         
         $cities = $this->Product->Location->City->find('list');
         
-        $cityForLocation = '';
+        $cityId = '';
         if ($idLocation !== null) {
-            $cityForLocation = $this->Product->Location->find('first', array(
-                'conditions' => array(
-                    'Location.id' => $idLocation
-                ),
-                'fields' => array(
-                    'Location.fk_id_cities'
-                )
-            ));
-            $locationsForCity = $this->Product->Location->getCityLocations($cityForLocation['Location']['fk_id_cities']);
+            $cityId = $this->Product->Location->cityIdLocationIsFrom($idLocation);
+            $locationsForCity = $this->Product->Location->getCityLocations($cityId);
             $this->set('location', (int)$idLocation);
-            $this->set('cityId', (int)$cityForLocation['Location']['fk_id_cities']);
+            $this->set('cityId', (int)$cityId);
             $this->set('locationsForCity', $locationsForCity);
         }
         
-        $this->set(compact('cities', 'locationForCity'));
+        $this->set(compact('cities'));
     }
 
     /**

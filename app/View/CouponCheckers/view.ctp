@@ -64,6 +64,11 @@ $code = str_split($couponChecker['CouponCheckerLogin']['activation_code'], 4);
             <div class="col-md-12">
                 <div class="thumbnail" style="max-width: 400px; margin-bottom:0px;">
                 <?php
+                if ($loggedInUser !== '1') {
+                    $disable = 'return false';
+                } else {
+                    $disable = '';
+                }
                 echo $this->Html->link($this->Html->image('/photos/'. $couponChecker['Location']['img_url']),
                         array(
                             'controller' => 'locations',
@@ -72,7 +77,8 @@ $code = str_split($couponChecker['CouponCheckerLogin']['activation_code'], 4);
                         ),
                         array(
                             'title' => $couponChecker['Location']['name'],
-                            'escape' => false
+                            'escape' => false,
+                            'onclick' => $disable
                         ));
                 ?>
                 </div>

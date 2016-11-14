@@ -38,6 +38,14 @@ class AppController extends Controller {
     public $admin = false;
     public $locationOperator = false;
     public $operator = false;
+    
+    /**
+     * Ako je korisnik locationOperator
+     * onda ovo ima vrijednost njegove lokacije
+     *
+     * @var int 
+     */
+    public $userLocation;
 
     public $components = array(
         'Auth' => array(
@@ -78,6 +86,10 @@ class AppController extends Controller {
         $this->menuBuilder($this->Auth->user('group_id'));
         
         $this->set('loggedInUser', $this->Auth->user());
+        
+        $this->userLocation = $this->Auth->user('map_object_id');
+        
+        $this->set('loggedInUsersLocation', $this->userLocation);
         
         $this->checkPermissions();
         // zabrani sve stranice, sve su privatne
