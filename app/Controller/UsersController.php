@@ -92,7 +92,7 @@ class UsersController extends AppController {
         $this->User->set($this->request->data);
         //debug($this->request->data);exit();
         if ($this->User->validates()) {
-            $filename = $this->uploadFile($this->request->data['User']['img'], '/photos-profiles/');
+            $filename = $this->uploadFile($this->request->data['User']['img'], 'photos-profiles/');
             if ($filename !== '') {
                 $this->request->data['User']['img'] = $filename;
             }
