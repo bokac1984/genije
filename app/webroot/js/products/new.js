@@ -1,31 +1,31 @@
 var FormValidator = function () {
     var summernoteCodeValue;
     var loadAllElements = function () {
-        
+
         $('#city_id').change(function () {
             $.ajax({
-              method: "POST",
-              dataType: "json",
-              url: "/events/locations.json",
-              data: { city: $(this).val() }
+                method: "POST",
+                dataType: "json",
+                url: "/events/locations.json",
+                data: {city: $(this).val()}
             })
-            .done(function( result ) {
-                var options = $("#map_object");
-                options.empty().append('<option selected="selected" value=""></option>');
-                $.each(result, function () {
-                    options.append($("<option />").val(this.id).text(this.name));
-                });
-            });
+                    .done(function (result) {
+                        var options = $("#map_object");
+                        options.empty().append('<option selected="selected" value=""></option>');
+                        $.each(result, function () {
+                            options.append($("<option />").val(this.id).text(this.name));
+                        });
+                    });
         });
-        
+
         $("#map_object").select2({
             placeholder: "Izaberite lokaciju",
             allowClear: true,
             theme: "bootstrap"
         });
 
-        
-        $(document).on('click', '.dodaj_red', function(e){
+
+        $(document).on('click', '.dodaj_red', function (e) {
             e.preventDefault();
 
             var $row = $(this);
@@ -35,25 +35,26 @@ var FormValidator = function () {
             $table.after(clonedRow);
             var idReda = $('table.feature tbody tr:last').find('input').attr('name').match(/\d+/)[0];
 
-            clonedRow.find("input").each(function() {
+            clonedRow.find("input").each(function () {
                 var idNew = +idReda + 1;
 
-                $(this).val('').attr('name', function(_, name){
+                $(this).val('').attr('name', function (_, name) {
                     var lastPart = name.slice(-7);
                     return 'data\[ProductFeature\]\[' + idNew + '\]' + lastPart;
                 });
 
-                $(this).val('').attr('id', function(_, id){
+                $(this).val('').attr('id', function (_, id) {
                     return idNew;
                 });
             });
         });
 
-        $(document).on('click', '.ukloni_red', function(e){
+        $(document).on('click', '.ukloni_red', function (e) {
             e.preventDefault();
             var $row = $(this).closest('tr');
+            var brojElemenata = $('.feature').find('tbody tr').length;
 
-            if (!$row.is(":last-child")) {
+            if (brojElemenata > 1) {
                 $row.remove();
             }
         });
@@ -71,11 +72,11 @@ var FormValidator = function () {
         var $modal = $('#ajax-modal');
         $.fn.modalmanager.defaults.resize = true;
         $.fn.modal.defaults.spinner = $.fn.modalmanager.defaults.spinner =
-            '<div class="loading-spinner" style="width: 200px; margin-left: -100px;">' +
-            '<div class="progress progress-striped active">' +
-            '<div class="progress-bar" style="width: 100%;"></div>' +
-            '</div>' +
-            '</div>';
+                '<div class="loading-spinner" style="width: 200px; margin-left: -100px;">' +
+                '<div class="progress progress-striped active">' +
+                '<div class="progress-bar" style="width: 100%;"></div>' +
+                '</div>' +
+                '</div>';
 
         var form = $('#ProductAddForm');
         var errorHandler = $('.errorHandler', form);
@@ -85,11 +86,11 @@ var FormValidator = function () {
             var $text = $("#text");
             var $noteEditable = $('.note-editable');
             $text.val($('.summernote').code());
-            
+
             if ($text.val() !== "" && $text.val() !== "<br>") {
                 $text.val('');
                 return true;
-            } else if ($noteEditable.html().length > 0){
+            } else if ($noteEditable.html().length > 0) {
                 return true;
             } else {
                 return false;
@@ -153,7 +154,7 @@ var FormValidator = function () {
                 successHandler.show();
                 errorHandler.hide();
                 // submit form
-                if ($('.summernote').code() !== "<br>"){  
+                if ($('.summernote').code() !== "<br>") {
                     $("#text").val($('.summernote').code());
                     if ($("#text").val().length <= 0 && $('.note-editable').html().length > 0) {
                         $("#text").val($('.note-editable').html());
