@@ -1,5 +1,6 @@
 <?php
 $url = $this->request->here;
+$location = $loggedInUser['group_id'] !== '1' ? $loggedInUser['map_object_id'] : '';
 ?>
 <ul class="main-navigation-menu">
     <li>
@@ -50,7 +51,10 @@ $url = $this->request->here;
         </a>
         <ul class="sub-menu">
             <li>
-                <?php echo $this->Html->link("Novi događaj", array('plugin' => null, 'controller' => 'events', 'action' => 'add')); ?>
+                <?php echo $this->Html->link("Novi događaj", array('plugin' => null, 
+                    'controller' => 'events', 
+                    'action' => 'add',
+                    $location)); ?>
             </li>
             <li>
                 <?php echo $this->Html->link("Pregled događaja", array('plugin' => null, 'controller' => 'events', 'action' => 'index')); ?>
@@ -64,7 +68,7 @@ $url = $this->request->here;
         </a>
         <ul class="sub-menu">
             <li class="<?php echo (preg_match("/\/news\/add/", $url))? 'active' : ''?>">
-                <?php echo $this->Html->link("Nova vijest", array('plugin' => null, 'controller' => 'news', 'action' => 'add')); ?>
+                <?php echo $this->Html->link("Nova vijest", array('plugin' => null, 'controller' => 'news', 'action' => 'add', $location)); ?>
             </li>
             <li>
                 <?php echo $this->Html->link("Pregled vijesti", array('plugin' => null, 'controller' => 'news', 'action' => 'index')); ?>

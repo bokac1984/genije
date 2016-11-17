@@ -50,6 +50,7 @@ var FormValidator = function () {
             .done(function( result ) {
                 var options = $("#map_object");
                 options.empty().append('<option selected="selected" value=""></option>');
+                console.log(result.id);
                 $.each(result, function () {
                     options.append($("<option />").val(this.id).text(this.name));
                 });

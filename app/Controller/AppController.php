@@ -84,7 +84,7 @@ class AppController extends Controller {
         $this->Auth->flash['element'] = "flash_error";
        
         $this->menuBuilder($this->Auth->user('group_id'));
-        
+        //debug($this->Auth->user());
         $this->set('loggedInUser', $this->Auth->user());
         
         $this->userLocation = $this->Auth->user('map_object_id');
@@ -183,6 +183,20 @@ class AppController extends Controller {
             default:
                 break;
         }
+    }
+    
+    /**
+     * Trebala bi da provjeri da li ovaj korisnik smije da dodaje
+     * samo unutar svoje lokacije ili za sve gradove i lokacije
+     * 
+     * @return boolean
+     */
+    public function checkIfUserCanAddToAllLocations() {
+        if (empty($this->request->params['pass']) || $this->request->params['pass'][0] === '') {
+            return false;
+        }
+
+        return $this->request->params['pass'][0] === $this->userLocation;        
     }
 
 }

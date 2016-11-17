@@ -26,9 +26,34 @@
 			<?php echo h($plan['Plan']['price']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Quantity'); ?></dt>
+		<dt><?php echo __('News Quantity'); ?></dt>
 		<dd>
-			<?php echo h($plan['Plan']['quantity']); ?>
+			<?php echo h($plan['Plan']['news_quantity']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Events Quantity'); ?></dt>
+		<dd>
+			<?php echo h($plan['Plan']['events_quantity']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Products Quantity'); ?></dt>
+		<dd>
+			<?php echo h($plan['Plan']['products_quantity']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Location Images Quantity'); ?></dt>
+		<dd>
+			<?php echo h($plan['Plan']['location_images_quantity']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('News Images Quantity'); ?></dt>
+		<dd>
+			<?php echo h($plan['Plan']['news_images_quantity']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Coupon Quantity'); ?></dt>
+		<dd>
+			<?php echo h($plan['Plan']['coupon_quantity']); ?>
 			&nbsp;
 		</dd>
 	</dl>

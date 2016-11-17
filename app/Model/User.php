@@ -176,5 +176,5 @@ class User extends AppModel {
         }
 
         return $parts;
-    }
+    }   
 }

@@ -70,6 +70,40 @@ class NewsController extends AppController {
         if ($this->request->is('ajax')) {
             $this->disableCache();
         }
+        
+        
+        /**
+         * we do this to ensure our index page
+         * will have the correct location data for our location operator
+         */
+        if (!$this->admin) {
+            $this->DataTable->settings['News']['conditions']['News.fk_id_map_objects'] = $this->userLocation;
+        }     
+    }
+    
+    public function isAuthorized($user) {
+        if ($this->locationOperator || $this->operator) {
+            // ako je locOperator pogledaj jesmo li u add akciji
+            // ako da vidi da li ID pripada lokaciji usera ulogovanog
+            if (in_array($this->action, array('add'))) {
+                return $this->checkIfUserCanAddToAllLocations();
+            }
+            //izbaci iz igre index i ovaj za dataTable
+            //gucking strict checking vidim nesto ne daje dobre rezultaet
+            // plus samo udji tu kad imamo pass onda gledaj
+            // inace je to onda idnex akcija, za sve ostalo imamo dozvolu
+            if (!in_array($this->action, array('index'), true) && !empty($this->request->params['pass'])) {
+                return $this->News->newsBelongsToUsersLocation($this->userLocation, $this->request->params['pass'][0]);       
+            }
+            
+            return true;
+        }
+
+        if (in_array($this->action, array('add', 'delete')) && $this->admin) {
+            return true;
+        }
+
+        return parent::isAuthorized($user);        
     }
 
     public $helpers = array('DataTable.DataTable', 'MyHtml', 'Time');
@@ -110,9 +144,33 @@ class NewsController extends AppController {
         $this->set(compact('news', 'image'));
     }
 
-    public function add() {
-        $cities = $this->News->City->find('list');
+    public function add($location = null) {
+        $userSubscriptionData = $this->Auth->user('Subscription');
+        $Subscription = ClassRegistry::init("Subscription");
+        $subscribedNewsCount = $Subscription->Plan->numberOfNewsToPublish($userSubscriptionData['plans_id']);
+        $publishedNewsCount = $this->News->countPublishedNews($this->userLocation);
+        $now = date("Y-m-d H:i:s");
+        
+        if ($publishedNewsCount <= $subscribedNewsCount
+                || $now > $userSubscriptionData['end_date']) {
+            return $this->redirect(array('action' => 'expired'));
+        } 
+        
+        if ($location !== null) {
+            $cityId = $this->News->Location->cityIdLocationIsFrom($location);
+            $cities = array(
+                $cityId => $this->News->Location->getCityName($cityId)
+            );
+        } else {
+            $cities = $this->News->City->find('list');
+        }        
         $this->set(compact('cities'));
+    }
+    /**
+     * TODO: napraviti ovo da lici na nesto
+     */
+    public function expired() {
+        
     }
     public function view($id = null) {
         $this->News->id = $id;

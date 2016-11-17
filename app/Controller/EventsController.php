@@ -17,7 +17,7 @@ class EventsController extends AppController {
     
     public $components = array(
         'DataTable.DataTable' => array(
-            'Event' => array(
+            'Event' => array(                
                 'columns' => array(
                     'id' => array(
                         'label' => '#',
@@ -76,11 +76,41 @@ class EventsController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
         $this->set('icon', 'calendar');
+        
+        /**
+         * we do this to ensure our index page
+         * will have the correct location data for our location operator
+         */
+        if (!$this->admin) {
+        $this->DataTable->settings['Event']['conditions']['Event.fk_id_map_objects'] = $this->userLocation;        
+        }
     }
 
     public function isAuthorized($user) {
+        if ($this->locationOperator || $this->operator) {
+            // ako je locOperator pogledaj jesmo li u add akciji
+            // ako da vidi da li ID pripada lokaciji usera ulogovanog
+            if (in_array($this->action, array('add'))) {
+                return $this->checkIfUserCanAddToAllLocations();
+            }
+            
+            //izbaci iz igre index i ovaj za dataTable
+            //gucking strict checking vidim nesto ne daje dobre rezultaet
+            // plus samo udji tu kad imamo pass onda gledaj
+            // inace je to onda idnex akcija, za sve ostalo imamo dozvolu
+            if (!in_array($this->action, array('index'), true) && !empty($this->request->params['pass'])) {
+                //return $this->Product->productBelongsToUsersLocation($this->userLocation, $this->request->params['pass'][0]);       
+            }
+            
+            return true;
+        }
+
+        if (in_array($this->action, array('add', 'delete')) && $this->admin) {
+            return true;
+        }
+
         return parent::isAuthorized($user);
-    }
+    } 
 
     public function index() {
         $this->DataTable->setViewVar('Event');
@@ -121,7 +151,7 @@ class EventsController extends AppController {
      *
      * @return void
      */
-    public function add() {
+    public function add($location = null) {
         if ($this->request->is('post')) {
             if ( !isset($this->request->data['Event']['use_loc_image']) && $this->data['Event']['img_url']['error'] !== 4 ) {
                 $this->request->data['Event']['img_url'] = 'events/' . $this->uploadFile($this->request->data['Event']['img_url'], $this->photoLocation);                
@@ -138,8 +168,17 @@ class EventsController extends AppController {
                 $this->Flash->error(__('Nije moguće sačuvati podatke, molimo Vas pokušajte ponovo!'));
             }
         }
-        $cities = $this->Event->Location->City->find('list');
-        $this->set(compact(array('cities')));
+        
+        if ($location !== null) {
+            $cityId = $this->Event->Location->cityIdLocationIsFrom($location);
+            $cities = array(
+                $cityId => $this->Event->Location->getCityName($cityId)
+            );
+        } else {
+            $cities = $this->Event->Location->City->find('list');
+        }
+        
+        $this->set(compact(array('cities', 'location')));
     }
     
     public function editStatus() {
@@ -156,8 +195,13 @@ class EventsController extends AppController {
     
     public function locations() {
         $this->request->onlyAllow('ajax');
-        $this->viewClass = 'Json';
-        $cities = $this->Event->Location->getCityLocations($this->request->data['city']);
+        $this->viewClass = 'Json'; 
+        if (!$this->admin) {
+            $cities = $this->Event->Location->getLocationNameForUser($this->userLocation);
+        } else {
+            $cities = $this->Event->Location->getCityLocations($this->request->data['city']);
+        }
+        
         $this->set(compact('cities'));
     }
     

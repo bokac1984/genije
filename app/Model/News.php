@@ -2,10 +2,10 @@
 App::uses('AppModel', 'Model');
 /**
  * News Model
- * @property City $City
- * @property Location $Location 
- * @property Event $Event
- * @property Gallery $Gallery
+ * @property City $City Model grada
+ * @property Location $Location Model lokacije
+ * @property Event $Event Model dogadjaja
+ * @property Gallery $Gallery Model galerije slika
  */
 class News extends AppModel {
        
@@ -59,7 +59,7 @@ class News extends AppModel {
             'className' => 'NewsComment',
             'foreignKey' => 'fk_id_news',
         ),        
-    );    
+    );
     
     public function beforeSave($options = array()) {
         if (isset($this->data[$this->alias]['title']) && empty($this->data[$this->alias]['title'])) {
@@ -81,12 +81,7 @@ class News extends AppModel {
             return $this->getLastInsertID();
         }
         return 0;
-    }
-    
-    public function countPublishedNews($userId = null) {
-        
-    }
-    
+    }    
     
     public function saveImageData($id, $filename = '') {
         if ('' !== $filename) {
@@ -206,5 +201,39 @@ class News extends AppModel {
                 )
             ));
         }
+    }
+    
+    /**
+     * Pogledaj da li ova lokacija koja se gleda pripada lokaciji korisnika
+     * 
+     * @param int $userLocation
+     * @param int $newsId
+     * @return boolean
+     */
+    public function newsBelongsToUsersLocation ($userLocation, $newsId) {
+        $newsLocation = $this->find('all',array(
+                'conditions' => array(
+                    'News.fk_id_map_objects' => $userLocation,
+                    'News.id' => $newsId
+                ),
+            'fields' => array(
+                'News.fk_id_map_objects AS location'
+            )
+        ));
+        
+        return !empty($newsLocation);
+    }    
+    
+    public function countPublishedNews($userLocation = null) {
+        return $this->find('count', array(
+            'conditions' => array(
+                'News.fk_id_map_objects' => $userLocation
+            )
+        ));
+    }
+    
+    public function beforeFind($query) {
+        //debug($query);exit();
+        parent::beforeFind($query);
     }
 }

@@ -15,7 +15,12 @@ class PlanFixture extends CakeTestFixture {
 		'description' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
 		'duration' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
 		'price' => array('type' => 'decimal', 'null' => true, 'default' => null, 'length' => 11, 'unsigned' => false),
-		'quantity' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
+		'news_quantity' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
+		'events_quantity' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
+		'products_quantity' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
+		'location_images_quantity' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
+		'news_images_quantity' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
+		'coupon_quantity' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
@@ -34,7 +39,12 @@ class PlanFixture extends CakeTestFixture {
 			'description' => 'Lorem ipsum dolor sit amet',
 			'duration' => 'Lorem ipsum dolor sit amet',
 			'price' => '',
-			'quantity' => 1
+			'news_quantity' => 1,
+			'events_quantity' => 1,
+			'products_quantity' => 1,
+			'location_images_quantity' => 1,
+			'news_images_quantity' => 1,
+			'coupon_quantity' => 1
 		),
 	);
 

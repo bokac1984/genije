@@ -104,6 +104,60 @@ var UsersOverview = function () {
             });              
         });
         
+        /**
+         * klik na dugme X u jednom redu
+         */
+        $(document).on('click', '#cancelsub', function(){
+            var $modal = $('#cancel-subscription').modal();
+            
+            var subscriptionId = $(this).attr('data-id');
+            $modal.find('#subscription-id').attr('data-id', subscriptionId);
+            $.ajax({
+              method: "POST",
+              dataType: "json",
+              url: "/decline_reasons/reasons.json"
+            })
+            .done(function( result ) {
+                console.log(result);  
+                var options = $modal.find("#decline_reason");
+                options.prop("disabled", false);
+                options.empty();
+                $.each(result, function (index, element) {
+                    console.log(this.id);
+                    options.append($("<option />").val(this.id).text(this.description));
+                });
+            })
+            .fail(function( result ) {
+                console.log(result.responseText);
+            });
+        }); 
+        
+        /**
+         * klik na sacuvaj poslije klika na X
+         */
+        $(document).on('click', '#btn-dialog-save-canceled-sub', function(){
+            var id = $('#cancel-subscription').find('#subscription-id').attr('data-id');
+            var reason = $('#decline_reason').val();
+            $.ajax({
+              method: "POST",
+              dataType: "json",
+              url: "/subscriptions/cancel",
+              data: {subscription: id, reason: reason}
+            })
+            .done(function( result ) {
+                console.log(result);  
+                var options = $modal.find("#decline_reason");
+                options.prop("disabled", false);
+                options.empty().append('<option selected="selected" value=""></option>');
+                $.each(result, function (index, element) {
+                    console.log(this.id);
+                    options.append($("<option />").val(this.id).text(this.description));
+                });
+            })
+            .fail(function( result ) {
+                console.log(result.responseText);
+            });
+        });         
 
     };
     return {

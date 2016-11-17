@@ -29,7 +29,16 @@
                         <td class="center"><?php echo $plan['Plan']['name'] ?></td>
                         <td class="center"><?php echo $plan['Plan']['price'] ?> KM</td>
                         <td class="center"><?php echo $plan['Plan']['duration'] ?> mjesec</td>
-                        <td class="center"><?php echo $plan['Plan']['quantity'] ?></td>
+                        <td class="">
+                            <ul class="kolicina-objava">
+                                <li>Vjesti: <?php echo $plan['Plan']['news_quantity'] ?></li>
+                                <li>Slika na vijestima: <?php echo $plan['Plan']['news_images_quantity'] ?></li>
+                                <li>Proizvoda: <?php echo $plan['Plan']['products_quantity'] ?></li>
+                                <li>Slika na proizvodu: <?php echo $plan['Plan']['product_images_quantity'] ?></li>
+                                <li>Slika na lokaciji: <?php echo $plan['Plan']['location_images_quantity'] ?></li>
+                                <li>Kupona: <?php echo $plan['Plan']['coupon_quantity'] ?></li>                                
+                            </ul>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

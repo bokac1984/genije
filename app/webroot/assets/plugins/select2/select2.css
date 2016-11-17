@@ -102,6 +102,7 @@ Version: 3.4.3 Timestamp: Tue Sep 17 06:47:14 PDT 2013
 
 .select2-container.select2-allowclear .select2-choice abbr {
     display: inline-block;
+    margin-right: 8px;
 }
 
 .select2-container .select2-choice abbr:hover {

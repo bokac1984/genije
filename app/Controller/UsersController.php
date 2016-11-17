@@ -191,7 +191,7 @@ class UsersController extends AppController {
             throw new NotFoundException(__('Nepostojeći korisnik!!!'));
         }  
         if ($this->request->is('post') || $this->request->is('put')) {
-            debug($this->request->data);
+            //  debug($this->request->data);
 //            if ($this->User->save($this->request->data)) {
 //                $this->Session->setFlash(__('The user has been saved'));
 //                $this->redirect(array('action' => 'index'));

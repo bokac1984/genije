@@ -351,4 +351,26 @@ class Location extends AppModel {
         
         return $city['Location']['fk_id_cities'];
     }
+    
+    /**
+     * Daj samo za jednu lokaciju naziv lokacije za potrebe dodavanja dogadjaja
+     * 
+     * @param type $idLocation
+     * @return type
+     */
+    public function getLocationNameForUser($idLocation) {
+        $this->recursive = -1;
+        $lokacije = $this->find('first', array(
+            'conditions' => array(
+                'Location.id' => $idLocation,
+                'Location.online_status' => 2
+            ),
+            'fields' => array(
+                'Location.id',
+                'Location.name'
+            )
+        ));
+        
+        return array($lokacije['Location']);        
+    }
 }

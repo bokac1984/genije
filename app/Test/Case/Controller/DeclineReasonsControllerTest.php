@@ -1,10 +1,10 @@
 <?php
-App::uses('PlansController', 'Controller');
+App::uses('DeclineReasonsController', 'Controller');
 
 /**
- * PlansController Test Case
+ * DeclineReasonsController Test Case
  */
-class PlansControllerTest extends ControllerTestCase {
+class DeclineReasonsControllerTest extends ControllerTestCase {
 
 /**
  * Fixtures
@@ -12,7 +12,7 @@ class PlansControllerTest extends ControllerTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.plan'
+		'app.decline_reason'
 	);
 
 /**
@@ -58,15 +58,6 @@ class PlansControllerTest extends ControllerTestCase {
  */
 	public function testDelete() {
 		$this->markTestIncomplete('testDelete not implemented.');
-	}
-
-/**
- * testGetAllPlans method
- *
- * @return void
- */
-	public function testGetAllPlans() {
-		$this->markTestIncomplete('testGetAllPlans not implemented.');
 	}
 
 }

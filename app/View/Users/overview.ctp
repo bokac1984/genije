@@ -431,3 +431,63 @@ if (!empty($this->request->data['User']['img'])) {
        </button>       
    </div>
 </div>
+
+<!-- DIALOG renew Subscription -->
+<div id="renew-subscription" class="modal fade" tabindex="-1" data-width="760" data-backdrop="static" data-keyboard="false" style="display: none;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            ×
+        </button>
+        <input type="hidden" class="sub-user-id" value="" >
+        <h4 class="modal-title">Promjeni plan</h4>
+    </div>
+   <div class="modal-body" style="margin-bottom:0">
+       <div class="rezultati-sub"></div>
+       <div class="error-sub"></div>
+   </div>
+   <div class="modal-footer" style="margin-top:0">       
+       <button id="btn-dialog-save-subs" class="btn btn-green">
+           <i class="fa fa-check"></i> Sačuvaj
+       </button>
+       <button id="btn-dialog-dismiss-subs" class="btn btn-bricky" data-dismiss="modal">
+           Odustani
+       </button>       
+   </div>
+</div>
+
+<!-- DIALOG Cancel Subscription -->
+<div id="cancel-subscription" class="modal fade" tabindex="-1" data-width="760" data-backdrop="static" data-keyboard="false" style="display: none;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            ×
+        </button>
+        <input type="hidden" class="sub-user-id" value="" >
+        <h4 class="modal-title">Prekini plan</h4>
+    </div>
+   <div class="modal-body" style="margin-bottom:0">
+       <div class="row">
+           <div class="col-md-12">
+            <div class="form-group">
+                <div class="hidden" id="subscription-id" data-id=""></div>
+                <label for="control-label">
+                    Razlog prekida
+                </label>
+                <select id="decline_reason" name="data[DeclineReason][id]" class="form-control search-select">
+                    
+                </select>
+                
+            </div>
+           </div>
+           <input type="hidden" class="user-id" value="<?php echo $this->request->data['User']['id']; ?>" >
+       </div> 
+       <div class="error-sub"></div>
+   </div>
+   <div class="modal-footer" style="margin-top:0">       
+       <button id="btn-dialog-save-canceled-sub" class="btn btn-green">
+           <i class="fa fa-check"></i> Sačuvaj
+       </button>
+       <button id="btn-dialog-dismiss-subs" class="btn btn-bricky" data-dismiss="modal">
+           Odustani
+       </button>       
+   </div>
+</div>

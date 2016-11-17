@@ -6,7 +6,7 @@ App::uses('AppModel', 'Model');
  * Subscription Model
  *
  * @property AdminUsers $AdminUsers
- * @property Plans $Plans
+ * @property Plan $Plan
  */
 class Subscription extends AppModel {
 
@@ -36,7 +36,7 @@ class Subscription extends AppModel {
      * @var array
      */
     public $belongsTo = array(
-        'AdminUser' => array(
+        'User' => array(
             'className' => 'User',
             'foreignKey' => 'admin_users_id',
             'conditions' => '',
@@ -55,7 +55,7 @@ class Subscription extends AppModel {
     public function subExists($userID = null) {
         $postoji = $this->find('count', array(
             'conditions' => array(
-                'Subscription.admin_users_id' => $userID
+                'Subscription.admin_users_id' => $userID,
             )
         ));
         

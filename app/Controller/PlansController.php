@@ -118,4 +118,10 @@ class PlansController extends AppController {
         return $this->redirect(array('action' => 'index'));
     }
 
+
+    public function getAllPlans() {
+        $this->viewClass = 'Json';
+        $plans = $this->Plan->find('all');
+        $this->set(compact('plans'));
+    }       
 }

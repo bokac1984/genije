@@ -1,52 +1,33 @@
 <div class="addons index">
-	<h2><?php echo __('Addons'); ?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<thead>
-	<tr>
-			<th><?php echo $this->Paginator->sort('id'); ?></th>
-			<th><?php echo $this->Paginator->sort('name'); ?></th>
-			<th><?php echo $this->Paginator->sort('duration'); ?></th>
-			<th><?php echo $this->Paginator->sort('quantity'); ?></th>
-			<th><?php echo $this->Paginator->sort('price'); ?></th>
-			<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	</thead>
-	<tbody>
-	<?php foreach ($addons as $addon): ?>
-	<tr>
-		<td><?php echo h($addon['Addon']['id']); ?>&nbsp;</td>
-		<td><?php echo h($addon['Addon']['name']); ?>&nbsp;</td>
-		<td><?php echo h($addon['Addon']['duration']); ?>&nbsp;</td>
-		<td><?php echo h($addon['Addon']['quantity']); ?>&nbsp;</td>
-		<td><?php echo h($addon['Addon']['price']); ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $addon['Addon']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $addon['Addon']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $addon['Addon']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $addon['Addon']['id']))); ?>
-		</td>
-	</tr>
-<?php endforeach; ?>
-	</tbody>
-	</table>
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-		'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
-	));
-	?>	</p>
-	<div class="paging">
-	<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
-		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-	?>
-	</div>
+    <h2><?php echo __('Addons'); ?></h2>
+    <table class="table table-condensed" cellpadding="0" cellspacing="0">
+        <thead>
+            <tr>
+                <th><?php echo $this->Paginator->sort('id'); ?></th>
+                <th><?php echo $this->Paginator->sort('name'); ?></th>
+                <th><?php echo $this->Paginator->sort('duration'); ?></th>
+                <th><?php echo $this->Paginator->sort('quantity'); ?></th>
+                <th><?php echo $this->Paginator->sort('price'); ?></th>
+                <th class="actions"><?php echo __('Actions'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($addons as $addon): ?>
+                <tr>
+                    <td><?php echo h($addon['Addon']['id']); ?>&nbsp;</td>
+                    <td><?php echo h($addon['Addon']['name']); ?>&nbsp;</td>
+                    <td><?php echo h($addon['Addon']['duration']); ?>&nbsp;</td>
+                    <td><?php echo h($addon['Addon']['quantity']); ?>&nbsp;</td>
+                    <td><?php echo h($addon['Addon']['price']); ?>&nbsp;</td>
+                    <td class="actions">
+                        <?php echo $this->Html->link(__('View'), array('action' => 'view', $addon['Addon']['id'])); ?>
+                        <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $addon['Addon']['id'])); ?>
+                        <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $addon['Addon']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $addon['Addon']['id']))); ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?php echo $this->element('pagination'); ?>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New Addon'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New User'), array('controller' => 'users', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
+

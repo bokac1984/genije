@@ -80,8 +80,12 @@ class LocationsController extends AppController {
     
     public function isAuthorized($user) {
         if ($this->locationOperator || $this->operator) {
+            if (in_array($this->action, array('index'))) {
+                return false;
+            }
             return true;
         }
+
         
         if (in_array($this->action, array('add', 'delete')) && $this->admin) {
             return true;

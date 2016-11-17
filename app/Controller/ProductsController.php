@@ -19,18 +19,7 @@ class ProductsController extends AppController {
      */
     public $components = array(
         'DataTable.DataTable' => array(
-            'Product' => array(
-                'joins' =>  array(
-                     array(
-                        'table' => 'map_objects_products',
-                        'alias' => 'LocationProduct',
-                        'type' => 'INNER',
-                        'conditions' => array(
-                            'LocationProduct.fk_id_products = Product.id',
-                            'LocationProduct.fk_id_map_objects' => ''
-                        )
-                    )
-                ),                
+            'Product' => array(               
                 'columns' => array(
                     'Product.id' => array(
                         'label' => '#',
@@ -84,9 +73,20 @@ class ProductsController extends AppController {
          * we do this to ensure our index page
          * will have the correct location data for our location operator
          */
-
-        $this->DataTable->settings['Product']['joins'][0]['conditions']['LocationProduct.fk_id_map_objects'] = 
-                !$this->admin ? $this->userLocation : '';
+        if (!$this->admin) {
+            $this->DataTable->settings['Product']['joins'] = 
+                 array(
+                     array(
+                        'table' => 'map_objects_products',
+                        'alias' => 'LocationProduct',
+                        'type' => 'INNER',
+                        'conditions' => array(
+                            'LocationProduct.fk_id_products = Product.id',
+                            'LocationProduct.fk_id_map_objects' => $this->userLocation
+                        )
+                    )
+                ); 
+        }
     }
     
     public function isAuthorized($user) {
@@ -94,9 +94,9 @@ class ProductsController extends AppController {
             // ako je locOperator pogledaj jesmo li u add akciji
             // ako da vidi da li ID pripada lokaciji usera ulogovanog
             if (in_array($this->action, array('add'))) {
-                        
-                return $this->request->params['pass'][0] === $this->userLocation;
+                return $this->checkIfUserCanAddToAllLocations();
             }
+            
             //izbaci iz igre index i ovaj za dataTable
             //gucking strict checking vidim nesto ne daje dobre rezultaet
             // plus samo udji tu kad imamo pass onda gledaj
@@ -217,7 +217,7 @@ class ProductsController extends AppController {
             $this->set('cityId', (int)$cityId);
             $this->set('locationsForCity', $locationsForCity);
         }
-        
+            
         $this->set(compact('cities'));
     }
 
