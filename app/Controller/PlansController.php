@@ -7,6 +7,8 @@ App::uses('AppController', 'Controller');
  *
  * @property Plan $Plan
  * @property PaginatorComponent $Paginator
+ * @property FlashComponent $Flash
+ * @property SessionComponent $Session
  */
 class PlansController extends AppController {
 
@@ -15,8 +17,13 @@ class PlansController extends AppController {
      *
      * @var array
      */
-    public $components = array('Paginator');
+    public $components = array('Paginator', 'Flash', 'Session');
 
+    
+    public function beforeFilter() {
+        parent::beforeFilter();
+        $this->set('icon', 'location');
+    }
     /**
      * index method
      *
@@ -41,7 +48,14 @@ class PlansController extends AppController {
         $options = array('conditions' => array('Plan.' . $this->Plan->primaryKey => $id));
         $this->set('plan', $this->Plan->find('first', $options));
     }
-
+    /**
+     * plans method
+     *
+     * @return void
+     */
+    public function pregled() {
+        
+    }
     /**
      * add method
      *
@@ -104,9 +118,4 @@ class PlansController extends AppController {
         return $this->redirect(array('action' => 'index'));
     }
 
-    public function getAllPlans() {
-        $this->viewClass = 'Json';
-        $plans = $this->Plan->find('all');
-        $this->set(compact('plans'));
-    } 
 }
