@@ -18,8 +18,6 @@ var PageInitalization = function () {
             url: '/application_users/users',
             method: 'GET'
         }).done(function (response) {
-            console.log('ovdje uradjeno');
-            console.log(response);
             gMap.addMarkers(JSON.parse(response));
         }).fail(function () {
             alert('fail');
