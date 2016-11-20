@@ -3,6 +3,10 @@ App::uses('AppController', 'Controller');
 
 class DashboardsController extends AppController {
     
+    public $uses = array(
+        'Plan', 'Subscription', 'Event', 'News', 'Product' 
+    );
+    
     public function beforeFilter() {
         if ($this->request->is('ajax')) {
             $this->disableCache();
@@ -10,23 +14,33 @@ class DashboardsController extends AppController {
         $this->set('icon', 'home-3');
         parent::beforeFilter();
     }
-
+    
     public function isAuthorized($user) {
         return true;
     }
 
     public function index() {
-
-    }
-    
-    public function edit($id = null) {
-        $this->Event->id = $id;
-        if (!$this->Event->exists()) {
-          throw new NotFoundException(__('Ne postoji dogadjaj'));
+        if (!$this->admin) {
+            $news = $this->News->publishedByLocationIdLastMonth($this->userLocation);
+            
+            $subscribedCount = $this->Plan->find('first', array(
+                'conditions' => array(
+                    'Plan.id' => $this->Auth->user('Subscription.plans_id')
+                )
+            ));
+            
+            $newsPercent = $this->getPercent($news, $subscribedCount['Plan']['news_quantity']);
+            
+            $eventsPunlished = $this->Event->publishedByLocationIdLastMonth($this->userLocation);
+            $eventsPercent = $this->getPercent($eventsPunlished, $subscribedCount['Plan']['events_quantity']);
+            
+            $productsPublished = $this->Product->publishedByLocationIdLastMonth($this->userLocation);
+            $productsPercent = $this->getPercent($productsPublished, $subscribedCount['Plan']['products_quantity']);
+            $this->set('newsPercent', $newsPercent > 100 ? 100 : $newsPercent);
+            $this->set('eventsPercent', $eventsPercent > 100 ? 100 : $eventsPercent);
+            $this->set('productsPercent', $productsPercent > 100 ? 100 : $productsPercent);
+            $this->render('locationo');
         }
-        $event = $this->Event->findById($id);  
-        
-        $this->set(compact('event'));
     }
 
     public function add() {
@@ -73,5 +87,9 @@ class DashboardsController extends AppController {
                 echo 'error';
             }
         }
+    }
+    
+    private function getPercent($part, $whole) {
+        return $part / $whole * 100;
     }
 }
