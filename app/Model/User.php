@@ -3,7 +3,6 @@ App::uses('AppModel', 'Model');
 App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 /**
  * User Model
- *
  * 
  * @property Location $Location
  * @property Subscription $Subscription
@@ -81,6 +80,9 @@ class User extends AppModel {
         'Subscription' => array(
             'className' => 'Subscription',
             'foreignKey' => 'admin_users_id',
+            'conditions' => array(
+                'Subscription.decline_reason_id' => null
+            )
         ),
     );
     
