@@ -102,4 +102,19 @@ class AppModel extends Model {
 
         return parent::beforeSave($options);
     }    
+    
+    /**
+     *
+     * Daj broj objava za odgovarajuci Model 
+     * @param int $locationId
+     * @return int broj objava
+     */
+    public function publishedByLocationIdLastMonth($locationId = null) {
+        return $this->find('count', array(
+            'conditions' => array(
+                "$this->alias.fk_id_map_objects" => $locationId,
+                "$this->alias.creation_date BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()"
+            )
+        ));        
+    }    
 }
