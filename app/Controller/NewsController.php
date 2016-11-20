@@ -146,15 +146,21 @@ class NewsController extends AppController {
 
     public function add($location = null) {
         $userSubscriptionData = $this->Auth->user('Subscription');
-        $Subscription = ClassRegistry::init("Subscription");
-        $subscribedNewsCount = $Subscription->Plan->numberOfNewsToPublish($userSubscriptionData['plans_id']);
+        $Plan = ClassRegistry::init("Plan");
+        
+        $subscribedNewsCount = $Plan->numberOfNewsToPublish($userSubscriptionData['plans_id']);
         $publishedNewsCount = $this->News->countPublishedNews($this->userLocation);
         $now = date("Y-m-d H:i:s");
+        //debug($publishedNewsCount . " " .$subscribedNewsCount['Plan']['news_quantity']);
         
-        if ($publishedNewsCount <= $subscribedNewsCount
-                || $now > $userSubscriptionData['end_date']) {
-            return $this->redirect(array('action' => 'expired'));
-        } 
+        if ($publishedNewsCount > $subscribedNewsCount['Plan']['news_quantity']) {
+            $this->set('usedCount', $publishedNewsCount);
+            $this->set('subscribedCount', $subscribedNewsCount['Plan']['news_quantity']);
+            $this->render('used');
+        } else if ($now > $userSubscriptionData['end_date']) {
+            $this->set('b', 'test2');
+            $this->render('expired');
+        }
         
         if ($location !== null) {
             $cityId = $this->News->Location->cityIdLocationIsFrom($location);
@@ -172,6 +178,9 @@ class NewsController extends AppController {
     public function expired() {
         
     }
+    
+    public function used() {}
+    
     public function view($id = null) {
         $this->News->id = $id;
         if (!$this->News->exists()) {
