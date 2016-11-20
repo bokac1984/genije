@@ -228,5 +228,28 @@ class Product extends AppModel {
         
         return $productLocation[0]['LocationProduct']['location'] == $userLocation;
     }
+    
+    /**
+     * Vrati broj objava za proizvode, jer su oni specificni
+     * 
+     * @param int $locationId
+     * @return int broj objava
+     */
+    public function publishedByLocationIdLastMonth($locationId = null) {
+        return $this->find('count', array(
+            'joins' => array(
+                     array(
+                        'table' => 'map_objects_products',
+                        'alias' => 'LocationProduct',
+                        'type' => 'INNER',
+                        'conditions' => array(
+                            'LocationProduct.fk_id_products = Product.id',
+                            'LocationProduct.fk_id_map_objects' => $locationId
+                        )
+                    )
+                ),
+            'conditions' => "$this->alias.created BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()"
+        ));
+    }
 
 }
