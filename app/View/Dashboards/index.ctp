@@ -16,7 +16,9 @@ echo $this->Html->script('/js/libs/jquery.sparkline/jquery.sparkline', array('bl
 echo $this->Html->script('/js/libs/jquery-easy-pie-chart/jquery.easy-pie-chart', array('block' => 'scriptBottom'));
 echo $this->Html->script('/js/libs/jquery-ui-touch-punch/jquery.ui.touch-punch.min', array('block' => 'scriptBottom'));
 echo $this->Html->script('/js/dashboard', array('block' => 'scriptBottom'));
-echo $this->Html->scriptBlock("Index.init();", array('block'=>'scriptBottom'));
+// ako nije admin daj neki znak javascirptu
+$admin = $loggedInUser['group_id'] === '1' ? '1' : '0';
+echo $this->Html->scriptBlock("Index.init($admin);", array('block'=>'scriptBottom'));
 ?>
 <div class="row">
     <div class="col-sm-4">
