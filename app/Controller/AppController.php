@@ -3,21 +3,6 @@
 /**
  * Application level Controller
  *
- * This file is application-wide controller file. You can put all
- * application-wide controller-related methods here.
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       app.Controller
- * @since         CakePHP(tm) v 0.2.9
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 App::uses('Controller', 'Controller');
 App::uses('DataTableRequestHandlerTrait', 'DataTable.Lib');
@@ -80,11 +65,15 @@ class AppController extends Controller {
             'action' => 'login'
         );
         $this->Auth->authError = __('Nemate dozvolu da vidite tu stranicu.');
-        $this->Auth->loginError = __('Korisničko ime ili lozinaka nisu validni.');
+        $this->Auth->loginError = __('Korisničko ime ili lozinka nisu validni.');
         $this->Auth->flash['element'] = "flash_error";
-       
+        
+        if ($this->request->is('ajax')) {
+            $this->disableCache();
+        }
+        
         $this->menuBuilder($this->Auth->user('group_id'));
-        //debug($this->Auth->user());
+        
         $this->set('loggedInUser', $this->Auth->user());
         
         $this->userLocation = $this->Auth->user('map_object_id');
@@ -197,6 +186,33 @@ class AppController extends Controller {
         }
 
         return $this->request->params['pass'][0] === $this->userLocation;        
+    }
+    
+    /**
+     * Provjeri da li korisnik moze dodati postType 
+     * zbog ogranicenja za kolicinu ili istekli datum
+     * 
+     * @return url
+     */
+    public function userCanAddMorePosts() {
+        $userSubscriptionData = $this->Auth->user('Subscription');
+        $Plan = ClassRegistry::init("Plan");
+        
+        // napravi mnozinu od naziva modela
+        $postType = strtolower(Inflector::pluralize($this->modelClass));
+        
+        $subscribedCountPerMonth = $Plan->numberOfPostTypeToPublish($userSubscriptionData['plans_id'], $postType);
+        $publishedForLastSubscribePeriod = $this->{$this->modelClass}->publishedByLocationIdLastMonth($this->userLocation, $userSubscriptionData['start_date']);
+        $now = date("Y-m-d H:i:s");
+        
+        
+        
+        if ($now > $userSubscriptionData['end_date']) {
+            return $this->redirect(array('controller' => 'subscriptions', 'action' => 'expired'));
+        }        
+        else if ($this->{$this->modelClass}->canPostMore ($subscribedCountPerMonth['Plan']["{$postType}_quantity"], $publishedForLastSubscribePeriod)) {
+            return $this->redirect(array('controller' => 'subscriptions', 'action' => 'used'));
+        }
     }
 
 }

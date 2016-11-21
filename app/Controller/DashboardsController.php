@@ -21,7 +21,8 @@ class DashboardsController extends AppController {
 
     public function index() {
         if (!$this->admin) {
-            $news = $this->News->publishedByLocationIdLastMonth($this->userLocation);
+            $startDate = $this->Auth->user('Subscription.start_date');
+            $news = $this->News->publishedByLocationIdLastMonth($this->userLocation, $startDate);
             
             $subscribedCount = $this->Plan->find('first', array(
                 'conditions' => array(
@@ -31,10 +32,10 @@ class DashboardsController extends AppController {
             
             $newsPercent = $this->getPercent($news, $subscribedCount['Plan']['news_quantity']);
             
-            $eventsPunlished = $this->Event->publishedByLocationIdLastMonth($this->userLocation);
+            $eventsPunlished = $this->Event->publishedByLocationIdLastMonth($this->userLocation, $startDate);
             $eventsPercent = $this->getPercent($eventsPunlished, $subscribedCount['Plan']['events_quantity']);
             
-            $productsPublished = $this->Product->publishedByLocationIdLastMonth($this->userLocation);
+            $productsPublished = $this->Product->publishedByLocationIdLastMonth($this->userLocation, $startDate);
             $productsPercent = $this->getPercent($productsPublished, $subscribedCount['Plan']['products_quantity']);
             $this->set('newsPercent', $newsPercent > 100 ? 100 : $newsPercent);
             $this->set('eventsPercent', $eventsPercent > 100 ? 100 : $eventsPercent);

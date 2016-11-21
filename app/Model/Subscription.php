@@ -56,10 +56,10 @@ class Subscription extends AppModel {
         $postoji = $this->find('count', array(
             'conditions' => array(
                 'Subscription.admin_users_id' => $userID,
+                'Subscription.decline_reason_id' => null,
             )
         ));
         
         return $postoji === 0;
     }
-
 }

@@ -43,9 +43,6 @@
             array('type' => 'icon')
         );
         ?>
-        <style>
-
-        </style>
         <!-- end: MAIN CSS -->
         <!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
     </head>
@@ -89,8 +86,7 @@
                     </div>
                     <!-- end: MAIN MENU TOGGLER BUTTON -->
                     <!-- start: MAIN NAVIGATION MENU -->
-                        <?php 
-                        //debug($menuElement);exit();
+                        <?php
                         echo $this->element($menuElement); 
                         ?>
                     <!-- end: MAIN NAVIGATION MENU -->
@@ -177,7 +173,7 @@
                 Main.init();
             });
         </script>
-        <?php //echo $this->element('sql_dump'); ?>
+        <?php echo $this->element('sql_dump'); ?>
     </body>
     <!-- end: BODY -->
 </html>

@@ -33,13 +33,20 @@ class Plan extends AppModel {
         ),
     );
     
-    public function numberOfNewsToPublish($planId = null) {
+    /**
+     * Na osnovu postType nadji broj njegovih objava
+     * 
+     * @param int $planId
+     * @param string $postType news ili events ili products
+     * @return array
+     */
+    public function numberOfPostTypeToPublish($planId = null, $postType = null) {
         return $this->find('first', array(
             'conditions' => array(
                 'Plan.id' => $planId
             ),
             'fields' => array(
-                'Plan.news_quantity'
+                "Plan.{$postType}_quantity"
             )
         ));
     }    

@@ -276,4 +276,19 @@ class Event extends AppModel {
             'fields' => 'Event.img_url'
         ));
     }
+    /**
+     *
+     * Nadji da li korisnik smije sada da objavljuje, ako mu broj objava
+     * bude veci za neki datum od ukupnog mjesecnog broja onda ne smije 
+     * @param type $userLocaton
+     * @param type $startDate
+     */
+    public function checkIfUserCanPublish($userLocaton, $startDate) {
+        return $this->find('count', array(
+            'conditions' => array(
+                'Event.fk_id_map_objects' => $userLocaton,
+                'Event.creation_date >= ' => $this->correctDateForMonthlySubscription($startDate)
+            )
+        ));
+    }
 }

@@ -4,7 +4,7 @@ $this->assign('page-breadcrumbroot', $this->Html->link('Korisnici', array('contr
 $this->assign('crumb', 'Pregled profila');
 
 $this->assign('title', 'Korisnici');
-$this->assign('page-title', 'Korisnici <small>pregled profila</small>');
+$this->assign('page-title', $this->request->data['User']['fullname'] . ' <small>pregled profila</small>');
 
 echo $this->Html->script('/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min', array('block' => 'scriptBottom'));
 echo $this->Html->script('/assets/plugins/jquery.pulsate/jquery.pulsate.min', array('block' => 'scriptBottom'));
@@ -16,11 +16,11 @@ echo $this->Html->scriptBlock("UsersOverview.init();", array('block' => 'scriptB
 echo $this->Html->css('/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min', array('block' => 'css'));
 echo $this->Html->css('/assets/plugins/bootstrap-social-buttons/social-buttons-3', array('block' => 'css'));
 
-echo $this->Html->css('/assets/plugins/summernote/build/summernote.css', array('block' => 'css'));
+echo $this->Html->css('/assets/plugins/summernote/build/summernote', array('block' => 'css'));
 echo $this->Html->css('/assets/plugins/select2/select2', array('block' => 'css'));
 echo $this->Html->css('/assets/plugins/iCheck/skins/square/green', array('block' => 'css'));
-echo $this->Html->css('/assets/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css', array('block' => 'css'));
-echo $this->Html->css('/assets/plugins/bootstrap-modal/css/bootstrap-modal.css', array('block' => 'css'));
+echo $this->Html->css('/assets/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch', array('block' => 'css'));
+echo $this->Html->css('/assets/plugins/bootstrap-modal/css/bootstrap-modal', array('block' => 'css'));
 
 // sredi sliku da prikaze
 $slika = '/photos-profiles/default.jpg';
@@ -410,7 +410,8 @@ if (!empty($this->request->data['User']['img'])) {
 </div>
 
 <!-- DIALOG Subscription -->
-<div id="subscription" class="modal fade" tabindex="-1" data-width="760" data-backdrop="static" data-keyboard="false" style="display: none;">
+<div id="subscription" class="modal-overflow modal fade" tabindex="-1" data-width="760" 
+     data-backdrop="static" data-keyboard="false" style="display: none;">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
             ×
@@ -466,13 +467,13 @@ if (!empty($this->request->data['User']['img'])) {
     </div>
    <div class="modal-body" style="margin-bottom:0">
        <div class="row">
+           <div class="hidden" id="subscription-id" data-id=""></div>
            <div class="col-md-12">
             <div class="form-group">
-                <div class="hidden" id="subscription-id" data-id=""></div>
                 <label for="control-label">
                     Razlog prekida
                 </label>
-                <select id="decline_reason" name="data[DeclineReason][id]" class="form-control search-select">
+                <select id="decline_reason" name="data[DeclineReason][id]" class="form-control select">
                     
                 </select>
                 

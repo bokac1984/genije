@@ -152,6 +152,9 @@ class EventsController extends AppController {
      * @return void
      */
     public function add($location = null) {
+        
+        $this->userCanAddMorePosts();
+        
         if ($this->request->is('post')) {
             if ( !isset($this->request->data['Event']['use_loc_image']) && $this->data['Event']['img_url']['error'] !== 4 ) {
                 $this->request->data['Event']['img_url'] = 'events/' . $this->uploadFile($this->request->data['Event']['img_url'], $this->photoLocation);                

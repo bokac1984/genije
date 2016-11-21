@@ -235,7 +235,8 @@ class Product extends AppModel {
      * @param int $locationId
      * @return int broj objava
      */
-    public function publishedByLocationIdLastMonth($locationId = null) {
+    public function publishedByLocationIdLastMonth($locationId = null, $startDate = null) {
+        $date = $this->correctDateForMonthlySubscription($startDate);
         return $this->find('count', array(
             'joins' => array(
                      array(
@@ -248,7 +249,9 @@ class Product extends AppModel {
                         )
                     )
                 ),
-            'conditions' => "$this->alias.created BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()"
+            'conditions' => array(
+                "$this->alias.created >= " => $this->correctDateForMonthlySubscription($date)
+            )
         ));
     }
 

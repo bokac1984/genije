@@ -80,32 +80,41 @@ var UsersOverview = function () {
                 });                
             })
             .fail(function( result ) {
-                alert('Nastala je greska prilikom snimanja lokacije!');
+                alert('Nije moguće prikazati planove, javite se administraciji!!!');
             });            
             var $modal = $('#subscription').modal();
         }); 
 
         $(document).on('click', '#btn-dialog-save-subs', function(){
+            $('#subscription').find('.modal-body .error-sub').empty();
             var odabrano = $('input[name="selected-plan"]').val();
+            
+            if (odabrano === '-1') {
+                $('.modal-body .error-sub').html("<p style='color: red;'>Morate odabrati jedan plan!!!</p>");
+                return;
+            }
+            
+            // sada da jos vidimo koji je period odabrao
+            var period = $('select[id="sub-period"]').val();
             
             $.ajax({
               method: "POST",
               dataType: "html",
               url: "/users/saveplan.json",
-              data: { plan: odabrano, user: $(".sub-user-id").val()}
+              data: { plan: odabrano, user: $(".sub-user-id").val(), period: period }
             })
             .done(function( result ) {
-                $('.odabrani-planovi').html(result);              
+                $('.odabrani-planovi').empty().html(result); 
+                $('#subscription').modal('toggle');
             })
             .fail(function( result ) {
-                console.log(result.responseText);
                 var poruka = JSON.parse(result.responseText);
-                $('.modal-body .error-sub').html("<p style='color: red;'>" + poruka.message + "</p>");
+                $('#subscription').find('.modal-body .error-sub').html("<p style='color: red;'>" + poruka.message + "</p>");
             });              
         });
         
         /**
-         * klik na dugme X u jednom redu
+         * klik na dugme X u jednom redu, tj odustajanje od pretplate
          */
         $(document).on('click', '#cancelsub', function(){
             var $modal = $('#cancel-subscription').modal();
@@ -117,13 +126,11 @@ var UsersOverview = function () {
               dataType: "json",
               url: "/decline_reasons/reasons.json"
             })
-            .done(function( result ) {
-                console.log(result);  
+            .done(function( result ) { 
                 var options = $modal.find("#decline_reason");
                 options.prop("disabled", false);
                 options.empty();
-                $.each(result, function (index, element) {
-                    console.log(this.id);
+                $.each(result, function () {
                     options.append($("<option />").val(this.id).text(this.description));
                 });
             })
@@ -133,11 +140,14 @@ var UsersOverview = function () {
         }); 
         
         /**
-         * klik na sacuvaj poslije klika na X
+         * klik na sacuvaj poslije klika na X, ovo je vec na modalu
          */
         $(document).on('click', '#btn-dialog-save-canceled-sub', function(){
             var id = $('#cancel-subscription').find('#subscription-id').attr('data-id');
             var reason = $('#decline_reason').val();
+            var button = $(this);
+            button.prop('disabled', true);
+            
             $.ajax({
               method: "POST",
               dataType: "json",
@@ -145,14 +155,9 @@ var UsersOverview = function () {
               data: {subscription: id, reason: reason}
             })
             .done(function( result ) {
-                console.log(result);  
-                var options = $modal.find("#decline_reason");
-                options.prop("disabled", false);
-                options.empty().append('<option selected="selected" value=""></option>');
-                $.each(result, function (index, element) {
-                    console.log(this.id);
-                    options.append($("<option />").val(this.id).text(this.description));
-                });
+                $('#cancel-subscription').modal('toggle'); 
+                button.prop('disabled', false);
+                $('.odabrani-planovi').empty();
             })
             .fail(function( result ) {
                 console.log(result.responseText);

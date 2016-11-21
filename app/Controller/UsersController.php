@@ -219,7 +219,8 @@ class UsersController extends AppController {
         ));
         $subscription = $this->User->Subscription->find('all', array(
             'conditions' => array(
-                'Subscription.admin_users_id' => $id
+                'Subscription.admin_users_id' => $id,
+                'Subscription.decline_reason_id' => null
             ),
             'contain' => array(
                 'Plan'
@@ -289,13 +290,19 @@ class UsersController extends AppController {
      * Ajax metoda za cuvanje pretplate
      */
     public function savePlan() {
+        if (!$this->request->is('ajax')) {
+            throw new MethodNotAllowedException('Nije dozvoljen direktan pristup ovom linku!');
+        }        
         $this->viewClass = 'Json';
+        
+        $period = $this->request->data['period'];
         
         $data = array(
             'plans_id' => $this->request->data['plan'],
             'admin_users_id' => $this->request->data['user'],
             'start_date' => $this->User->getDataSource()->expression('NOW()'),
-            'end_date' => $this->User->getDataSource()->expression('NOW() + INTERVAL 1 MONTH')
+            'end_date' => $this->User->getDataSource()->expression("NOW() + INTERVAL $period MONTH"),
+            'period' => $period
         );
 
         if (!$this->User->Subscription->subExists($data['admin_users_id'])) {
@@ -305,7 +312,8 @@ class UsersController extends AppController {
         if ($this->User->Subscription->save($data)) {
             $subscription = $this->User->Subscription->find('all', array(
                 'conditions' => array(
-                    'Subscription.admin_users_id' => $data['admin_users_id']
+                    'Subscription.admin_users_id' => $data['admin_users_id'],
+                    'Subscription.decline_reason_id' => null
                 ),
                 'contain' => array(
                     'Plan'

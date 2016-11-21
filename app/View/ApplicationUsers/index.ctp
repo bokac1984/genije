@@ -9,7 +9,7 @@ $this->assign('page-title', 'Korisnici <small>pregled</small>');
 ?>
 <div class="row">
     <div class='col-md-12'>
-        <table class="table table-striped table-bordered table-hover" id="sample-table-2">
+        <table class="table table-striped table-hover table-condensed" id="sample-table-2">
             <thead>
                 <tr>
                     <th class="center">
@@ -27,7 +27,7 @@ $this->assign('page-title', 'Korisnici <small>pregled</small>');
             </tr>
             </thead>
             <tbody>
-<?php foreach ($users as $user): ?>
+            <?php foreach ($users as $user): ?>
                     <tr>
                         <td class="center">
                             <div class="checkbox-table">
@@ -42,7 +42,7 @@ $this->assign('page-title', 'Korisnici <small>pregled</small>');
                             'height' => '50',
                             'width' => '50',
                             'alt' => 'my image'
-                                )
+                            )
                         );
                         ?>
                         </td>
@@ -60,7 +60,7 @@ $this->assign('page-title', 'Korisnici <small>pregled</small>');
                             <a href="#" rel="nofollow" target="_blank">
                                 <?php echo $user['ApplicationUser']['email'] ?>
                             </a></td>
-                        <td class="hidden-xs"><?php echo $user['ApplicationUser']['login_type'] == 2 ? 'FB' : "Google"; ?></td>
+                        <td class="hidden-xs"><?php echo $user['ApplicationUser']['login_type'] == 2 ? 'Facebook' : "Google"; ?></td>
                         <td class="center">
                             <div class="visible-md visible-lg hidden-sm hidden-xs">
                                 <a href="#" class="btn btn-xs btn-teal tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
@@ -93,6 +93,15 @@ $this->assign('page-title', 'Korisnici <small>pregled</small>');
     </div>
 </div>
 <div class="row">
+    <div class="col-md-12">
+        <p>
+	<?php
+	echo $this->Paginator->counter(array(
+		'format' => __('Strana {:page} od {:pages}, prikazujem {:current} redova od {:count} ukupno, počevši od reda {:start}, završno sa redom {:end}')
+	));
+	?>	
+        </p>
+    </div>
     <div class='col-md-12'>
         <?php echo $this->element('pagination'); ?>
     </div>

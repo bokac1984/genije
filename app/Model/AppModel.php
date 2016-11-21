@@ -105,16 +105,58 @@ class AppModel extends Model {
     
     /**
      *
-     * Daj broj objava za odgovarajuci Model 
+     * Daj broj objava za odgovarajuci Model u periodu koji se racuna od dana pretplate
+     * pa svaki mjesec do tog dana u mjesecu kao u primjeru objasnjenom u metodi correctDateForMonttlySubscription
      * @param int $locationId
      * @return int broj objava
      */
-    public function publishedByLocationIdLastMonth($locationId = null) {
+    public function publishedByLocationIdLastMonth($locationId = null, $startDate = null) {
+        $date = $this->correctDateForMonthlySubscription($startDate);
         return $this->find('count', array(
             'conditions' => array(
                 "$this->alias.fk_id_map_objects" => $locationId,
-                "$this->alias.creation_date BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()"
+                "$this->alias.creation_date >= " => $date
             )
         ));        
     }    
+    
+    /**
+     * Ovdje bi trebalo da odredimo koji je to datum
+     * u odnosu na koji cemo da gledamo da li je objavljeno dogadjaja ili svega ostalog
+     * tipa ako je danas 13.03.2016  a pretplata pocela 18.01.2016 onda cemo
+     * da vidimo je li prvi datum (13.03.2016) veci od 18.03.2016
+     * ako nije onda cemo da smanjimo jedan mjesec i racunamo od 18.02.2016 broj objava
+     * @param datetime $startDate
+     */
+    public function correctDateForMonthlySubscription($startDate = null) {
+        $now = new DateTime("now");
+        $date1 = new DateTime($startDate);
+        
+        $day = $date1->format('d'); // stavi tacan dan kojeg je nastala pretpplata
+        $month = $now->format('m');
+        $year = $now->format('Y');
+        $hour = $date1->format('H');
+        $min = $date1->format('i');
+        $sec = $date1->format('s');
+        
+        $projectedDateOfExpire = new DateTime("$year-$month-$day");
+        $projectedDateOfExpire->setTime($hour, $min, $sec);
+        
+        if ($now < $projectedDateOfExpire) {
+            $projectedDateOfExpire->modify('-1 month');
+        }
+        
+        return $projectedDateOfExpire->format('Y-m-d H:i:s');
+    }    
+    
+    /**
+     * Da li ima pravo da jos objavljuje
+     * 
+     * @param int $subscribedCount Broj pretplacenih objava
+     * @param int $publishedCount Broj objavljenih objava
+     * @return bolean
+     */
+    public function canPostMore($subscribedCount, $publishedCount) {
+        return $publishedCount >= $subscribedCount;
+    }
 }

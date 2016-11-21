@@ -17,14 +17,55 @@ class SubscriptionsController extends AppController {
      */
     public $components = array('Paginator');
 
+    public function beforeFilter() {
+        parent::beforeFilter();
+        $this->set('icon', 'stack-2');
+        
+        $this->Auth->allow('uploadPhotos');
+    }
+    
+    public function isAuthorized($user) {
+        if ($this->locationOperator || $this->operator) {
+            return true;
+        }
+
+        if (in_array($this->action, array('add', 'delete')) && $this->admin) {
+            return true;
+        }
+
+        return parent::isAuthorized($user);
+    }     
+    
+    public function expired() {}
+    
+    public function used() {}
+
     /**
      * index method
      *
      * @return void
      */
     public function index() {
-        $this->Subscription->recursive = 0;
+        $this->Subscription->recursive = 0;       
         $this->set('subscriptions', $this->Paginator->paginate());
+    }
+    
+    public function mine() {
+        $this->Subscription->recursive = 0;     
+        $this->Paginator->settings = array(
+            'limit' => 25,
+            'order' => array(
+                'Subscription.created' => 'DESC'
+            ),
+            'conditions' => array(
+                'Subscription.admin_users_id' => $this->Auth->user('id'),
+                'Subscription.decline_reason_id' => null
+            ),
+            'contain' => array(
+                'Plan'
+            )
+        );
+        $this->set('subscriptions', $this->Paginator->paginate());        
     }
 
     /**
@@ -108,6 +149,32 @@ class SubscriptionsController extends AppController {
             $this->Flash->error(__('The subscription could not be deleted. Please, try again.'));
         }
         return $this->redirect(array('action' => 'index'));
+    }
+    
+    /**
+     * Ajax metoda za odustajanje od pretplate
+     */
+    public function cancel() {
+        $this->viewClass = 'Json';
+        
+        $data = array(
+            'Subscription' => array(
+                'id' => $this->request->data['subscription'],
+                'decline_reason_id' => $this->request->data['reason']
+            )
+        );
+        
+        $respond = array(
+            'status' => '400',
+            'error' => 'Nije moguće sačuvati!',
+        );
+        if ($this->Subscription->save($data)) {
+            $respond = array(
+                'status' => '200',
+                'error' => ''
+            );
+        } 
+        $this->set('respond', $respond);
     }
 
 }

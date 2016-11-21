@@ -189,6 +189,9 @@ class ProductsController extends AppController {
      * @return void
      */
     public function add($idLocation = null) {
+        
+        $this->userCanAddMorePosts();
+        
         if ($this->request->is('post')) {
             $this->Product->create();
             // ako je ulogovan locationOperator onda samo dodaj grad i lokaciju u niz

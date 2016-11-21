@@ -120,8 +120,15 @@ class PlansController extends AppController {
 
 
     public function getAllPlans() {
+        if (!$this->request->is('ajax')) {
+            throw new MethodNotAllowedException('Nije dozvoljen direktan pristup ovom linku!');
+        }
         $this->viewClass = 'Json';
-        $plans = $this->Plan->find('all');
+        $plans = $this->Plan->find('all', array(
+            'conditions' => array(
+                'Plan.active' => '1'
+            )
+        ));
         $this->set(compact('plans'));
     }       
 }

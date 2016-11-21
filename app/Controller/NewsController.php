@@ -67,9 +67,6 @@ class NewsController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
         $this->set('icon', 'note');
-        if ($this->request->is('ajax')) {
-            $this->disableCache();
-        }
         
         
         /**
@@ -145,23 +142,7 @@ class NewsController extends AppController {
     }
 
     public function add($location = null) {
-        $userSubscriptionData = $this->Auth->user('Subscription');
-        $Plan = ClassRegistry::init("Plan");
-        
-        $subscribedNewsCount = $Plan->numberOfNewsToPublish($userSubscriptionData['plans_id']);
-        $publishedNewsCount = $this->News->countPublishedNews($this->userLocation);
-        $now = date("Y-m-d H:i:s");
-        //debug($publishedNewsCount . " " .$subscribedNewsCount['Plan']['news_quantity']);
-        
-        if ($publishedNewsCount > $subscribedNewsCount['Plan']['news_quantity']) {
-            $this->set('usedCount', $publishedNewsCount);
-            $this->set('subscribedCount', $subscribedNewsCount['Plan']['news_quantity']);
-            $this->render('used');
-        } else if ($now > $userSubscriptionData['end_date']) {
-            $this->set('b', 'test2');
-            $this->render('expired');
-        }
-        
+        $this->userCanAddMorePosts();
         if ($location !== null) {
             $cityId = $this->News->Location->cityIdLocationIsFrom($location);
             $cities = array(
@@ -172,14 +153,6 @@ class NewsController extends AppController {
         }        
         $this->set(compact('cities'));
     }
-    /**
-     * TODO: napraviti ovo da lici na nesto
-     */
-    public function expired() {
-        
-    }
-    
-    public function used() {}
     
     public function view($id = null) {
         $this->News->id = $id;
